@@ -2,12 +2,12 @@
 #
 # Plain HTML/CSS/JS, no build step: Netlify just publishes the `site/` dir.
 #
-# Netlify Forms: the Request-Certification form is declared statically in
-# site/request-certification.html (a <form name="request-certification"
-# data-netlify="true" netlify-honeypot="bot-field"> with the hidden form-name
-# input + bot-field honeypot). New Netlify sites ship with form detection OFF,
-# so the form only registers after detection is enabled AND the site is
-# redeployed — see DEPLOY.md for the exact enable/redeploy steps.
+# Netlify Forms: two static forms are declared with data-netlify="true" +
+# netlify-honeypot="bot-field" and a hidden form-name input —
+#   - request-certification  (site/request-certification.html)
+#   - contribute-plan        (site/contribute-plan.html; multipart, accepts an upload)
+# New Netlify sites ship with form detection OFF, so a form only registers after
+# detection is enabled AND the site is redeployed — see DEPLOY.md.
 
 [build]
   publish = "site"
@@ -18,4 +18,18 @@
 [[redirects]]
   from = "/cert/:id"
   to = "/cert.html?id=:id"
+  status = 200
+
+# The schemas + protocol are the repo's source of truth (not duplicated into
+# site/). Proxy same-domain paths to the canonical raw files so machine-readable
+# links (llms.txt, for-agents.html) and the existing how-to-enter/request-cert
+# references resolve at aec.kentucky-ai.com. NOTE: needs the repo public — true by
+# launch time (DEPLOY §1 flips it public before the site deploys).
+[[redirects]]
+  from = "/schema/*"
+  to = "https://raw.githubusercontent.com/Kentucky-ai/opentakeoff-academy/main/schema/:splat"
+  status = 200
+[[redirects]]
+  from = "/PROTOCOL.md"
+  to = "https://raw.githubusercontent.com/Kentucky-ai/opentakeoff-academy/main/PROTOCOL.md"
   status = 200

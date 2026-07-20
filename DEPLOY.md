@@ -97,9 +97,12 @@ curl -X PATCH "https://api.netlify.com/api/v1/sites/${SITE_ID}" \
 netlify deploy --prod --dir=site
 ```
 
-Confirm: `listSiteForms` now returns `request-certification` with an `id`; a test
-`POST` of `form-name=request-certification` + fields returns **200** and shows
-under *Forms → submissions*.
+Confirm: `listSiteForms` now returns **both** `request-certification` and
+`contribute-plan` with an `id`; a test `POST` of `form-name=request-certification`
+(or `form-name=contribute-plan`) + fields returns **200** and shows under
+*Forms → submissions*. (`contribute-plan` is `multipart/form-data` and accepts an
+optional planset upload — file submissions appear as download links in the
+dashboard.)
 
 (Optional email notification:
 `POST /api/v1/hooks` with `{site_id, form_id, type:"email", event:"submission_created", data:{email:"…"}}`
@@ -112,14 +115,17 @@ under *Forms → submissions*.
 The connected Gmail is **read/draft-only** from tooling, so this is a manual,
 one-time setup in the Gmail UI:
 
-1. Create the label **`OpenTakeoff Academy/Cert Requests`** (a nested label under
-   `OpenTakeoff Academy`).
-2. Create a filter: **from** the Netlify form-notification sender (e.g.
-   `forms-noreply@netlify.com`, or whatever address the notification hook uses)
-   → **apply label** `OpenTakeoff Academy/Cert Requests` (and optionally *Skip the
-   Inbox* / *Mark as important*).
+1. Create the labels **`OpenTakeoff Academy/Cert Requests`** and
+   **`OpenTakeoff Academy/Plan Submissions`** (nested under `OpenTakeoff Academy`).
+2. Create filters on the Netlify form-notification sender (e.g.
+   `forms-noreply@netlify.com`). If you set a per-form notification email (below),
+   filter by the form name / subject so **request-certification** → *Cert Requests*
+   and **contribute-plan** → *Plan Submissions* (optionally *Skip the Inbox* /
+   *Mark as important*).
 
-This routes every Request-Certification submission into one reviewable folder.
+This routes every certification request and every contributed-plan submission
+into its own reviewable folder. (Per-form email hooks are set in §4's optional
+step — pass each form's `form_id`.)
 
 ---
 
