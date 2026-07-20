@@ -27,3 +27,6 @@ tmp/
 
 # real source plansets — private held-out ground-truth material, NOT for publication
 plans/
+
+# held-out ground-truth answer keys — never published
+**/ground-truth/

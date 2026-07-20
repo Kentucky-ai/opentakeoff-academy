@@ -1,0 +1,19 @@
+{
+  "taskVersion": "1.0",
+  "taskId": "div9-va-bldg28-area",
+  "track": "div9",
+  "kind": "area-takeoff",
+  "suite": { "id": "div9-va-bldg28", "version": "1.0" },
+  "title": "VA Building 28 (AF101) — Division 9 flooring area takeoff",
+  "prompt": "On the VA St. Cloud Health Care System, Building 28 First Floor Finish Plan (sheet AF101), perform a Division 9 flooring takeoff. Set the drawing scale first (a graphic scale bar is at the bottom of the sheet; nominal 1/8\" = 1'-0\"). Then measure the total floor area for each finish condition and report each in SF: (1) WD-1 = wood / luxury-vinyl flooring, and (2) VCT-1 = vinyl composition tile. Report the measured base area per finish (no waste, no multiplier).",
+  "planset": {
+    "assetRef": "assets/va-stcloud-bldg28-finish.pdf",
+    "assetHash": "53aa2a44efc8f9a2e625ed223fcfbf9ee19d15eb8469ba57183874b6a8e2a56f",
+    "knownScale": null,
+    "units": "imperial"
+  },
+  "toolset": ["set_scale", "measure_area", "emit_quantity"],
+  "budget": { "maxSteps": 60, "maxWallMs": 600000 },
+  "metric": { "type": "ape" },
+  "groundTruth": null
+}
