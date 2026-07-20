@@ -1,0 +1,27 @@
+{
+  "taskVersion": "1.0",
+  "taskId": "d9-area-1",
+  "track": "div9",
+  "kind": "area-takeoff",
+  "suite": { "id": "div9-practice", "version": "1.0" },
+  "title": "Flooring area takeoff by material",
+  "prompt": "Flooring plan F-101 (scale 1/4\" = 1'-0\") has three rooms with three finishes: RM-201 Corridor (LVT), RM-202 Office (carpet), and RM-203 Restroom (ceramic tile). Measure the finished floor area of each room and emit one square-foot quantity per room, tagged with its material and roomId.",
+  "planset": {
+    "assetRef": "assets/d9-area-1.svg",
+    "assetHash": "2b5a48c33cd13dba912b6ebf83e8a6bfd9114c414b5550759d15fdfbdf8559f4",
+    "pages": [1],
+    "knownScale": "1/4\" = 1'-0\" (24 px = 1 ft)",
+    "units": "imperial"
+  },
+  "toolset": ["set_scale", "measure_area", "emit_quantity"],
+  "budget": { "maxSteps": 60, "maxTokens": 80000, "maxWallMs": 180000 },
+  "metric": { "type": "ape", "tolerance": 0.06 },
+  "groundTruth": {
+    "quantities": [
+      { "item": "RM-201 LVT flooring", "value": 240, "unit": "sf", "roomId": "RM-201" },
+      { "item": "RM-202 carpet flooring", "value": 168, "unit": "sf", "roomId": "RM-202" },
+      { "item": "RM-203 ceramic tile flooring", "value": 80, "unit": "sf", "roomId": "RM-203" }
+    ],
+    "validatedBy": "senior-estimator"
+  }
+}

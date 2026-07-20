@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Self-Test — Run a Takeoff Agent in Your Browser — OpenTakeoff Academy</title>
+<meta name="description" content="Run an AI takeoff agent against a public practice planset entirely in your browser — free, no signup, non-certified. One-click demo run, or bring your own OpenAI-compatible endpoint. See a real APE score.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M4 30h32v3H4z' fill='%23191510'/%3E%3Cpath d='M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z' fill='%23ffd21e' stroke='%23191510' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="self-test.css">
+</head>
+<body data-page="selftest">
+
+<div class="scene" id="scene" aria-hidden="true"></div>
+
+<div class="rack">
+
+  <!-- ============ SITE NAV ============ -->
+  <nav class="board sitenav" id="sitenav" aria-label="Primary">
+    <a class="nav-brand" href="index.html">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 30h32v3H4z" fill="#191510"></path><path d="M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z" fill="#fff" stroke="#191510" stroke-width="2"></path><path d="M17 10.5C17 8.6 18.3 7 20 7s3 1.6 3 3.5" fill="none" stroke="#191510" stroke-width="2"></path><path d="M20 8v-3" stroke="#191510" stroke-width="2"></path></svg>
+      OpenTakeoff Academy
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Leaderboard</a>
+      <a href="self-test.html" aria-current="page">Self-Test</a>
+      <a href="how-to-enter.html">Enter the Academy</a>
+      <a href="request-certification.html">Request Cert</a>
+      <a href="cert.html?id=OTA-D9A-0047">Verify a Cert</a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="board" id="deck" aria-label="Free self-test">
+    <div class="hazbar"></div>
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="#191510"/></svg>
+      <span class="hd-title">Free Self-Test &mdash; Run a Takeoff Agent in Your Browser</span>
+      <span class="hd-tag">Kick the tires</span>
+    </div>
+    <div class="board-bd">
+      <div class="deck-brand">
+        <div class="deck-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40"><path d="M4 30h32v3H4z" fill="#191510"></path><path d="M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z" fill="#fff" stroke="#191510" stroke-width="2"></path><path d="M17 10.5C17 8.6 18.3 7 20 7s3 1.6 3 3.5" fill="none" stroke="#191510" stroke-width="2"></path><path d="M20 8v-3" stroke="#191510" stroke-width="2"></path></svg>
+        </div>
+        <div class="deck-name">
+          <h1>RUN A TAKEOFF, GET A SCORE</h1>
+          <p class="tag">Free &middot; no signup &middot; non-certified</p>
+        </div>
+        <div class="deck-chips">
+          <span class="chip chip-mock">Free</span>
+          <span class="chip chip-week">No signup</span>
+          <span class="chip chip-week">Runs in your browser</span>
+        </div>
+      </div>
+
+      <p class="st-lede">
+        Point an AI agent at a <b>public practice planset</b> and watch it calibrate the scale, measure each
+        room, and emit quantities &mdash; then see a real <b>APE score</b> against the answer key. Two ways to run,
+        both entirely client-side: a <b>one-click demo</b> that needs zero setup, or <b>your own model</b> via any
+        OpenAI-compatible endpoint. Nothing is uploaded, nothing is signed up for, nothing is recorded.
+      </p>
+
+      <div class="tier-banner">
+        <span class="tier-pill free">Free self-test</span>
+        <span class="tb-txt"><b>This page.</b> Unlimited, no signup, public answer keys. Nothing is committed &mdash; a sandbox to prove your agent can operate the tools.</span>
+        <span class="tier-pill cert">Certified badge</span>
+        <span class="tb-txt"><b>Different thing.</b> A weighted, verifiable credential from a <b>proctored session on a held-out planset</b> you have never seen. <a href="request-certification.html">Request a certified session &rarr;</a></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PLANSET ============ -->
+  <section class="board" aria-label="Practice planset">
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 9h16M9 4v16" fill="none" stroke="#191510" stroke-width="2"/></svg>
+      <span class="hd-title">Practice Planset &mdash; Div 9 Flooring F-101</span>
+      <span class="hd-tag">Public key</span>
+    </div>
+    <div class="board-bd">
+      <div class="plan-meta">
+        <span class="chip chip-week">div9 / practice</span>
+        <span class="chip chip-week">area-takeoff</span>
+        <span class="chip chip-week">scale 1/4&quot; = 1'-0&quot;</span>
+        <span class="chip chip-week">3 rooms &middot; 3 finishes</span>
+      </div>
+      <div class="plan-frame" id="plan-host" role="img" aria-label="Division 9 flooring plan F-101: three rooms — RM-201 Corridor (LVT), RM-202 Office (carpet), RM-203 Restroom (ceramic tile) — with a graphic scale bar."></div>
+      <p class="plan-cap">Task d9-area-1 &middot; asset site/practice/d9-area-1.svg &middot; the same geometry the Node conformance engine scores</p>
+
+      <div class="task-card">
+        <h3>The task</h3>
+        <p id="task-prompt"></p>
+        <div class="gt-box">
+          <span class="gt-hd">&#10003; Public answer key (practice only)</span>
+          <ul id="gt-keys"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RUN ============ -->
+  <section class="board" id="run-panel" aria-label="Run the self-test">
+    <div class="hazbar"></div>
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="#191510"/></svg>
+      <span class="hd-title">Run &mdash; One Click, No Setup</span>
+      <span class="hd-tag">Sandbox</span>
+    </div>
+    <div class="board-bd">
+
+      <fieldset class="mode-row" style="border:0;margin:0;padding:0" aria-label="Run mode">
+        <label class="mode-card demo" data-mode="demo">
+          <input type="radio" name="run-mode" value="demo" checked>
+          <span class="mc-title">Demo run <span class="mc-tag">no setup</span></span>
+          <span class="mc-desc">A built-in scripted agent plays the tools and scores. One click, zero configuration &mdash; works instantly. Scores ~0% APE.</span>
+        </label>
+        <label class="mode-card byo" data-mode="byo">
+          <input type="radio" name="run-mode" value="byo">
+          <span class="mc-title">Your agent <span class="mc-tag">bring your endpoint</span></span>
+          <span class="mc-desc">Paste any OpenAI-compatible endpoint. Your browser runs <b>your</b> model against the same planset through the same tools.</span>
+        </label>
+      </fieldset>
+
+      <!-- endpoint config (shown only for "your agent") -->
+      <form class="endpoint-form" id="endpoint-form" hidden autocomplete="off" onsubmit="return false">
+        <ul class="form-errors" id="form-errors" hidden></ul>
+        <div class="ef-grid">
+          <div class="field">
+            <label for="f-base">Base URL</label>
+            <input id="f-base" type="text" inputmode="url" placeholder="http://localhost:11434/v1" spellcheck="false">
+            <span class="hint">OpenAI-compatible base ending in <code>/v1</code>. We POST to <code>/chat/completions</code>.</span>
+          </div>
+          <div class="field">
+            <label for="f-model">Model</label>
+            <input id="f-model" type="text" placeholder="llama3.1  ·  qwen2.5  ·  gpt-4o-mini" spellcheck="false">
+            <span class="hint">The model name your endpoint expects.</span>
+          </div>
+          <div class="field">
+            <label for="f-key">API key <span style="text-transform:none;font-weight:400">(optional)</span></label>
+            <input id="f-key" type="password" placeholder="sk-…  (blank for local runtimes)" spellcheck="false" autocomplete="off">
+            <span class="hint">Sent only to your endpoint as a Bearer token.</span>
+          </div>
+        </div>
+        <label class="remember-row"><input type="checkbox" id="f-remember"> Remember the API key on this device (stored in this browser's localStorage)</label>
+
+        <div class="note-box">
+          <div class="note privacy"><span class="n-ico" aria-hidden="true">&#128274;</span><span><b>Your endpoint, model, and key stay in your browser.</b> They are sent <b>only</b> to the endpoint you type above &mdash; never to OpenTakeoff Academy. This page has no backend; base URL &amp; model persist in <code>localStorage</code>, and the key persists only if you tick the box.</span></div>
+          <div class="note cors"><span class="n-ico" aria-hidden="true">&#9888;</span><span><b>CORS:</b> the browser calls your endpoint directly, so the target must allow cross-origin browser requests. Local runtimes (<b>Ollama</b>, <b>LM Studio</b>, <b>vLLM</b>, <b>LiteLLM</b>) usually do. Hosted APIs (OpenAI, etc.) typically block browser calls &mdash; run a local model or put a CORS proxy in front. An unreachable endpoint fails gracefully with a readable message in the trace.</span></div>
+        </div>
+      </form>
+
+      <div class="run-actions">
+        <button class="run-btn" type="button" id="run-btn">
+          <span class="run-tri" aria-hidden="true">&#9658;</span><span class="run-label">Run demo takeoff</span>
+        </button>
+        <span class="run-status" id="run-status">Ready &middot; click Run to start</span>
+      </div>
+
+      <!-- live trace -->
+      <div class="trace-wrap" id="trace-wrap" hidden>
+        <div class="trace-hd">Live trace &middot; each tool call &amp; result as it happens</div>
+        <div class="trace" id="trace" aria-live="polite" aria-label="Live agent trace"></div>
+      </div>
+
+      <!-- score -->
+      <div class="score-panel" id="score-panel" aria-live="polite" hidden></div>
+
+    </div>
+  </section>
+
+  <!-- ============ FREE vs CERTIFIED ============ -->
+  <section class="board" aria-label="Free self-test versus certified badge">
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3Z" fill="none" stroke="#191510" stroke-width="1.8"/></svg>
+      <span class="hd-title">Free Self-Test vs. Certified Badge</span>
+      <span class="hd-tag">Two tiers</span>
+    </div>
+    <div class="board-bd">
+      <p class="sec-lede">These are <b>two different things</b>. The self-test on this page is a public sandbox for proving your agent can operate the tools. A <b>Certified</b> badge is a weighted, verifiable credential earned under proctoring on plansets that are never distributed.</p>
+      <div class="trust-grid">
+        <div class="trust-card self">
+          <h3>Free self-test
+            <span class="att att-self"><span class="dot" aria-hidden="true"></span>Non-certified</span>
+          </h3>
+          <p>This page. Runs entirely in your browser against a public practice planset.</p>
+          <ul>
+            <li><b>Unlimited</b> &mdash; no signup, no session</li>
+            <li>Answer keys are <b>public</b> (embedded in the practice task)</li>
+            <li><b>Nothing is committed</b> &mdash; no leaderboard, no record</li>
+            <li>Demo agent, or <b>bring your own endpoint</b></li>
+          </ul>
+        </div>
+        <div class="trust-card certified">
+          <h3>Certified badge
+            <span class="att att-certified"><span class="dot" aria-hidden="true"></span>Certified</span>
+          </h3>
+          <p>A proctored session on a fresh <b>held-out planset you have never seen</b>, scored on the Academy's side.</p>
+          <ul>
+            <li>Weighted, <b>verifiable</b> credential with issue + expiry</li>
+            <li>Ground truth is <b>never distributed</b></li>
+            <li>Your model / parser / harness stay a black box</li>
+            <li>The only path to a trustworthy mark on the leaderboard</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cta-strip" style="margin-top:18px;border-radius:8px;border:1px solid var(--rule)">
+        <div class="cta-copy">
+          <h2>Ready for the real thing?</h2>
+          <p>Once your agent clears the practice bar here, request a proctored, held-out certification session and earn a badge for your model card, README, or profile.</p>
+        </div>
+        <a class="cta-btn" href="request-certification.html">Request Certification <span class="arrow" aria-hidden="true">&#9654;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="status">
+    <div class="board">
+      <div class="bp status-bar">
+        <span>FREE PRACTICE SELF-TEST &middot; NON-CERTIFIED</span>
+        <span class="dim">RUNS IN YOUR BROWSER &mdash; NO BACKEND, NO SIGNUP</span>
+        <span class="dim">ENDPOINTS &amp; KEYS NEVER SENT TO THE ACADEMY</span>
+      </div>
+    </div>
+    <div class="board directory" aria-label="Site directory">
+      <span class="dir-name">OpenTakeoff Academy</span>
+      <span class="dir-nav">
+        <a href="index.html">Leaderboard</a><span class="bar">|</span>
+        <a href="self-test.html">Self-Test</a><span class="bar">|</span>
+        <a href="how-to-enter.html">Enter</a><span class="bar">|</span>
+        <a href="request-certification.html">Request Cert</a><span class="bar">|</span>
+        <a href="cert.html?id=OTA-D9A-0047">Verify</a>
+      </span>
+    </div>
+    <p class="foot-note">
+      This free self-test runs an OpenTakeoff Academy practice task entirely in your browser against a
+      public answer key. It is not a certification, produces no leaderboard entry, and records nothing.
+      A weighted, verifiable OpenTakeoff Certified badge comes only from a proctored session on a held-out
+      planset &mdash; ground-truth data is never distributed.
+    </p>
+  </footer>
+
+</div>
+
+<script src="app.js"></script>
+<script src="self-test.js"></script>
+</body>
+</html>

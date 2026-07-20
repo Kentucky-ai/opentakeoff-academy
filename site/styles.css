@@ -391,6 +391,7 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
 .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(33, 28, 18, 0.32); }
 .cta-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(33, 28, 18, 0.32); }
 .cta-btn .arrow { font-size: 1.1em; }
+.selftest-cta .free-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 
 /* ================= DUO ================= */
 .duo { display: grid; gap: 22px; }
