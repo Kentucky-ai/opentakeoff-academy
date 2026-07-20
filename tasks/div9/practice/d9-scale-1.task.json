@@ -1,0 +1,25 @@
+{
+  "taskVersion": "1.0",
+  "taskId": "d9-scale-1",
+  "track": "div9",
+  "kind": "scale-calibration",
+  "suite": { "id": "div9-practice", "version": "1.0" },
+  "title": "Calibrate the drawing scale from the graphic bar",
+  "prompt": "Partial plan F-160 ships with NO stated scale — only a graphic scale bar. The bar spans a labeled real-world distance. Use set_scale to calibrate the drawing, then emit the resulting scale as a single quantity named 'drawing scale' in 'ft/px' (real feet represented by one pixel of the asset).",
+  "planset": {
+    "assetRef": "assets/d9-scale-1.svg",
+    "assetHash": "7dda6c0f86b913785a66029688cfbf640a0a43f6e1c5d27e3125d4b36fbc4c29",
+    "pages": [1],
+    "knownScale": null,
+    "units": "imperial"
+  },
+  "toolset": ["set_scale", "emit_quantity"],
+  "budget": { "maxSteps": 25, "maxTokens": 40000, "maxWallMs": 90000 },
+  "metric": { "type": "scale-error", "tolerance": 0.035 },
+  "groundTruth": {
+    "quantities": [
+      { "item": "drawing scale", "value": 0.1, "unit": "ft/px" }
+    ],
+    "validatedBy": "senior-estimator"
+  }
+}

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Enter the Academy — OpenTakeoff Academy</title>
+<meta name="description" content="How to bring your model, parser, or harness to OpenTakeoff Academy, run the practice suite, earn a Certified or Self-Reported credential, and keep your IP private.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M4 30h32v3H4z' fill='%23191510'/%3E%3Cpath d='M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z' fill='%23ffd21e' stroke='%23191510' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="howto">
+
+<div class="scene" id="scene" aria-hidden="true"></div>
+
+<div class="rack">
+
+  <nav class="board sitenav" id="sitenav" aria-label="Primary">
+    <a class="nav-brand" href="index.html">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 30h32v3H4z" fill="#191510"></path><path d="M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z" fill="#fff" stroke="#191510" stroke-width="2"></path><path d="M17 10.5C17 8.6 18.3 7 20 7s3 1.6 3 3.5" fill="none" stroke="#191510" stroke-width="2"></path><path d="M20 8v-3" stroke="#191510" stroke-width="2"></path></svg>
+      OpenTakeoff Academy
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Leaderboard</a>
+      <a href="how-to-enter.html" aria-current="page">Enter the Academy</a>
+      <a href="request-certification.html">Request Cert</a>
+      <a href="cert.html?id=OTA-D9A-0047">Verify a Cert</a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="board" id="deck" aria-label="Enter the Academy">
+    <div class="hazbar"></div>
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18v-2H3v2Zm9-16C7.6 4 4 7.6 4 12v2h16v-2c0-4.4-3.6-8-8-8Z" fill="#191510"/></svg>
+      <span class="hd-title">Enter the Academy &mdash; Bring Your Own Everything</span>
+      <span class="hd-tag">Onboarding</span>
+    </div>
+    <div class="board-bd">
+      <div class="deck-brand">
+        <div class="deck-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40"><path d="M4 30h32v3H4z" fill="#191510"></path><path d="M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z" fill="#fff" stroke="#191510" stroke-width="2"></path><path d="M17 10.5C17 8.6 18.3 7 20 7s3 1.6 3 3.5" fill="none" stroke="#191510" stroke-width="2"></path><path d="M20 8v-3" stroke="#191510" stroke-width="2"></path></svg>
+        </div>
+        <div class="deck-name">
+          <h1>PROVE YOUR TAKEOFF AGENT</h1>
+          <p class="tag">Certification Protocol v1.0</p>
+        </div>
+        <div class="deck-chips">
+          <span class="chip chip-mock">Apache-2.0</span>
+          <span class="chip chip-week">IP stays private</span>
+        </div>
+      </div>
+      <p class="howto-lede">
+        Bring <b>any model</b> (an OpenAI-compatible endpoint or an MCP server), <b>your own parser</b>
+        (exposed as a black-box MCP tool), and optionally <b>your own harness</b>. Certify per competency
+        on held-out plansets, earn a verifiable <b>OpenTakeoff Certified</b> credential, and put it on a
+        Hugging Face model card, GitHub README, or LinkedIn profile. Your weights, parser internals, and
+        raw traces never leave your machine.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ THE FLOW ============ -->
+  <section class="board" aria-label="Certification flow">
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6" fill="none" stroke="#191510" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="hd-title">The Certification Flow</span>
+      <span class="hd-tag">6 Steps</span>
+    </div>
+    <div class="board-bd">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="step-no" aria-hidden="true"></div>
+          <h3>Register &amp; choose a track</h3>
+          <p><b>Generalist</b> (broad takeoff across trades) or <b>Vertical-Specialist</b> (deep trade suites; first live: <b>Division 9 / flooring</b>). Certification is per-track, so a specialist parser can earn a specialist mark without being a generalist.</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-no" aria-hidden="true"></div>
+          <h3>Practice (private)</h3>
+          <p>Pull the public <b>practice suite</b> (answer keys included) and wire your model + parser (MCP) + harness with the conformance SDK. Iterate freely on your own compute, with your own keys. All practice work is fully private.</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-no" aria-hidden="true"></div>
+          <h3>Cert run</h3>
+          <p><b>Self-Reported:</b> run the ranked suite locally and submit the signed run-bundle (a PR to <code>submissions/</code>). &nbsp; <b>Certified:</b> request a proctored eval &mdash; the Academy delivers a fresh held-out batch you've never seen, drives your endpoint/MCP, and records provenance on its side.</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-no" aria-hidden="true"></div>
+          <h3>Score vs hidden ground truth</h3>
+          <p>APE / count-error / scale-error / scope-F1, plus efficiency, plus <b>provenance sanity checks</b> that flag gamed runs (a correct answer with zero measurement steps, superhuman speed, missing <code>emit_quantity</code> calls, or a planset <code>assetHash</code> mismatch).</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-no" aria-hidden="true"></div>
+          <h3>Issue the certificate</h3>
+          <p>If the tier threshold clears, the Academy issues a signed cert (<code>schema/cert.schema.json</code>) with a unique id, suite version, score vs baseline, and <b>issue + expiry</b> dates &mdash; mapped onto Open Badges 3.0.</p>
+        </div>
+        <div class="flow-step">
+          <div class="step-no" aria-hidden="true"></div>
+          <h3>Publish &amp; embed</h3>
+          <p>Your ticket appears on the leaderboard and gets a public, verifiable cert page. Copy the badge + <code>model-index</code> block to your model card, the badge to your README, and an Open-Badge entry to LinkedIn.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TWO TRUST TIERS ============ -->
+  <section class="board" aria-label="The two trust tiers">
+    <div class="hazbar"></div>
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3Z" fill="none" stroke="#191510" stroke-width="1.8"/></svg>
+      <span class="hd-title">The Two Trust Tiers &mdash; The Core Tradeoff</span>
+      <span class="hd-tag">Attestation</span>
+    </div>
+    <div class="board-bd">
+      <p class="sec-lede">You can't have a run that is fully private <b>and</b> a publicly trustworthy cert &mdash; a self-run harness can be rigged, and signing proves only <i>what was recorded</i>. So the Academy separates <b>privacy of your IP</b> from <b>verifiability of the score</b>.</p>
+      <div class="trust-grid">
+        <div class="trust-card self">
+          <h3>Self-Reported
+            <span class="att att-self"><span class="dot" aria-hidden="true"></span>Self-Reported</span>
+          </h3>
+          <p>You run the ranked suite on your own infra via the conformance SDK and submit the signed run-bundle.</p>
+          <ul>
+            <li>Private and fast</li>
+            <li><b>Self-attested</b> &mdash; lower trust</li>
+            <li>Gets the same provenance checks, but the tasks were run by you</li>
+            <li>Earns a visually distinct <b>Self-Reported</b> badge</li>
+          </ul>
+        </div>
+        <div class="trust-card certified">
+          <h3>Certified (proctored)
+            <span class="att att-certified"><span class="dot" aria-hidden="true"></span>Certified</span>
+          </h3>
+          <p>The Academy runs a <b>fresh held-out set you have never seen</b> against your endpoint / MCP server (or your sealed container), records provenance on its side, and scores it.</p>
+          <ul>
+            <li>Your model / parser / harness stay a remote <b>black box</b></li>
+            <li>The Academy controls the tasks and scoring</li>
+            <li>The only path to the trustworthy <b>Certified</b> mark</li>
+            <li>Same pattern as hidden test servers (SQuAD / ImageNet / Kaggle)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ QUICKSTART ============ -->
+  <section class="board" aria-label="Quickstart">
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6 3 12l5 6M16 6l5 6-5 6M13 4l-2 16" fill="none" stroke="#191510" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="hd-title">Quickstart</span>
+      <span class="hd-tag">CLI</span>
+    </div>
+    <div class="board-bd">
+      <p class="sec-lede"><b>Any model</b> reachable via an OpenAI-compatible endpoint (Ollama, LM Studio, vLLM, LiteLLM, hosted APIs) or an MCP server. Built-in Academy tools handed to every agent: <code>set_scale</code>, <code>measure_area</code>, <code>measure_length</code>, <code>count</code>, <code>identify_scope</code>, <code>emit_quantity</code>.</p>
+
+      <p class="comp-note" style="color:var(--ink-2)">1 &middot; Run the public practice suite against your own model (your keys, your compute):</p>
+      <div class="codewrap"><pre><code>npx opentakeoff-academy run \
+  --track div9 --suite practice \
+  --endpoint http://localhost:11434/v1 --model my-model \
+  --out ./runs/my-run.bundle.json</code></pre></div>
+
+      <p class="comp-note" style="margin-top:14px;color:var(--ink-2)">2 &middot; Bring your own parser as a black-box MCP server:</p>
+      <div class="codewrap"><pre><code>npx opentakeoff-academy run --track div9 --suite practice \
+  --endpoint http://localhost:11434/v1 --model my-model \
+  --mcp ./my-parser.mcp.json --out ./runs/my-run.bundle.json</code></pre></div>
+
+      <p class="comp-note" style="margin-top:14px;color:var(--ink-2)">3 &middot; Score locally against the practice keys:</p>
+      <div class="codewrap"><pre><code>npx opentakeoff-academy score ./runs/my-run.bundle.json --track div9 --suite practice</code></pre></div>
+
+      <p class="comp-note" style="margin-top:14px;color:var(--ink-2)">Bring your <b>own harness</b>? Produce a conformant bundle (<code>adapter: "custom-bundle"</code>) with the SDK helpers, then validate it:</p>
+      <div class="codewrap"><pre><code>npx opentakeoff-academy validate ./runs/my-run.bundle.json</code></pre></div>
+
+      <p class="comp-note" style="margin-top:16px;color:var(--ink-2)">Submit for the leaderboard: open a PR adding your bundle under <code>submissions/</code>. CI verifies the bundle hash, scores it against hidden ground truth, and updates the leaderboard.</p>
+    </div>
+  </section>
+
+  <!-- ============ WHAT STAYS PRIVATE ============ -->
+  <section class="board" aria-label="What stays private">
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10V8a6 6 0 1 1 12 0v2M5 10h14v10H5z" fill="none" stroke="#191510" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <span class="hd-title">What Stays Private &mdash; The Guarantee</span>
+      <span class="hd-tag">Your IP</span>
+    </div>
+    <div class="board-bd">
+      <p class="sec-lede">Always private &mdash; never leaves your machine or your black box:</p>
+      <div class="private-guarantee">
+        <div class="pg-item"><svg class="pg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" fill="none" stroke="#1e7a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Model weights</span></div>
+        <div class="pg-item"><svg class="pg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" fill="none" stroke="#1e7a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Parser internals</span></div>
+        <div class="pg-item"><svg class="pg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" fill="none" stroke="#1e7a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Harness source</span></div>
+        <div class="pg-item"><svg class="pg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" fill="none" stroke="#1e7a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Raw traces</span></div>
+        <div class="pg-item"><svg class="pg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" fill="none" stroke="#1e7a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Plansets you contribute</span></div>
+      </div>
+      <div class="leaves-box">
+        <b>The only thing that leaves the black box for a Certified mark</b>
+        <p>Your <b>score on Academy-controlled held-out tasks</b>. Trace <code>args</code>/<code>result</code> for your own MCP tools may be redacted (<code>{"$redacted": true}</code>) &mdash; the scorer needs the produced quantities and the call graph, not your parser's internals.</p>
+      </div>
+
+      <div class="cta-strip" style="margin-top:18px;border-radius:8px;border:1px solid var(--rule)">
+        <div class="cta-copy">
+          <h2>Ready to sign in?</h2>
+          <p>Read the full protocol in <code>PROTOCOL.md</code>, wire up the practice suite, and open your first submission PR.</p>
+        </div>
+        <a class="cta-btn" href="index.html"><span class="arrow" aria-hidden="true">&#9664;</span> Back to the Leaderboard</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="status">
+    <div class="board">
+      <div class="bp status-bar">
+        <span>CERTIFICATION PROTOCOL v1.0</span>
+        <span class="dim">APACHE-2.0 FOR HARNESS / SDK / SCHEMAS</span>
+        <span class="dim">RANKED GROUND TRUTH NEVER DISTRIBUTED</span>
+      </div>
+    </div>
+    <div class="board directory" aria-label="Site directory">
+      <span class="dir-name">OpenTakeoff Academy</span>
+      <span class="dir-nav">
+        <a href="index.html">Leaderboard</a><span class="bar">|</span>
+        <a href="how-to-enter.html">Enter</a><span class="bar">|</span>
+        <a href="request-certification.html">Request Cert</a><span class="bar">|</span>
+        <a href="cert.html?id=OTA-D9A-0047">Verify</a>
+      </span>
+    </div>
+  </footer>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

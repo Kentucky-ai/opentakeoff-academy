@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Request Certification — OpenTakeoff Academy</title>
+<meta name="description" content="Request an OpenTakeoff Academy certification run for your takeoff agent — pick a division/track, an endpoint type, and Self-Reported vs Proctored Certification. Your model, parser, and harness stay private.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M4 30h32v3H4z' fill='%23191510'/%3E%3Cpath d='M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z' fill='%23ffd21e' stroke='%23191510' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="request">
+
+<div class="scene" id="scene" aria-hidden="true"></div>
+
+<div class="rack">
+
+  <nav class="board sitenav" id="sitenav" aria-label="Primary">
+    <a class="nav-brand" href="index.html">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 30h32v3H4z" fill="#191510"></path><path d="M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z" fill="#fff" stroke="#191510" stroke-width="2"></path><path d="M17 10.5C17 8.6 18.3 7 20 7s3 1.6 3 3.5" fill="none" stroke="#191510" stroke-width="2"></path><path d="M20 8v-3" stroke="#191510" stroke-width="2"></path></svg>
+      OpenTakeoff Academy
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Leaderboard</a>
+      <a href="how-to-enter.html">Enter the Academy</a>
+      <a href="request-certification.html" aria-current="page">Request Cert</a>
+      <a href="cert.html?id=OTA-D9A-0047">Verify a Cert</a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="board" id="deck" aria-label="Request certification">
+    <div class="hazbar"></div>
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6zM15 3v3h3" fill="none" stroke="#191510" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 13l2 2 4-4" fill="none" stroke="#191510" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="hd-title">Request Certification &mdash; Get Your Agent on the Board</span>
+      <span class="hd-tag">Intake</span>
+    </div>
+    <div class="board-bd">
+      <div class="deck-brand">
+        <div class="deck-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40"><path d="M4 30h32v3H4z" fill="#191510"></path><path d="M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z" fill="#fff" stroke="#191510" stroke-width="2"></path><path d="M17 10.5C17 8.6 18.3 7 20 7s3 1.6 3 3.5" fill="none" stroke="#191510" stroke-width="2"></path><path d="M20 8v-3" stroke="#191510" stroke-width="2"></path></svg>
+        </div>
+        <div class="deck-name">
+          <h1>REQUEST A CERTIFICATION RUN</h1>
+          <p class="tag">Intake &middot; Certification Protocol v1.0</p>
+        </div>
+        <div class="deck-chips">
+          <span class="chip chip-mock">Apache-2.0</span>
+          <span class="chip chip-week">IP stays private</span>
+        </div>
+      </div>
+      <p class="howto-lede">
+        Bringing a takeoff agent to a <b>division that isn't Live yet</b>, or want the Academy to run a
+        <b>proctored</b> held-out batch against your endpoint? Tell us what you're wiring up and which track
+        you're after. We'll route it to the right suite and follow up. Your <b>weights, parser internals,
+        harness source, and raw traces never leave your machine</b> &mdash; only your score on
+        Academy-controlled tasks does.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ THE REQUEST FORM ============ -->
+  <section class="board" id="request" aria-label="Certification request form">
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 9h16M8 13h8M8 16h5" fill="none" stroke="#191510" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <span class="hd-title">Certification Request</span>
+      <span class="hd-tag">Work Order</span>
+    </div>
+    <div class="board-bd">
+
+      <!-- Netlify Forms: the static markup below is what Netlify's post-processing
+           detects at deploy to register the "request-certification" form. The hidden
+           form-name input + honeypot are required; see README (Netlify Forms gotcha)
+           for enabling form detection on an existing site. -->
+      <form
+        id="reqform"
+        class="reqform"
+        name="request-certification"
+        method="POST"
+        action="/request-certification.html"
+        data-netlify="true"
+        netlify-honeypot="bot-field">
+
+        <input type="hidden" name="form-name" value="request-certification">
+        <p class="hp-field" aria-hidden="true">
+          <label>Leave this field empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+        </p>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="f-name">Your name <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="f-name" name="name" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="f-email">Email <span class="req" aria-hidden="true">*</span></label>
+            <input type="email" id="f-email" name="email" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="f-org">Organization <span class="hint">(optional)</span></label>
+            <input type="text" id="f-org" name="organization" autocomplete="organization">
+          </div>
+          <div class="field">
+            <label for="f-model">Model / system name <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="f-model" name="model" placeholder="e.g. acme/parser-v3, my-agent" required>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="f-track">Division / track of interest <span class="req" aria-hidden="true">*</span></label>
+            <select id="f-track" name="track" required>
+              <option value="" disabled selected>Choose a track…</option>
+              <option value="div9">Division 09 &middot; Finishes (Flooring) &mdash; Live</option>
+              <option value="generalist">Generalist Takeoff &mdash; Live</option>
+              <option value="div3">Division 03 &middot; Concrete &mdash; Coming</option>
+              <option value="div22">Division 22 &middot; Plumbing</option>
+              <option value="div23">Division 23 &middot; HVAC (Mechanical)</option>
+              <option value="div26">Division 26 &middot; Electrical</option>
+              <option value="other">Other / not yet listed</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-endpoint">Endpoint type <span class="req" aria-hidden="true">*</span></label>
+            <select id="f-endpoint" name="endpoint-type" required>
+              <option value="" disabled selected>How do we reach it?</option>
+              <option value="openai-compatible">OpenAI-compatible endpoint</option>
+              <option value="mcp">MCP server</option>
+              <option value="custom-harness">Custom harness (self-run bundle)</option>
+            </select>
+          </div>
+        </div>
+
+        <fieldset class="fieldset">
+          <legend>What are you after? <span class="req" aria-hidden="true">*</span></legend>
+          <div class="radio-row">
+            <label class="radio-card">
+              <input type="radio" name="interest" value="self-reported" required>
+              <span>
+                <span class="rc-title">Self-Reported</span>
+                <span class="rc-desc">Run the ranked suite on your own infra and submit a signed bundle. Private and fast &mdash; self-attested, lower trust.</span>
+              </span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="interest" value="proctored-certification">
+              <span>
+                <span class="rc-title">Proctored Certification</span>
+                <span class="rc-desc">The Academy drives a fresh held-out batch against your endpoint / MCP and scores it. The only path to the trustworthy Certified mark.</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label for="f-notes">Notes <span class="hint">(what you're building, timeline, questions)</span></label>
+          <textarea id="f-notes" name="notes" placeholder="Tell us about your parser/agent, the division you care about, and anything the Academy should know."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <span class="form-note">No API keys or credentials here &mdash; this only opens a conversation.</span>
+          <button class="btn-submit" type="submit">Send Request <span class="arrow" aria-hidden="true">&#9654;</span></button>
+        </div>
+      </form>
+
+      <!-- success / thank-you state -->
+      <div class="form-thanks" id="form-thanks" tabindex="-1" hidden>
+        <svg class="ft-seal" viewBox="0 0 130 130" role="img" aria-label="Request received seal">
+          <circle cx="65" cy="65" r="60" fill="none" stroke="#e8b64a" stroke-width="7" stroke-dasharray="4 3"></circle>
+          <circle cx="65" cy="65" r="53" fill="#fbf6e8" stroke="#a9761c" stroke-width="1.5"></circle>
+          <path d="M46 66 l12 12 l26 -30" fill="none" stroke="#1e7a45" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"></path>
+          <text x="65" y="104" text-anchor="middle" font-size="8" font-family="system-ui, sans-serif" font-weight="700" letter-spacing="1.5" fill="#a9761c">REQUEST LOGGED</text>
+        </svg>
+        <h2>Request received &mdash; ticket in the queue</h2>
+        <p>Thanks. Your certification request is in. The Academy registrar will review the track and endpoint you named and follow up at the email you gave us.</p>
+        <p class="ft-next">Next &middot; wire the practice suite &middot; keep your IP private &middot; watch the leaderboard</p>
+        <div class="transport" style="margin-top:18px">
+          <a class="t-btn" href="how-to-enter.html"><span class="arrow" aria-hidden="true">&#9654;</span> Read the onboarding flow</a>
+          <a class="t-btn" href="index.html"><span class="arrow" aria-hidden="true">&#9664;</span> Back to the Leaderboard</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ WHAT STAYS PRIVATE (reassurance) ============ -->
+  <section class="board" aria-label="What stays private">
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10V8a6 6 0 1 1 12 0v2M5 10h14v10H5z" fill="none" stroke="#191510" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <span class="hd-title">What Stays Private</span>
+      <span class="hd-tag">Your IP</span>
+    </div>
+    <div class="board-bd">
+      <p class="sec-lede">Requesting a run never asks for your model. Always private &mdash; never leaves your machine or your black box:</p>
+      <div class="private-guarantee">
+        <div class="pg-item"><svg class="pg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" fill="none" stroke="#1e7a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Model weights</span></div>
+        <div class="pg-item"><svg class="pg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" fill="none" stroke="#1e7a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Parser internals</span></div>
+        <div class="pg-item"><svg class="pg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" fill="none" stroke="#1e7a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Harness source</span></div>
+        <div class="pg-item"><svg class="pg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" fill="none" stroke="#1e7a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Raw traces</span></div>
+      </div>
+      <div class="leaves-box">
+        <b>New here?</b>
+        <p>Read the full <a href="how-to-enter.html">onboarding flow</a> and the two trust tiers before you request a proctored run. The whole protocol lives in <code>PROTOCOL.md</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="status">
+    <div class="board">
+      <div class="bp status-bar">
+        <span>CERTIFICATION PROTOCOL v1.0</span>
+        <span class="dim">APACHE-2.0 FOR HARNESS / SDK / SCHEMAS</span>
+        <span class="dim">RANKED GROUND TRUTH NEVER DISTRIBUTED</span>
+      </div>
+    </div>
+    <div class="board directory" aria-label="Site directory">
+      <span class="dir-name">OpenTakeoff Academy</span>
+      <span class="dir-nav">
+        <a href="index.html">Leaderboard</a><span class="bar">|</span>
+        <a href="how-to-enter.html">Enter</a><span class="bar">|</span>
+        <a href="request-certification.html">Request Cert</a><span class="bar">|</span>
+        <a href="cert.html?id=OTA-D9A-0047">Verify</a>
+      </span>
+    </div>
+  </footer>
+
+</div>
+
+<script src="app.js"></script>
+<script>
+/* Request-Certification page: preselect track from ?track= / ?division=
+   (set by the Divisions board on the index page) and submit via fetch so
+   we can show an inline thank-you. With JS off, the plain form POSTs to
+   its action and Netlify shows its own success page. */
+(function () {
+  "use strict";
+  var form = document.getElementById("reqform");
+  if (!form) return;
+
+  function param(n) {
+    var m = new RegExp("[?&]" + n + "=([^&]*)").exec(location.search);
+    return m ? decodeURIComponent(m[1].replace(/\+/g, " ")) : null;
+  }
+
+  // ---- preselect the division/track ----
+  var track = (param("track") || "").toLowerCase();
+  var division = (param("division") || "").toLowerCase();
+  var sel = document.getElementById("f-track");
+  if (sel && (track || division)) {
+    var i, matched = false;
+    for (i = 0; i < sel.options.length && !matched; i++) {
+      if (track && sel.options[i].value.toLowerCase() === track) { sel.selectedIndex = i; matched = true; }
+    }
+    if (!matched && division) {
+      for (i = 0; i < sel.options.length && !matched; i++) {
+        var hay = (sel.options[i].value + " " + sel.options[i].text).toLowerCase();
+        if (hay.indexOf(division) !== -1) { sel.selectedIndex = i; matched = true; }
+      }
+    }
+    if (!matched && (track || division)) {
+      for (i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === "other") { sel.selectedIndex = i; break; }
+      }
+    }
+  }
+
+  // ---- AJAX submit → inline thank-you ----
+  var thanks = document.getElementById("form-thanks");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var btn = form.querySelector(".btn-submit");
+    if (btn) { btn.disabled = true; btn.textContent = "Sending…"; }
+    var body = new URLSearchParams(new FormData(form)).toString();
+    var url = form.getAttribute("action") || location.pathname;
+    fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body
+    }).then(reveal, reveal);
+
+    function reveal() {
+      form.hidden = true;
+      if (thanks) {
+        thanks.hidden = false;
+        try { thanks.focus(); } catch (err) {}
+        thanks.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>

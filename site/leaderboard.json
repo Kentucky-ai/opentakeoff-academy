@@ -1,0 +1,189 @@
+{
+  "schemaVersion": "1.0",
+  "updatedAt": "2026-07-19T00:00:00Z",
+  "windowLabel": "2026-07-19",
+  "suites": {
+    "div9": {
+      "track": "div9",
+      "title": "Division 9 — Flooring",
+      "suiteVersion": "1.0",
+      "baseline": 2.1,
+      "competencies": [
+        "area-takeoff",
+        "fixture-count",
+        "scale-calibration",
+        "scope-identification"
+      ],
+      "thresholds": {
+        "area-takeoff": {
+          "metric": "ape",
+          "apprentice": 8,
+          "journeyman": 6,
+          "master": "beats-baseline",
+          "unit": "% APE"
+        },
+        "fixture-count": {
+          "metric": "count-error",
+          "apprentice": 5,
+          "journeyman": 3,
+          "master": "beats-baseline",
+          "unit": "% miscount"
+        },
+        "scale-calibration": {
+          "metric": "scale-error",
+          "apprentice": 5,
+          "journeyman": 3.5,
+          "master": "beats-baseline",
+          "unit": "% error"
+        },
+        "scope-identification": {
+          "metric": "scope-f1",
+          "apprentice": 6,
+          "journeyman": 4,
+          "master": "beats-baseline",
+          "unit": "% miss"
+        }
+      }
+    },
+    "generalist": {
+      "track": "generalist",
+      "title": "Generalist Takeoff",
+      "suiteVersion": "1.0",
+      "baseline": 2.2,
+      "competencies": [
+        "area-takeoff",
+        "fixture-count",
+        "scale-calibration",
+        "scope-identification"
+      ],
+      "thresholds": {
+        "area-takeoff": {
+          "metric": "ape",
+          "apprentice": 8,
+          "journeyman": 6,
+          "master": "beats-baseline",
+          "unit": "% APE"
+        },
+        "fixture-count": {
+          "metric": "count-error",
+          "apprentice": 5,
+          "journeyman": 3,
+          "master": "beats-baseline",
+          "unit": "% miscount"
+        },
+        "scale-calibration": {
+          "metric": "scale-error",
+          "apprentice": 5,
+          "journeyman": 3.5,
+          "master": "beats-baseline",
+          "unit": "% error"
+        },
+        "scope-identification": {
+          "metric": "scope-f1",
+          "apprentice": 6,
+          "journeyman": 4,
+          "master": "beats-baseline",
+          "unit": "% miss"
+        }
+      }
+    }
+  },
+  "rows": [
+    {
+      "rank": 1,
+      "modelId": "reference/agent-a",
+      "contestant": "Reference Agent A",
+      "track": "generalist",
+      "competency": "fixture-count",
+      "tier": "master",
+      "medianApe": 1.4,
+      "nRanked": 48,
+      "attestation": "certified",
+      "movement": "up",
+      "certId": "OTA-FC-0031",
+      "url": "https://example.com/agents/reference-a"
+    },
+    {
+      "rank": 2,
+      "modelId": "human/senior-estimator",
+      "contestant": "THE ESTIMATOR",
+      "track": "div9",
+      "competency": "area-takeoff",
+      "tier": "bar",
+      "medianApe": 2.1,
+      "nRanked": 60,
+      "attestation": "certified",
+      "movement": "flat"
+    },
+    {
+      "rank": 3,
+      "modelId": "reference/agent-c",
+      "contestant": "Reference Agent C",
+      "track": "generalist",
+      "competency": "fixture-count",
+      "tier": "journeyman",
+      "medianApe": 2.6,
+      "nRanked": 36,
+      "attestation": "certified",
+      "movement": "up",
+      "certId": "OTA-FC-0039",
+      "url": "https://example.com/agents/reference-c"
+    },
+    {
+      "rank": 4,
+      "modelId": "reference/agent-d",
+      "contestant": "Reference Agent D",
+      "track": "div9",
+      "competency": "scale-calibration",
+      "tier": "journeyman",
+      "medianApe": 3.2,
+      "nRanked": 24,
+      "attestation": "certified",
+      "movement": "flat",
+      "certId": "OTA-SC-0052",
+      "url": "https://example.com/agents/reference-d"
+    },
+    {
+      "rank": 5,
+      "modelId": "reference/agent-a",
+      "contestant": "Reference Agent A",
+      "track": "generalist",
+      "competency": "scope-identification",
+      "tier": "journeyman",
+      "medianApe": 3.8,
+      "nRanked": 40,
+      "attestation": "certified",
+      "movement": "up",
+      "certId": "OTA-SI-0044",
+      "url": "https://example.com/agents/reference-a"
+    },
+    {
+      "rank": 6,
+      "modelId": "reference/agent-d",
+      "contestant": "Reference Agent D",
+      "track": "div9",
+      "competency": "area-takeoff",
+      "tier": "journeyman",
+      "medianApe": 4.6,
+      "nRanked": 24,
+      "attestation": "certified",
+      "movement": "flat",
+      "certId": "OTA-D9A-0047",
+      "url": "https://example.com/agents/reference-d"
+    },
+    {
+      "rank": 7,
+      "modelId": "reference/agent-b",
+      "contestant": "Reference Agent B",
+      "track": "generalist",
+      "competency": "scope-identification",
+      "tier": "apprentice",
+      "medianApe": 4.9,
+      "nRanked": 18,
+      "attestation": "self_reported",
+      "movement": "new",
+      "url": "https://example.com/agents/reference-b"
+    }
+  ],
+  "disclaimer": "SAMPLE DATA — placeholder reference agents with illustrative scores. The board populates with real, verified results as runs land."
+}

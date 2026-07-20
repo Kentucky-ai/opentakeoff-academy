@@ -1,0 +1,25 @@
+{
+  "taskVersion": "1.0",
+  "taskId": "e26-count-1",
+  "track": "div26",
+  "kind": "fixture-count",
+  "suite": { "id": "div26-practice", "version": "1.0" },
+  "title": "Lighting fixture count on a reflected ceiling plan",
+  "prompt": "Reflected ceiling plan E-201 shows a single open area. Type 'A' fixtures are 2x4 recessed LED troffers, drawn as a rectangle tagged 'A'. Exit signs are tagged 'EX' and emergency lights are tagged 'EM'. Count ONLY the Type 'A' troffers — do not count exit signs (EX) or emergency lights (EM). Emit the total as a single quantity named 'Type A troffer' in 'ea'.",
+  "planset": {
+    "assetRef": "assets/e26-count-1.svg",
+    "assetHash": "966893384d47bd03ff294073c6477c4c59cead75bac8fc2f68310158ece1c994",
+    "pages": [1],
+    "knownScale": "1/4\" = 1'-0\" (24 px = 1 ft)",
+    "units": "imperial"
+  },
+  "toolset": ["count", "emit_quantity"],
+  "budget": { "maxSteps": 30, "maxTokens": 40000, "maxWallMs": 90000 },
+  "metric": { "type": "count-error" },
+  "groundTruth": {
+    "quantities": [
+      { "item": "Type A 2x4 LED troffer", "value": 12, "unit": "ea" }
+    ],
+    "validatedBy": "senior-estimator"
+  }
+}

@@ -1,0 +1,189 @@
+name: Score submission
+'on':
+  pull_request:
+    paths:
+    - submissions/**
+permissions:
+  contents: write
+concurrency:
+  group: score-submission-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout PR head
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+        fetch-depth: 0
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    - name: Install SDK
+      run: |-
+        if [ -f package-lock.json ]; then
+          npm ci
+        else
+          npm install
+        fi
+    - name: Provision ranked ground truth (if configured)
+      env:
+        OTA_GROUNDTRUTH_TARBALL_B64: ${{ secrets.OTA_GROUNDTRUTH_TARBALL_B64 }}
+      run: |-
+        # Ranked scoring needs the private ground-truth keys, which are never in the repo.
+        # Materialize them from a base64 tarball secret into an out-of-tree dir and export
+        # OTA_GROUNDTRUTH_DIR. If the secret is absent, ranked bundles fail closed (below)
+        # and practice bundles score against the in-repo groundTruth keys.
+        if [ -n "$OTA_GROUNDTRUTH_TARBALL_B64" ]; then
+          mkdir -p "$RUNNER_TEMP/ota-groundtruth"
+          echo "$OTA_GROUNDTRUTH_TARBALL_B64" | base64 -d | tar -xzf - -C "$RUNNER_TEMP/ota-groundtruth"
+          echo "OTA_GROUNDTRUTH_DIR=$RUNNER_TEMP/ota-groundtruth" >> "$GITHUB_ENV"
+          echo "Provisioned Academy ground truth for ranked scoring."
+        else
+          echo "No OTA_GROUNDTRUTH_TARBALL_B64 secret; ranked bundles will fail closed."
+        fi
+    - name: Validate + score changed submissions
+      env:
+        BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      run: |-
+        # Score only the bundles this PR adds/changes under submissions/.
+        git fetch --no-tags origin "$BASE_SHA" 2>/dev/null || true
+        CHANGED=$(git diff --name-only --diff-filter=AM "$BASE_SHA" "$HEAD_SHA" -- 'submissions/**' | { grep -E '\.bundle\.json$' || true; })
+        if [ -z "$CHANGED" ]; then
+          echo "No new/changed submission bundles."
+          exit 0
+        fi
+        echo "Changed bundles:"
+        echo "$CHANGED"
+        # The driver calls the exact CLI contract per bundle:
+        #   node src/cli.js validate <bundle.json>
+        #   node src/cli.js score <bundle.json> --track <t> --suite <id> --out <report.json>
+        # A nonzero exit from either fails this job; ranked runs then upsert site/leaderboard.json.
+        # NOTE: the driver reads these fields from the scorer's report.json (align the CLI):
+        #   report.competency, report.tier, report.medianApe (or report.score.medianApe),
+        #   report.nRanked, report.certId (optional). Missing fields fall back safely.
+        cat > "$RUNNER_TEMP/driver.mjs" <<'NODE'
+        import { execFileSync } from 'node:child_process';
+        import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
+        import path from 'node:path';
+
+        const REPO = process.cwd();
+        const bundles = process.argv.slice(2);
+        if (bundles.length === 0) { console.log('No new/changed submission bundles.'); process.exit(0); }
+
+        const LB_PATH = path.join(REPO, 'site/leaderboard.json');
+        const lb = JSON.parse(readFileSync(LB_PATH, 'utf8'));
+
+        function resolveSuiteDir(track, suiteId) {
+          const base = path.join(REPO, 'tasks', track);
+          if (existsSync(base)) {
+            for (const entry of readdirSync(base, { withFileTypes: true })) {
+              if (!entry.isDirectory()) continue;
+              const man = path.join(base, entry.name, 'suite.json');
+              if (existsSync(man)) {
+                try {
+                  const m = JSON.parse(readFileSync(man, 'utf8'));
+                  if (m.id === suiteId) return { dir: entry.name, manifest: m };
+                } catch (e) { /* ignore malformed manifest */ }
+              }
+            }
+            if (existsSync(path.join(base, suiteId, 'suite.json'))) {
+              return { dir: suiteId, manifest: JSON.parse(readFileSync(path.join(base, suiteId, 'suite.json'), 'utf8')) };
+            }
+          }
+          return { dir: suiteId, manifest: null };
+        }
+
+        function num(...vals) { for (const v of vals) { if (typeof v === 'number' && !Number.isNaN(v)) return v; } return undefined; }
+
+        let changed = false;
+
+        for (const rel of bundles) {
+          const bundlePath = path.isAbsolute(rel) ? rel : path.join(REPO, rel);
+          console.log('::group::' + rel);
+          const bundle = JSON.parse(readFileSync(bundlePath, 'utf8'));
+          const track = bundle.track;
+          const suiteId = bundle.suite && bundle.suite.id;
+          const mode = bundle.suite && bundle.suite.mode;
+          const { dir: suiteDir, manifest } = resolveSuiteDir(track, suiteId);
+
+          // 1. validate (exact CLI contract) -- a nonzero exit throws and fails the job.
+          execFileSync('node', ['src/cli.js', 'validate', bundlePath], { stdio: 'inherit' });
+
+          // 2. score (exact CLI contract). Ranked bundles need the private keys.
+          const reportPath = path.join(process.env.RUNNER_TEMP || REPO, 'report-' + path.basename(rel).replace(/\.json$/, '') + '.json');
+          const env = { ...process.env };
+          if (mode === 'ranked' && !env.OTA_GROUNDTRUTH_DIR) {
+            console.error('Ranked bundle ' + rel + ' requires OTA_GROUNDTRUTH_DIR (private keys). Failing closed.');
+            process.exit(1);
+          }
+          execFileSync('node', ['src/cli.js', 'score', bundlePath, '--track', track, '--suite', suiteDir, '--out', reportPath], { stdio: 'inherit', env });
+
+          const report = JSON.parse(readFileSync(reportPath, 'utf8'));
+          console.log('::endgroup::');
+
+          // Only ranked runs earn a leaderboard row; practice scoring is a dev/smoke check.
+          if (mode !== 'ranked') { console.log('practice bundle scored (smoke check) -- not added to leaderboard.'); continue; }
+
+          const competency = report.competency
+            || (manifest && Array.isArray(manifest.competencies) && manifest.competencies.length === 1 ? manifest.competencies[0] : undefined)
+            || 'general-takeoff';
+          const score = num(report.medianApe, report.score && report.score.medianApe, report.score && report.score.median, report.median, typeof report.score === 'number' ? report.score : undefined);
+          const nRanked = num(report.nRanked, report.n, bundle.tasks.length);
+          const tier = report.tier || 'apprentice';
+          const attestation = (bundle.attestation && bundle.attestation.mode === 'proctored') ? 'certified' : 'self_reported';
+
+          const rows = lb.rows || (lb.rows = []);
+          const idx = rows.findIndex(r => r.modelId === bundle.contestant.modelId && r.track === track && r.competency === competency);
+          let movement = 'new';
+          if (idx >= 0) {
+            const prev = rows[idx].medianApe;
+            movement = (typeof prev === 'number' && typeof score === 'number') ? (score < prev ? 'up' : score > prev ? 'down' : 'flat') : 'flat';
+          }
+          const row = {
+            modelId: bundle.contestant.modelId,
+            contestant: bundle.contestant.name,
+            track,
+            competency,
+            tier,
+            medianApe: score,
+            nRanked,
+            attestation,
+            movement
+          };
+          if (report.certId) row.certId = report.certId;
+          if (bundle.contestant.contact) row.url = bundle.contestant.contact;
+          if (idx >= 0) rows[idx] = { ...rows[idx], ...row }; else rows.push(row);
+          changed = true;
+          console.log('Upserted leaderboard row: ' + row.contestant + ' / ' + competency + ' = ' + score);
+        }
+
+        if (changed) {
+          const rows = lb.rows;
+          rows.sort((a, b) => (a.medianApe == null ? Infinity : a.medianApe) - (b.medianApe == null ? Infinity : b.medianApe));
+          rows.forEach((r, i) => { r.rank = i + 1; });
+          lb.updatedAt = new Date().toISOString();
+          writeFileSync(LB_PATH, JSON.stringify(lb, null, 2) + '\n', 'utf8');
+          console.log('Updated site/leaderboard.json (' + rows.length + ' rows).');
+        } else {
+          console.log('No ranked rows to upsert.');
+        }
+        NODE
+        node "$RUNNER_TEMP/driver.mjs" $CHANGED
+    - name: Commit leaderboard update
+      if: github.event.pull_request.head.repo.full_name == github.repository
+      env:
+        HEAD_REF: ${{ github.event.pull_request.head.ref }}
+      run: |-
+        if git diff --quiet -- site/leaderboard.json; then
+          echo "Leaderboard unchanged."
+          exit 0
+        fi
+        git config user.name "opentakeoff-academy-bot"
+        git config user.email "bot@aec.kentucky-ai.com"
+        git add site/leaderboard.json
+        git commit -m "leaderboard: score submission (automated) [skip ci]"
+        git push origin "HEAD:${HEAD_REF}"

@@ -1,0 +1,25 @@
+{
+  "taskVersion": "1.0",
+  "taskId": "e26-count-2",
+  "track": "div26",
+  "kind": "fixture-count",
+  "suite": { "id": "div26-practice", "version": "1.0" },
+  "title": "Duplex receptacle count on a power plan",
+  "prompt": "Power plan E-301 mixes three device symbols: duplex receptacles (a circle with two short parallel bars), wall switches (marked 'S'), and data/telecom jacks (a triangle marked 'D'). Count ONLY the duplex receptacles — do not count switches (S) or data jacks (D). Emit the total as a single quantity named 'duplex receptacle' in 'ea'.",
+  "planset": {
+    "assetRef": "assets/e26-count-2.svg",
+    "assetHash": "96d173a23722a64ec21cb88b28bb18ad8f5e2a52adb5eed62c5f36b9bce90446",
+    "pages": [1],
+    "knownScale": "1/4\" = 1'-0\" (24 px = 1 ft)",
+    "units": "imperial"
+  },
+  "toolset": ["count", "emit_quantity"],
+  "budget": { "maxSteps": 30, "maxTokens": 40000, "maxWallMs": 90000 },
+  "metric": { "type": "count-error" },
+  "groundTruth": {
+    "quantities": [
+      { "item": "duplex receptacle", "value": 9, "unit": "ea" }
+    ],
+    "validatedBy": "senior-estimator"
+  }
+}

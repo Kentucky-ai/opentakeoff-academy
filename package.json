@@ -1,0 +1,51 @@
+{
+  "name": "opentakeoff-academy",
+  "version": "0.1.0",
+  "description": "Conformance SDK + CLI for OpenTakeoff Academy — an open benchmark & certification harness for construction-takeoff AI agents.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "homepage": "https://aec.kentucky-ai.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kentucky-ai/opentakeoff-academy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Kentucky-ai/opentakeoff-academy/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "opentakeoff-academy": "src/cli.js",
+    "opentakeoff-env": "src/ot-env-mcp.js"
+  },
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src/",
+    "schema/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node examples/my-agent.example.js --selftest",
+    "serve:agent": "node examples/my-agent.example.js --serve",
+    "serve:env": "node src/ot-env-mcp.js",
+    "cli": "node src/cli.js"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "@modelcontextprotocol/sdk": "^1.29.0"
+  },
+  "keywords": [
+    "construction",
+    "takeoff",
+    "benchmark",
+    "certification",
+    "mcp",
+    "agents",
+    "evaluation"
+  ]
+}

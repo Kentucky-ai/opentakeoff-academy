@@ -1,0 +1,27 @@
+{
+  "taskVersion": "1.0",
+  "taskId": "g-area-1",
+  "track": "generalist",
+  "kind": "area-takeoff",
+  "suite": { "id": "generalist-practice", "version": "1.0" },
+  "title": "Two-room floor area takeoff",
+  "prompt": "Plan F-A1 shows two rooms at scale 1/4\" = 1'-0\". Calibrate the drawing (or use the provided scale), measure the finished floor area of each room, and emit the area of RM-101 (Office) and RM-102 (Break Room) in square feet, plus the total floor area. Report one quantity per room and one total.",
+  "planset": {
+    "assetRef": "assets/g-area-1.svg",
+    "assetHash": "d13ec36e0d124ab8a2d1ed1f6d5a8724c69246f04abd0a304bee6ca2c4acfdaf",
+    "pages": [1],
+    "knownScale": "1/4\" = 1'-0\" (24 px = 1 ft)",
+    "units": "imperial"
+  },
+  "toolset": ["set_scale", "measure_area", "emit_quantity"],
+  "budget": { "maxSteps": 40, "maxTokens": 60000, "maxWallMs": 120000 },
+  "metric": { "type": "ape", "tolerance": 0.06 },
+  "groundTruth": {
+    "quantities": [
+      { "item": "RM-101 Office floor area", "value": 300, "unit": "sf", "roomId": "RM-101" },
+      { "item": "RM-102 Break Room floor area", "value": 120, "unit": "sf", "roomId": "RM-102" },
+      { "item": "Total floor area", "value": 420, "unit": "sf" }
+    ],
+    "validatedBy": "senior-estimator"
+  }
+}

@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+
+# entrant run artifacts (keep the dir, ignore generated bundles/reports)
+runs/*.json
+runs/*.bundle.json
+runs/*.svg
+!runs/.gitkeep
+
+# keys & secrets — NEVER commit signing material
+*.pem
+*.key
+keys/
+.env
+.env.*
+
+# scratch / OS
+*.log
+.DS_Store
+coverage/
+.tmp/
+tmp/
+
+# real source plansets — private held-out ground-truth material, NOT for publication
+plans/

@@ -1,0 +1,24 @@
+{
+  "taskVersion": "1.0",
+  "taskId": "g-count-1",
+  "track": "generalist",
+  "kind": "fixture-count",
+  "suite": { "id": "generalist-practice", "version": "1.0" },
+  "title": "Restroom plumbing fixture count",
+  "prompt": "Plan P-201 is a restroom. Count every plumbing fixture shown (water closets 'WC', urinals 'UR', and lavatories 'LAV' are the fixture tags) and emit the total plumbing fixture count as a single quantity in 'ea'.",
+  "planset": {
+    "assetRef": "assets/g-count-1.svg",
+    "assetHash": "7c3e781ad1bb4a0b9af440a6429b159c19220310481b2ea72b4d56e2f6afd72c",
+    "pages": [1],
+    "units": "imperial"
+  },
+  "toolset": ["count", "emit_quantity"],
+  "budget": { "maxSteps": 30, "maxTokens": 40000, "maxWallMs": 90000 },
+  "metric": { "type": "count-error" },
+  "groundTruth": {
+    "quantities": [
+      { "item": "plumbing fixture", "value": 6, "unit": "ea" }
+    ],
+    "validatedBy": "senior-estimator"
+  }
+}

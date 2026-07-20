@@ -1,0 +1,20 @@
+{
+  "suiteManifestVersion": "1.0",
+  "id": "div9-ranked",
+  "dir": "ranked",
+  "track": "div9",
+  "version": "1.0",
+  "title": "Division 9 (Flooring) — Ranked Suite",
+  "mode": "ranked",
+  "keys": "withheld",
+  "status": "pending-ground-truth",
+  "description": "Ranked (scoring + certification) suite for the Division 9 / flooring vertical. This is a SCAFFOLD: it intentionally ships with no task files and no ground truth. Answer keys are WITHHELD — established and held out by a licensed/expert estimator and never committed to this repo. Ranked tasks are populated only after that ground truth exists. The source plan assets live privately in the gitignored plans/ directory; at scoring time the held-out keys are materialized out-of-tree and read via the OTA_GROUNDTRUTH_DIR environment variable (see .github/workflows/score-submission.yml). Competencies mirror the Div-9 practice suite; per-competency pass thresholds are published per the protocol (PROTOCOL.md §3) per suite version. Do NOT add task files with answer keys or invented quantities — see this directory's README.md.",
+  "competencies": ["area-takeoff", "fixture-count", "scale-calibration"],
+  "groundTruth": {
+    "source": "held-out",
+    "env": "OTA_GROUNDTRUTH_DIR",
+    "committed": false,
+    "note": "Private, estimator-validated. Never distributed in this repo; plan assets live in the gitignored plans/ directory."
+  },
+  "tasks": []
+}

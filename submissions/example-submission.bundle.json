@@ -1,0 +1,452 @@
+{
+  "bundleVersion": "1.0",
+  "runId": "run_example-9f1c2a7e4b3d",
+  "track": "div9",
+  "suite": {
+    "id": "div9-practice",
+    "version": "1.0",
+    "mode": "practice"
+  },
+  "contestant": {
+    "name": "Example Runner",
+    "modelId": "example-runner-0.1",
+    "harness": "example-harness/0.4.0",
+    "adapter": "custom-bundle",
+    "contact": "https://github.com/Kentucky-ai/opentakeoff-academy"
+  },
+  "attestation": {
+    "mode": "self_reported"
+  },
+  "tasks": [
+    {
+      "taskId": "d9-area-1",
+      "answer": {
+        "quantities": [
+          {
+            "item": "RM-201 LVT flooring",
+            "value": 244,
+            "unit": "sf",
+            "roomId": "RM-201",
+            "confidence": 0.93
+          },
+          {
+            "item": "RM-202 carpet flooring",
+            "value": 165,
+            "unit": "sf",
+            "roomId": "RM-202",
+            "confidence": 0.9
+          },
+          {
+            "item": "RM-203 ceramic tile flooring",
+            "value": 81,
+            "unit": "sf",
+            "roomId": "RM-203",
+            "confidence": 0.91
+          }
+        ],
+        "notes": "Calibrated off the graphic scale bar (240 px = 10 ft), measured each room polygon."
+      },
+      "trace": [
+        {
+          "seq": 0,
+          "tOffsetMs": 0,
+          "type": "model_message",
+          "tokens": {
+            "in": 1420,
+            "out": 180
+          }
+        },
+        {
+          "seq": 1,
+          "tOffsetMs": 620,
+          "type": "tool_call",
+          "tool": "set_scale",
+          "args": {
+            "a": [
+              40,
+              560
+            ],
+            "b": [
+              280,
+              560
+            ],
+            "realDistanceFt": 10
+          }
+        },
+        {
+          "seq": 2,
+          "tOffsetMs": 640,
+          "type": "tool_result",
+          "tool": "set_scale",
+          "result": {
+            "ftPerPx": 0.0416667
+          }
+        },
+        {
+          "seq": 3,
+          "tOffsetMs": 900,
+          "type": "tool_call",
+          "tool": "measure_area",
+          "args": {
+            "roomId": "RM-201",
+            "polygonPx": [
+              [
+                40,
+                56
+              ],
+              [
+                1000,
+                56
+              ],
+              [
+                1000,
+                200
+              ],
+              [
+                40,
+                200
+              ]
+            ]
+          }
+        },
+        {
+          "seq": 4,
+          "tOffsetMs": 960,
+          "type": "tool_result",
+          "tool": "measure_area",
+          "result": {
+            "areaSf": 244
+          }
+        },
+        {
+          "seq": 5,
+          "tOffsetMs": 1200,
+          "type": "tool_call",
+          "tool": "measure_area",
+          "args": {
+            "roomId": "RM-202",
+            "polygonPx": [
+              [
+                40,
+                240
+              ],
+              [
+                376,
+                240
+              ],
+              [
+                376,
+                528
+              ],
+              [
+                40,
+                528
+              ]
+            ]
+          }
+        },
+        {
+          "seq": 6,
+          "tOffsetMs": 1260,
+          "type": "tool_result",
+          "tool": "measure_area",
+          "result": {
+            "areaSf": 165
+          }
+        },
+        {
+          "seq": 7,
+          "tOffsetMs": 1500,
+          "type": "tool_call",
+          "tool": "measure_area",
+          "args": {
+            "roomId": "RM-203",
+            "polygonPx": [
+              [
+                420,
+                240
+              ],
+              [
+                660,
+                240
+              ],
+              [
+                660,
+                432
+              ],
+              [
+                420,
+                432
+              ]
+            ]
+          }
+        },
+        {
+          "seq": 8,
+          "tOffsetMs": 1560,
+          "type": "tool_result",
+          "tool": "measure_area",
+          "result": {
+            "areaSf": 81
+          }
+        },
+        {
+          "seq": 9,
+          "tOffsetMs": 1800,
+          "type": "tool_call",
+          "tool": "emit_quantity",
+          "args": {
+            "item": "RM-201 LVT flooring",
+            "value": 244,
+            "unit": "sf",
+            "roomId": "RM-201"
+          }
+        },
+        {
+          "seq": 10,
+          "tOffsetMs": 1810,
+          "type": "tool_result",
+          "tool": "emit_quantity",
+          "result": {
+            "ok": true
+          }
+        },
+        {
+          "seq": 11,
+          "tOffsetMs": 1900,
+          "type": "tool_call",
+          "tool": "emit_quantity",
+          "args": {
+            "item": "RM-202 carpet flooring",
+            "value": 165,
+            "unit": "sf",
+            "roomId": "RM-202"
+          }
+        },
+        {
+          "seq": 12,
+          "tOffsetMs": 1910,
+          "type": "tool_result",
+          "tool": "emit_quantity",
+          "result": {
+            "ok": true
+          }
+        },
+        {
+          "seq": 13,
+          "tOffsetMs": 2000,
+          "type": "tool_call",
+          "tool": "emit_quantity",
+          "args": {
+            "item": "RM-203 ceramic tile flooring",
+            "value": 81,
+            "unit": "sf",
+            "roomId": "RM-203"
+          }
+        },
+        {
+          "seq": 14,
+          "tOffsetMs": 2010,
+          "type": "tool_result",
+          "tool": "emit_quantity",
+          "result": {
+            "ok": true
+          }
+        }
+      ],
+      "telemetry": {
+        "steps": 15,
+        "tokensIn": 6200,
+        "tokensOut": 940,
+        "wallMs": 2050,
+        "toolCalls": 7,
+        "mcpCalls": 0
+      }
+    },
+    {
+      "taskId": "d9-count-1",
+      "answer": {
+        "quantities": [
+          {
+            "item": "floor drain",
+            "value": 5,
+            "unit": "ea",
+            "confidence": 0.97
+          }
+        ]
+      },
+      "trace": [
+        {
+          "seq": 0,
+          "tOffsetMs": 0,
+          "type": "model_message",
+          "tokens": {
+            "in": 1100,
+            "out": 120
+          }
+        },
+        {
+          "seq": 1,
+          "tOffsetMs": 400,
+          "type": "tool_call",
+          "tool": "count",
+          "args": {
+            "symbol": "FD",
+            "description": "floor drain (circle with cross)"
+          }
+        },
+        {
+          "seq": 2,
+          "tOffsetMs": 470,
+          "type": "tool_result",
+          "tool": "count",
+          "result": {
+            "count": 5,
+            "at": [
+              [
+                160,
+                150
+              ],
+              [
+                360,
+                150
+              ],
+              [
+                560,
+                150
+              ],
+              [
+                240,
+                300
+              ],
+              [
+                480,
+                300
+              ]
+            ]
+          }
+        },
+        {
+          "seq": 3,
+          "tOffsetMs": 700,
+          "type": "tool_call",
+          "tool": "emit_quantity",
+          "args": {
+            "item": "floor drain",
+            "value": 5,
+            "unit": "ea"
+          }
+        },
+        {
+          "seq": 4,
+          "tOffsetMs": 710,
+          "type": "tool_result",
+          "tool": "emit_quantity",
+          "result": {
+            "ok": true
+          }
+        }
+      ],
+      "telemetry": {
+        "steps": 5,
+        "tokensIn": 2600,
+        "tokensOut": 260,
+        "wallMs": 740,
+        "toolCalls": 2,
+        "mcpCalls": 0
+      }
+    },
+    {
+      "taskId": "d9-scale-1",
+      "answer": {
+        "quantities": [
+          {
+            "item": "drawing scale",
+            "value": 0.1,
+            "unit": "ft/px",
+            "confidence": 0.95
+          }
+        ],
+        "notes": "Graphic scale bar spans 200 px labeled 20 ft -> 20/200 = 0.1 ft/px."
+      },
+      "trace": [
+        {
+          "seq": 0,
+          "tOffsetMs": 0,
+          "type": "model_message",
+          "tokens": {
+            "in": 1050,
+            "out": 140
+          }
+        },
+        {
+          "seq": 1,
+          "tOffsetMs": 380,
+          "type": "tool_call",
+          "tool": "set_scale",
+          "args": {
+            "a": [
+              120,
+              360
+            ],
+            "b": [
+              320,
+              360
+            ],
+            "realDistanceFt": 20
+          }
+        },
+        {
+          "seq": 2,
+          "tOffsetMs": 400,
+          "type": "tool_result",
+          "tool": "set_scale",
+          "result": {
+            "ftPerPx": 0.1,
+            "pxSpan": 200
+          }
+        },
+        {
+          "seq": 3,
+          "tOffsetMs": 620,
+          "type": "tool_call",
+          "tool": "emit_quantity",
+          "args": {
+            "item": "drawing scale",
+            "value": 0.1,
+            "unit": "ft/px"
+          }
+        },
+        {
+          "seq": 4,
+          "tOffsetMs": 630,
+          "type": "tool_result",
+          "tool": "emit_quantity",
+          "result": {
+            "ok": true
+          }
+        }
+      ],
+      "telemetry": {
+        "steps": 5,
+        "tokensIn": 2400,
+        "tokensOut": 300,
+        "wallMs": 660,
+        "toolCalls": 2,
+        "mcpCalls": 0
+      }
+    }
+  ],
+  "telemetry": {
+    "sdkVersion": "0.4.0",
+    "totalSteps": 25,
+    "totalTokensIn": 11200,
+    "totalTokensOut": 1500,
+    "totalWallMs": 3450,
+    "startedAt": "2026-07-19T00:00:00Z"
+  },
+  "integrity": {
+    "hashAlg": "sha256",
+    "bundleHash": "f351746c07868fb0746a7814fb2ce10dd937c305bc14fb997c7ce68110c51fa4"
+  }
+}

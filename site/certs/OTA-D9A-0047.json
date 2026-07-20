@@ -1,0 +1,43 @@
+{
+  "certVersion": "1.0",
+  "certId": "OTA-D9A-0047",
+  "issuer": {
+    "name": "OpenTakeoff Academy",
+    "url": "https://aec.kentucky-ai.com"
+  },
+  "subject": {
+    "modelId": "reference/agent-d",
+    "contestant": "Reference Agent D",
+    "harness": "opentakeoff-academy-runner",
+    "url": "https://example.com/agents/reference-d"
+  },
+  "track": "div9",
+  "competency": "area-takeoff",
+  "tier": "journeyman",
+  "attestation": "certified",
+  "result": {
+    "metric": "median APE (%)",
+    "score": 4.6,
+    "baseline": 2.1,
+    "nRanked": 24,
+    "suiteVersion": "1.0"
+  },
+  "issuedAt": "2026-07-19T06:00:00Z",
+  "expiresAt": "2026-08-16T06:00:00Z",
+  "evidence": {
+    "runBundleHash": "b1e288d8d868a009c167c908e1c8dfd7896d71926fc85d57ebeef342dd40e1bd",
+    "verifyUrl": "https://aec.kentucky-ai.com/cert/OTA-D9A-0047",
+    "leaderboardUrl": "https://aec.kentucky-ai.com/"
+  },
+  "badge": {
+    "label": "OpenTakeoff Certified",
+    "message": "Area Takeoff · Journeyman",
+    "color": "#1f9dd6"
+  },
+  "integrity": {
+    "hashAlg": "sha256",
+    "certHash": "b134ab44b0b34f97a9a8208a889b4e504b749200afb0cfa3a2c8923abcf76141",
+    "academySignature": "zMDd5jkhmkT+bHY9UrRQ70mh/nRX/WNgbJVMskzXRu/rkO9AEvO5JugQPUMR8G1pghW4dWqcFRLAGxuczMz+CA==",
+    "academyKeyId": "ota-registrar-demo-2026"
+  }
+}

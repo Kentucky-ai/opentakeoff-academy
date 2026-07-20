@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opentakeoff.academy/schema/cert.schema.json",
+  "title": "OpenTakeoff Academy Certificate",
+  "description": "A verifiable credential issued when a run clears a tier threshold. Designed to map cleanly onto Open Badges 3.0 (see PROTOCOL.md) so it can be embedded on a Hugging Face model card, GitHub README, or LinkedIn Licenses & Certifications.",
+  "type": "object",
+  "required": ["certVersion", "certId", "issuer", "subject", "track", "competency", "tier", "attestation", "result", "issuedAt", "expiresAt", "evidence", "integrity"],
+  "additionalProperties": false,
+  "properties": {
+    "certVersion": { "type": "string", "const": "1.0" },
+    "certId": { "type": "string", "pattern": "^OTA-[A-Z0-9]{2,6}-[0-9]{4,6}$", "description": "e.g. OTA-D9A-0047." },
+    "issuer": {
+      "type": "object",
+      "required": ["name", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "const": "OpenTakeoff Academy" },
+        "url": { "type": "string" }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "required": ["modelId"],
+      "additionalProperties": false,
+      "properties": {
+        "modelId": { "type": "string" },
+        "contestant": { "type": "string" },
+        "harness": { "type": "string" },
+        "url": { "type": "string", "description": "HF/GitHub URL of the certified model or system." }
+      }
+    },
+    "track": { "type": "string" },
+    "competency": {
+      "type": "string",
+      "enum": ["scale-calibration", "fixture-count", "area-takeoff", "scope-identification", "general-takeoff"],
+      "description": "What the mark certifies the model can do."
+    },
+    "tier": {
+      "type": "string",
+      "enum": ["apprentice", "journeyman", "master"],
+      "description": "apprentice = passed once; journeyman = holds threshold repeatably on held-out plans; master = beats the human baseline."
+    },
+    "attestation": {
+      "type": "string",
+      "enum": ["self_reported", "certified"],
+      "description": "certified = earned via a proctored held-out run (trustworthy public mark). self_reported = entrant-run, lower trust; must be visually distinguished."
+    },
+    "result": {
+      "type": "object",
+      "required": ["metric", "score", "nRanked", "suiteVersion"],
+      "additionalProperties": false,
+      "properties": {
+        "metric": { "type": "string" },
+        "score": { "type": "number", "description": "e.g. median APE 4.6 (percent)." },
+        "baseline": { "type": "number", "description": "Human baseline score on the same suite." },
+        "nRanked": { "type": "integer", "description": "Number of held-out tasks scored." },
+        "suiteVersion": { "type": "string" }
+      }
+    },
+    "issuedAt": { "type": "string", "description": "ISO-8601." },
+    "expiresAt": { "type": "string", "description": "ISO-8601. Certs expire so claims can't go stale or overfit an old suite; recert on cadence." },
+    "evidence": {
+      "type": "object",
+      "required": ["runBundleHash", "verifyUrl"],
+      "additionalProperties": false,
+      "properties": {
+        "runBundleHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "verifyUrl": { "type": "string", "description": "Public cert page, e.g. https://opentakeoff.academy/cert/OTA-D9A-0047." },
+        "leaderboardUrl": { "type": "string" }
+      }
+    },
+    "badge": {
+      "type": "object",
+      "description": "Rendering hints for the embeddable SVG badge.",
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string", "description": "e.g. 'OpenTakeoff Certified'." },
+        "message": { "type": "string", "description": "e.g. 'Div-9 Area · Journeyman'." },
+        "color": { "type": "string" }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "required": ["hashAlg", "certHash", "academySignature"],
+      "additionalProperties": false,
+      "properties": {
+        "hashAlg": { "type": "string", "const": "sha256" },
+        "certHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "academySignature": { "type": "string", "description": "Academy signature over certHash. This is what makes the mark verifiable." },
+        "academyKeyId": { "type": "string" }
+      }
+    }
+  }
+}

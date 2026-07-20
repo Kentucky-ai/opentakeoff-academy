@@ -1,0 +1,43 @@
+{
+  "certVersion": "1.0",
+  "certId": "OTA-FC-0039",
+  "issuer": {
+    "name": "OpenTakeoff Academy",
+    "url": "https://aec.kentucky-ai.com"
+  },
+  "subject": {
+    "modelId": "reference/agent-c",
+    "contestant": "Reference Agent C",
+    "harness": "opentakeoff-academy-runner",
+    "url": "https://example.com/agents/reference-c"
+  },
+  "track": "generalist",
+  "competency": "fixture-count",
+  "tier": "journeyman",
+  "attestation": "certified",
+  "result": {
+    "metric": "median count error (%)",
+    "score": 2.6,
+    "baseline": 2.2,
+    "nRanked": 36,
+    "suiteVersion": "1.0"
+  },
+  "issuedAt": "2026-07-19T06:00:00Z",
+  "expiresAt": "2026-08-16T06:00:00Z",
+  "evidence": {
+    "runBundleHash": "b53cdec287a3e293a9b1558c1d7356eb289f53e1f72eb10ad9864d808db37e58",
+    "verifyUrl": "https://aec.kentucky-ai.com/cert/OTA-FC-0039",
+    "leaderboardUrl": "https://aec.kentucky-ai.com/"
+  },
+  "badge": {
+    "label": "OpenTakeoff Certified",
+    "message": "Fixture Count · Journeyman",
+    "color": "#1f9dd6"
+  },
+  "integrity": {
+    "hashAlg": "sha256",
+    "certHash": "b64cf3eb966adbec4b265bf20dbe051a334aeeb23ac1cee8c39c35eb9be8f357",
+    "academySignature": "UwAtdAH9OVQ+9adbt5G0pyGkhdqTUt05BMJFd/Lum+8TyDOIHEs8J1NvFjaw+zVpHokuQ20x+fy2YqjFc7XCAw==",
+    "academyKeyId": "ota-registrar-demo-2026"
+  }
+}

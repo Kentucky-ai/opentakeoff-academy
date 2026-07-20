@@ -1,0 +1,6 @@
+{
+  "id": "example-parser",
+  "command": "node",
+  "args": ["examples/my-parser.mcp.example.js"],
+  "_comment": "MCP server descriptor. 'command'/'args' launch a stdio server (args are resolved relative to the current working directory). For an HTTP MCP server use { \"url\": \"https://your-parser.example/mcp\" } instead. Pass this file to the runner with --mcp."
+}

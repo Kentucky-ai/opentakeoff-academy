@@ -1,0 +1,23 @@
+{
+  "suiteManifestVersion": "1.0",
+  "id": "div26-practice",
+  "dir": "practice",
+  "track": "div26",
+  "version": "1.0",
+  "title": "Division 26 (Electrical) — Practice Suite",
+  "mode": "practice",
+  "keys": "embedded",
+  "description": "Public practice suite for the Division 26 / electrical vertical. Electrical takeoff is fundamentally symbol counting, so this starter suite exercises the fixture-count competency across the two canonical electrical count families: lighting fixtures (Type A troffers on a reflected ceiling plan, with exit-sign and emergency-light distractors) and wiring devices (duplex receptacles on a power plan, with switch and data-jack distractors). The real skill is symbol discrimination — counting the right symbol and rejecting the look-alikes. Answer keys are embedded in each *.task.json. The ranked counterpart ships WITHOUT groundTruth (held by the Academy) — see tasks/README.md.",
+  "competencies": ["fixture-count"],
+  "baseline": {
+    "contestant": "Senior Estimator",
+    "fixture-count": { "metric": "count-error", "score": 0.0 }
+  },
+  "thresholds": {
+    "fixture-count": { "metric": "count-error", "apprentice": 1, "journeyman": 0, "master": "beats-baseline" }
+  },
+  "tasks": [
+    { "taskId": "e26-count-1", "file": "e26-count-1.task.json", "kind": "fixture-count", "competency": "fixture-count", "metric": "count-error" },
+    { "taskId": "e26-count-2", "file": "e26-count-2.task.json", "kind": "fixture-count", "competency": "fixture-count", "metric": "count-error" }
+  ]
+}

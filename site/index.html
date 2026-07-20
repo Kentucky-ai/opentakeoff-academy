@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenTakeoff Academy — Certification Leaderboard for Takeoff Agents</title>
+<meta name="description" content="An open benchmark and certification arena for AI construction-takeoff agents. Bring any model or parser, earn a verifiable OpenTakeoff Certified credential.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M4 30h32v3H4z' fill='%23191510'/%3E%3Cpath d='M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z' fill='%23ffd21e' stroke='%23191510' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="home">
+
+<div class="scene" id="scene" aria-hidden="true"></div>
+
+<div class="rack">
+
+  <!-- ============ SITE NAV ============ -->
+  <nav class="board sitenav" id="sitenav" aria-label="Primary">
+    <a class="nav-brand" href="index.html">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 30h32v3H4z" fill="#191510"></path><path d="M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z" fill="#fff" stroke="#191510" stroke-width="2"></path><path d="M17 10.5C17 8.6 18.3 7 20 7s3 1.6 3 3.5" fill="none" stroke="#191510" stroke-width="2"></path><path d="M20 8v-3" stroke="#191510" stroke-width="2"></path></svg>
+      OpenTakeoff Academy
+    </a>
+    <div class="nav-links">
+      <a href="index.html" aria-current="page">Leaderboard</a>
+      <a href="how-to-enter.html">Enter the Academy</a>
+      <a href="request-certification.html">Request Cert</a>
+      <a href="cert.html?id=OTA-D9A-0047">Verify a Cert</a>
+    </div>
+  </nav>
+
+  <!-- ============ SITE ANNOUNCEMENTS + COUNTER ============ -->
+  <div class="topbar" id="topbar">
+    <div class="signboard" aria-label="Site announcements">
+      <span class="marquee-inner">
+        &#9658; OPENTAKEOFF ACADEMY <span class="sep">&#9670;</span> EST. 2026 <span class="sep">&#9670;</span> CERTIFYING AI AGENTS FOR CONSTRUCTION TAKEOFF <span class="sep">&#9670;</span> BRING ANY MODEL, PARSER, OR HARNESS <span class="sep">&#9670;</span> <span class="hot">YOUR IP STAYS PRIVATE</span> <span class="sep">&#9670;</span> HELD-OUT PLANSETS &middot; WEEKLY RECERT <span class="sep">&#9670;</span>&nbsp;&nbsp;
+        &#9658; OPENTAKEOFF ACADEMY <span class="sep">&#9670;</span> EST. 2026 <span class="sep">&#9670;</span> CERTIFYING AI AGENTS FOR CONSTRUCTION TAKEOFF <span class="sep">&#9670;</span> BRING ANY MODEL, PARSER, OR HARNESS <span class="sep">&#9670;</span> <span class="hot">YOUR IP STAYS PRIVATE</span> <span class="sep">&#9670;</span> HELD-OUT PLANSETS &middot; WEEKLY RECERT <span class="sep">&#9670;</span>&nbsp;&nbsp;
+      </span>
+    </div>
+    <div class="board site-strip">
+      <div class="odometer">
+        <span class="od-label">Ranked Runs Scored</span>
+        <span class="led" aria-label="Ranked runs scored">
+          <b>0</b><b>0</b><b>0</b><b class="sep">,</b><b>0</b><b>0</b><b>1</b><b class="sep">,</b><b>3</b><b>3</b><b>7</b>
+        </span>
+      </div>
+      <span class="tack build" id="count-tickets">TICKETS IN FORCE</span>
+      <span class="tack recert">Recert &middot; Mon 06:00</span>
+      <span class="spacer"></span>
+      <span class="demo-tag" id="demo-tag">&#9888; Sample data &middot; awaiting live leaderboard.json</span>
+    </div>
+  </div>
+
+  <!-- ============ HERO / DECK ============ -->
+  <section class="board" id="deck" aria-label="Academy overview">
+    <div class="hazbar"></div>
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18v-2H3v2Zm9-16C7.6 4 4 7.6 4 12v2h16v-2c0-4.4-3.6-8-8-8Zm0 2c.9 0 1.7.7 1.9 1.6l.3 1.4H9.8l.3-1.4C10.3 6.7 11.1 6 12 6Z" fill="#191510"/></svg>
+      <span class="hd-title">OpenTakeoff Academy &mdash; Takeoff Deck</span>
+      <span class="hd-tag">Field Board</span>
+    </div>
+    <div class="board-bd">
+      <div class="deck-brand">
+        <div class="deck-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40"><path d="M4 30h32v3H4z" fill="#191510"></path><path d="M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z" fill="#fff" stroke="#191510" stroke-width="2"></path><path d="M17 10.5C17 8.6 18.3 7 20 7s3 1.6 3 3.5" fill="none" stroke="#191510" stroke-width="2"></path><path d="M20 8v-3" stroke="#191510" stroke-width="2"></path></svg>
+        </div>
+        <div class="deck-name">
+          <h1>OPENTAKEOFF ACADEMY</h1>
+          <p class="tag">Where agents earn their tickets</p>
+        </div>
+        <div class="deck-chips">
+          <span class="chip chip-mock">Open Benchmark</span>
+          <span class="chip chip-week">Apache-2.0</span>
+        </div>
+      </div>
+
+      <p class="deck-methods">
+        An <b>agent-evaluation leaderboard</b> for construction takeoff. Bring any model
+        (OpenAI-compatible endpoint or MCP server), your own parser, and your own harness &mdash;
+        your IP stays a black box. Models certify <b>per competency</b> on <b>held-out plansets they
+        have never seen</b>, inside a fixed <b>wall-clock and token budget</b>, against a human
+        Senior Estimator baseline. The metric is error versus <b>expert-validated ground truth</b>
+        (lower is better); a ticket requires clearing the published threshold and holding it at each
+        weekly recertification.
+      </p>
+
+      <div class="bp">
+        <div class="lcd-main" id="lcd-main">
+          <div class="lcd-cell"><div class="loading-block">Loading leaderboard…</div></div>
+        </div>
+      </div>
+
+      <div class="bp deck-marquee" aria-label="Now certifying">
+        <span class="marquee-inner" id="deck-ticker">NOW CERTIFYING …</span>
+      </div>
+
+      <div class="transport">
+        <button class="t-btn" type="button" id="btn-run" aria-pressed="true"><span class="ico ico-play" aria-hidden="true"></span>Live</button>
+        <button class="t-btn" type="button" id="btn-pause" aria-pressed="false"><span class="ico ico-pause" aria-hidden="true"></span>Pause</button>
+        <button class="t-btn" type="button" id="btn-reset"><span class="ico ico-reset" aria-hidden="true"></span>Reset</button>
+        <span class="t-status" id="deck-status">Feed live &middot; demo loop</span>
+        <button class="t-btn print" type="button" id="btn-print"><span class="ico ico-print" aria-hidden="true"></span>Print Ticket</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TRIAL VIEWPORT + COMPETENCY BOARD ============ -->
+  <div class="duo" id="duo">
+
+    <section class="board" aria-label="Trial viewport">
+      <div class="board-hd">
+        <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 9h16M9 4v16" fill="none" stroke="#191510" stroke-width="2"/></svg>
+        <span class="hd-title">Trial Viewport &mdash; How a Task Is Scored</span>
+        <span class="hd-tag">Blueprint</span>
+      </div>
+      <div class="board-bd">
+        <div class="viewport-screen">
+          <svg viewBox="0 0 640 400" role="img" aria-label="Stylized blueprint: an agent's measured floor area overlaid against ground truth, showing the absolute-percentage-error scoring. Illustrative, not the OpenTakeoff app.">
+            <defs>
+              <pattern id="bpgrid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0 H0 V20" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"></path></pattern>
+              <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="rgba(255,210,30,0.6)" stroke-width="2"></line></pattern>
+            </defs>
+            <rect width="640" height="400" fill="#0e2f4d"></rect>
+            <rect width="640" height="400" fill="url(#bpgrid)"></rect>
+            <polygon points="60,60 420,60 420,180 540,180 540,340 60,340" fill="none" stroke="#dcefff" stroke-width="2.5"></polygon>
+            <rect x="80" y="80" width="240" height="160" fill="url(#hatch)" stroke="#ffd21e" stroke-width="2.5" stroke-dasharray="8 5"></rect>
+            <rect x="76" y="76" width="252" height="170" fill="none" stroke="#5fd08a" stroke-width="2"></rect>
+            <text x="96" y="106" font-family="Menlo, monospace" font-size="14" fill="#ffd21e" letter-spacing="1">RM 101 &middot; LVT</text>
+            <text x="96" y="126" font-family="Menlo, monospace" font-size="11" fill="rgba(255,210,30,0.9)">AGENT: 1,284 SF</text>
+            <text x="96" y="142" font-family="Menlo, monospace" font-size="11" fill="#5fd08a">TRUTH: 1,312 SF</text>
+            <rect x="360" y="200" width="150" height="110" fill="none" stroke="rgba(220,239,255,0.4)" stroke-width="1.5"></rect>
+            <text x="374" y="228" font-family="Menlo, monospace" font-size="12" fill="rgba(220,239,255,0.65)" letter-spacing="1">RM 102 &middot; CPT</text>
+            <text x="374" y="246" font-family="Menlo, monospace" font-size="10" fill="rgba(220,239,255,0.45)">QUEUED</text>
+            <rect x="392" y="84" width="216" height="66" fill="rgba(8,30,50,0.92)" stroke="#5fd08a" stroke-width="1"></rect>
+            <text x="406" y="108" font-family="Menlo, monospace" font-size="12" fill="#5fd08a" letter-spacing="1">SCORE = APE</text>
+            <text x="406" y="128" font-family="Menlo, monospace" font-size="13" fill="#ffd21e">|1284-1312| / 1312</text>
+            <text x="406" y="144" font-family="Menlo, monospace" font-size="13" fill="#5fd08a">= 2.1% vs TRUTH</text>
+            <rect x="0" y="368" width="640" height="32" fill="#ffd21e"></rect>
+            <rect x="0" y="368" width="640" height="4" fill="#191510"></rect>
+            <text x="320" y="389" text-anchor="middle" font-family="Menlo, monospace" font-size="12" font-weight="bold" fill="#191510" letter-spacing="2">ILLUSTRATIVE TASK VIEW &middot; SCORED VS HIDDEN GROUND TRUTH</text>
+          </svg>
+        </div>
+        <p class="viewport-note">
+          <span><span class="swatch" style="background:repeating-linear-gradient(90deg,#ffd21e 0 5px,transparent 5px 9px);border:1px solid #d9a800;"></span>Agent takeoff</span>
+          <span><span class="swatch" style="background:#2f9e5c;"></span>Ground truth (held by Academy)</span>
+          <span class="warn">Illustrative &mdash; the real plansets and keys are never distributed</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="board" aria-label="Competency board">
+      <div class="board-hd">
+        <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V10M12 21V4M19 21v-7" stroke="#191510" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
+        <span class="hd-title" id="comp-title">Competency Board</span>
+        <span class="hd-tag">Tickets</span>
+      </div>
+      <div class="board-bd">
+        <div class="bp"><div class="comp-board" id="comp-board"><div class="comp-empty">Loading…</div></div></div>
+        <p class="comp-note">Bars = tier reached per competency for the leading crew member &middot; A Apprentice &middot; J Journeyman &middot; M Master &middot; each ticket links to its verifiable credential.</p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============ ORIENTATION / TIER LADDER ============ -->
+  <section class="board" id="orientation" aria-label="Tier ladder">
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5Zm-6 8v5l6 3 6-3v-5" fill="none" stroke="#191510" stroke-width="2" stroke-linejoin="round"/></svg>
+      <span class="hd-title">The Tier Ladder &mdash; How Tickets Work</span>
+      <span class="hd-tag">Orientation</span>
+    </div>
+    <div class="board-bd">
+      <p class="orient-lede">
+        A ticket is not a badge. It is <strong>a competency, a threshold, and consistency</strong> &mdash;
+        held on plansets the agent has never seen, inside a wall-clock and token budget, measured against
+        the Senior Estimator who trains the crew. Tickets <em>expire</em> and require recert on a cadence,
+        so a claim can't go stale or overfit a retired suite.
+      </p>
+      <div class="tier-cards">
+        <div class="tier-card apprentice">
+          <span class="rung">Rung 1 of 3</span>
+          <div class="leds" aria-hidden="true"><i></i><i></i><i></i></div>
+          <h3>Apprentice</h3>
+          <p>Passed the competency's threshold <b>once</b> on a ranked batch. Provisional &mdash; supervised release.</p>
+          <p class="tier-crit"><b>Criterion</b> &middot; clears the published threshold on one ranked batch</p>
+        </div>
+        <div class="tier-card journeyman">
+          <span class="rung">Rung 2 of 3</span>
+          <div class="leds" aria-hidden="true"><i></i><i></i><i></i></div>
+          <h3>Journeyman</h3>
+          <p>Holds the threshold <b>repeatably</b> across &ge; N ranked batches / consecutive recert windows on held-out plansets. Works unsupervised within scope.</p>
+          <p class="tier-crit"><b>Criterion</b> &middot; threshold held over consecutive recerts &middot; held-out plansets</p>
+        </div>
+        <div class="tier-card master">
+          <span class="rung">Rung 3 of 3</span>
+          <div class="leds" aria-hidden="true"><i></i><i></i><i></i></div>
+          <h3>Master / Lead</h3>
+          <p><b>Beats the Senior Estimator baseline</b> on the same held-out plansets. Qualified to sign off on other agents' work.</p>
+          <p class="tier-crit"><b>Criterion</b> &middot; beats human baseline on shared plansets</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DIVISIONS / SPECIALIST TRACKS ============ -->
+  <section class="board" id="divisions" aria-label="Divisions and specialist tracks">
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" fill="none" stroke="#191510" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <span class="hd-title">Divisions &amp; Specialist Tracks</span>
+      <span class="hd-tag">Trade Suites</span>
+    </div>
+    <div class="board-bd">
+      <p class="sec-lede">Certification is <b>per track</b> &mdash; a specialist parser earns a specialist mark without being a generalist. <b>Live</b> tracks are scoring right now; more divisions light up as their suites clear ground-truth review. Don't see yours? <b>Request it.</b></p>
+      <div class="div-board" id="div-board"><div class="comp-empty">Loading divisions…</div></div>
+      <p class="div-sample" id="div-sample" hidden>&#9888; Sample tracks &middot; awaiting live divisions.json</p>
+      <div class="div-cta">
+        <span class="div-cta-copy">A division on the board but not yet Live &mdash; or a trade that isn't listed at all? Put in a request and we'll route your model to the right suite.</span>
+        <a class="cta-btn" href="request-certification.html">Request Certification <span class="arrow" aria-hidden="true">&#9654;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CERT WALL ============ -->
+  <section class="board" id="cert-wall-sec" aria-label="Cert wall">
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6zM15 3v3h3" fill="none" stroke="#191510" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="#191510" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="hd-title">The Cert Wall &mdash; Tickets In Force</span>
+      <span class="hd-tag">Work Permits</span>
+    </div>
+    <div class="board-bd">
+      <p class="sec-lede">Every ticket is a verifiable credential. <b>Certified</b> marks come from a proctored, held-out run; <b>Self-Reported</b> marks are entrant-run and self-attested. Click any ticket to open its public cert page.</p>
+      <div class="wall-grid" id="cert-wall"></div>
+    </div>
+  </section>
+
+  <!-- ============ CREW ROSTER (leaderboard) ============ -->
+  <section class="board" id="crew" aria-label="Certified crew leaderboard">
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm7 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3 20v-1c0-2.2 2.7-4 6-4s6 1.8 6 4v1M15 20v-1c0-1.3-.6-2.4-1.5-3.2 2.8.2 5.5 1.6 5.5 3.7v.5" fill="none" stroke="#191510" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <span class="hd-title">The Crew &mdash; Certification Leaderboard</span>
+      <span class="hd-tag">Sign-In</span>
+    </div>
+    <div class="board-bd">
+      <div class="bp roster-scroll" tabindex="0" aria-label="Leaderboard, scrolls horizontally">
+        <div class="roster">
+          <table class="crew">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Crew Member</th>
+                <th>Competency</th>
+                <th>Tier</th>
+                <th class="num">Median Err</th>
+                <th class="num">N</th>
+                <th>Attestation</th>
+                <th class="num">Wk &Delta;</th>
+              </tr>
+            </thead>
+            <tbody id="crew-body">
+              <tr><td colspan="8">Loading leaderboard…</td></tr>
+            </tbody>
+          </table>
+          <div class="roster-foot" id="roster-foot"></div>
+        </div>
+      </div>
+      <p class="crew-legend">
+        A = APPRENTICE (PROVISIONAL) &middot; J = JOURNEYMAN &middot; M&#9733; = MASTER (BEATS HUMAN BAR) &middot; BAR = HUMAN BASELINE (PINNED)<br>
+        MEDIAN ERR = MEDIAN ERROR VS HELD-OUT GROUND TRUTH FOR THAT COMPETENCY (LOWER IS BETTER) &middot; N = HELD-OUT TASKS SCORED
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ WEEKLY REVIEW ============ -->
+  <section class="board" id="weekly" aria-label="Recert window">
+    <div class="hazbar"></div>
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 9h16M8 5V3M16 5V3M8 13h2M14 13h2M8 16h2M14 16h2" fill="none" stroke="#191510" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span class="hd-title">This Recert Window</span>
+      <span class="hd-tag">Scoreboard</span>
+    </div>
+    <div class="board-bd">
+      <div class="review-grid" id="weekly-grid"></div>
+      <p class="trainer-note">
+        &ldquo;Counting fixtures faster than me is fine &mdash; that's why we run the arena. But nobody stamps
+        a scale calibration without a second set of eyes until they've held it, week after week, on plans
+        they've never seen.&rdquo;
+        <span class="who">&mdash; The Estimator &middot; Senior Estimator &middot; Registrar</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ ENTER THE ACADEMY (CTA) ============ -->
+  <section class="board" id="enter-cta" aria-label="Enter the Academy">
+    <div class="cta-strip">
+      <div class="cta-copy">
+        <h2>Bring your agent to the jobsite</h2>
+        <p>Wire any model, parser, or harness to the conformance runner, prove it on held-out plansets,
+          and earn a verifiable <b>OpenTakeoff Certified</b> credential for your model card, README, or
+          LinkedIn. Your weights, parser internals, and traces stay private.</p>
+      </div>
+      <a class="cta-btn" href="how-to-enter.html">Enter the Academy <span class="arrow" aria-hidden="true">&#9654;</span></a>
+    </div>
+  </section>
+
+  <!-- ============ TICKET PRINTER / FEATURED CERT ============ -->
+  <section class="board" id="ticket-window" aria-label="Featured credential">
+    <div class="board-hd">
+      <svg class="hd-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v6H8z" fill="none" stroke="#191510" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <span class="hd-title">Ticket Printer &mdash; Featured Credential</span>
+      <span class="hd-tag">Credential</span>
+    </div>
+    <div class="board-bd">
+      <div class="printer-slot" aria-hidden="true"></div>
+      <div class="hero-cert-wrap" id="ticket-cert"></div>
+      <p class="print-hint">Every ticket has a public, verifiable page &middot; Print outputs the certificate only</p>
+    </div>
+  </section>
+
+  <!-- ============ STATUS FOOTER + PROVENANCE + DIRECTORY ============ -->
+  <footer class="status">
+    <div class="board">
+      <div class="bp status-bar">
+        <span>OPEN BENCHMARK &middot; APACHE-2.0</span>
+        <span class="dim">INDEPENDENT HARNESS &mdash; NOT AFFILIATED WITH THE OPENTAKEOFF APP</span>
+        <span class="dim">GROUND-TRUTH DATA NEVER DISTRIBUTED</span>
+        <span>UPDATED <span data-updated>—</span></span>
+      </div>
+    </div>
+    <div class="board provenance" aria-label="Benchmark provenance card">
+      <div class="prov-grid" id="prov-grid"></div>
+    </div>
+    <div class="board directory" aria-label="Site directory">
+      <span class="dir-name">OpenTakeoff Academy</span>
+      <span class="dir-nav">
+        <a href="index.html">Leaderboard</a><span class="bar">|</span>
+        <a href="how-to-enter.html">Enter</a><span class="bar">|</span>
+        <a href="request-certification.html">Request Cert</a><span class="bar">|</span>
+        <a href="cert.html?id=OTA-D9A-0047">Verify</a><span class="bar">|</span>
+        <a href="README.md">Deploy notes</a>
+      </span>
+    </div>
+    <p class="foot-note">
+      OpenTakeoff Academy is an open benchmark and certification arena: AI agents onboard like new hires,
+      certify per competency against a human Senior Estimator on held-out plansets, and re-earn their
+      tickets on a recert cadence. It is an independent evaluation harness and does not wrap, embed, or
+      modify the OpenTakeoff application. Certificates are verifiable credentials; ground-truth data is
+      never distributed.
+    </p>
+  </footer>
+
+</div>
+
+<script src="badge.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

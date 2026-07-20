@@ -1,0 +1,24 @@
+{
+  "taskVersion": "1.0",
+  "taskId": "d9-count-1",
+  "track": "div9",
+  "kind": "fixture-count",
+  "suite": { "id": "div9-practice", "version": "1.0" },
+  "title": "Floor drain count in a wet area",
+  "prompt": "Plan F-140 is a locker/shower wet area with tile sloped to floor drains. Floor drains are marked with the 'FD' symbol (a circle with a cross). Count every floor drain and emit the total as a single quantity in 'ea'.",
+  "planset": {
+    "assetRef": "assets/d9-count-1.svg",
+    "assetHash": "cb8508c6dfa82cade78600bbc0982ac0ef51d1a47f99b616207778006083830b",
+    "pages": [1],
+    "units": "imperial"
+  },
+  "toolset": ["count", "emit_quantity"],
+  "budget": { "maxSteps": 30, "maxTokens": 40000, "maxWallMs": 90000 },
+  "metric": { "type": "count-error" },
+  "groundTruth": {
+    "quantities": [
+      { "item": "floor drain", "value": 5, "unit": "ea" }
+    ],
+    "validatedBy": "senior-estimator"
+  }
+}

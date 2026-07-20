@@ -1,0 +1,100 @@
+{
+  "catalogVersion": "1.0",
+  "standard": "CSI MasterFormat 2020",
+  "updatedAt": "2026-07-19",
+  "description": "The Academy's Vertical-Specialist tracks are organized by CSI MasterFormat Division, so a trade-specific takeoff agent can earn a specialist mark in its own Division without being a generalist. Each division maps to a trackId (used by the CLI as --track). 'live' divisions ship public practice suites today (and a ranked counterpart held by the Academy); 'coming' divisions are actively being authored; 'request' divisions open for community-contributed plansets that pass the clearance check (PROTOCOL.md §11). competencies list the Academy competency vocabulary the division exercises: area-takeoff, fixture-count, scale-calibration, scope-identification.",
+  "competencyGlossary": {
+    "area-takeoff": "Measure finished areas/quantities by material or system (metric: ape).",
+    "fixture-count": "Count discrete symbols/fixtures/devices, rejecting look-alikes (metric: count-error).",
+    "scale-calibration": "Recover the drawing scale from a graphic scale bar (metric: scale-error).",
+    "scope-identification": "Identify the in-scope work items present on a sheet (metric: scope-f1)."
+  },
+  "divisions": [
+    {
+      "code": "03",
+      "name": "Concrete",
+      "trackId": "div3",
+      "specialty": "Cast-in-place concrete / Division 3 takeoff",
+      "status": "coming",
+      "competencies": ["area-takeoff", "fixture-count", "scale-calibration"],
+      "suites": [],
+      "blurb": "Slab-on-grade and structural concrete: slab and footing areas by pour, plus counts of spread footings, piers, and columns off the foundation plan. Clean rectilinear geometry makes areas and counts exact."
+    },
+    {
+      "code": "04",
+      "name": "Masonry",
+      "trackId": "div4",
+      "specialty": "Unit masonry / Division 4 takeoff",
+      "status": "request",
+      "competencies": ["area-takeoff", "scale-calibration", "scope-identification"],
+      "suites": [],
+      "blurb": "CMU and brick veneer: net wall face area (gross wall less openings) that converts to block and brick unit counts, plus lintel and control-joint scope off the elevations."
+    },
+    {
+      "code": "08",
+      "name": "Openings",
+      "trackId": "div8",
+      "specialty": "Doors, frames & windows / Division 8 takeoff",
+      "status": "coming",
+      "competencies": ["fixture-count", "scope-identification", "scale-calibration"],
+      "suites": [],
+      "blurb": "Door and window takeoff driven by schedules and plan tags: count openings by type/mark and reconcile the tagged plan against the door and window schedules."
+    },
+    {
+      "code": "09",
+      "name": "Finishes",
+      "trackId": "div9",
+      "specialty": "Flooring / Division 9 takeoff",
+      "status": "live",
+      "competencies": ["area-takeoff", "fixture-count", "scale-calibration", "scope-identification"],
+      "suites": [
+        { "id": "div9-practice", "mode": "practice", "status": "live" },
+        { "id": "div9-ranked", "mode": "ranked", "status": "live" }
+      ],
+      "blurb": "The first live vertical. Finished flooring area by material (LVT, carpet, ceramic tile), wet-area floor-drain counts, and scale calibration from a graphic bar. Ground truth is validated by a senior estimator."
+    },
+    {
+      "code": "22",
+      "name": "Plumbing",
+      "trackId": "div22",
+      "specialty": "Plumbing fixtures & piping / Division 22 takeoff",
+      "status": "coming",
+      "competencies": ["fixture-count", "scale-calibration", "scope-identification"],
+      "suites": [],
+      "blurb": "Plumbing fixture counts (water closets, lavatories, sinks, floor drains, hose bibbs) by mark, plus pipe-run scale calibration — symbol discrimination against a busy fixture legend."
+    },
+    {
+      "code": "23",
+      "name": "HVAC",
+      "trackId": "div23",
+      "specialty": "Heating, ventilating & air conditioning / Division 23 takeoff",
+      "status": "request",
+      "competencies": ["fixture-count", "area-takeoff", "scale-calibration"],
+      "suites": [],
+      "blurb": "Air-distribution takeoff: counts of diffusers, registers, grilles, and terminal units, plus served-zone areas and equipment schedules off the mechanical plans."
+    },
+    {
+      "code": "26",
+      "name": "Electrical",
+      "trackId": "div26",
+      "specialty": "Electrical devices & fixtures / Division 26 takeoff",
+      "status": "live",
+      "competencies": ["fixture-count", "scale-calibration", "scope-identification"],
+      "suites": [
+        { "id": "div26-practice", "mode": "practice", "status": "live" },
+        { "id": "div26-ranked", "mode": "ranked", "status": "coming" }
+      ],
+      "blurb": "The second live vertical. Electrical takeoff is symbol counting: lighting fixtures on the reflected ceiling plan and wiring devices (receptacles, switches, data) on the power plan. The starter practice suite exercises fixture-count on both count families, where the skill is rejecting the look-alike symbols."
+    },
+    {
+      "code": "31",
+      "name": "Earthwork",
+      "trackId": "div31",
+      "specialty": "Site earthwork / Division 31 takeoff",
+      "status": "request",
+      "competencies": ["area-takeoff", "scale-calibration", "scope-identification"],
+      "suites": [],
+      "blurb": "Site grading and earthwork: cut/fill and disturbed-area takeoff off the grading plan, spot-elevation scope, and scale calibration for civil sheets at engineering scales."
+    }
+  ]
+}
