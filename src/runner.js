@@ -25,6 +25,7 @@ import { performance } from 'node:perf_hooks';
 import { buildBundle, signBundle, sha256File, newRunId } from './bundle.js';
 import { connectMcp, mcpToolsToOpenAI } from './mcp.js';
 import { createEnvironment } from './environment.js';
+import { createOpenTakeoffBackend } from './ot-backend.js';
 
 export const SDK_VERSION = '1.0.0';
 
@@ -209,6 +210,11 @@ export async function runSuite(opts) {
     mcpOpenAITools,
     mcpToolSet,
     mcpServerId: mcp?.serverId,
+    // Environment backend: 'svg' (default; parses the practice planset) or
+    // 'opentakeoff' (the CERTIFIED path — drives the real opentakeoff-mcp engine).
+    engine: opts.engine || 'svg',
+    mcpDir: opts.mcpDir,
+    log,
   };
 
   const taskResults = [];
@@ -276,10 +282,31 @@ async function runTask(task, ctx) {
   });
 
   // --- the REAL OpenTakeoff environment, backed by the planset geometry -----
+  // Default: SvgGeometryBackend over the planset markup. Certified path
+  // (ctx.engine === 'opentakeoff'): drive the real opentakeoff-mcp engine on the
+  // plan PDF — same environment/tool surface, real engine geometry underneath.
+  let otBackend = null;
+  if (ctx.engine === 'opentakeoff') {
+    if (!anchor.path) throw new Error(`opentakeoff engine requires the planset asset on disk; ${task.taskId} has none resolvable`);
+    ctx.log?.(`[${task.taskId}] building OpenTakeoff engine backend on ${anchor.path} …`);
+    otBackend = await createOpenTakeoffBackend({
+      plansetPath: anchor.path,
+      mcpDir: ctx.mcpDir,
+      rooms: task.planset?.rooms,
+      log: ctx.log,
+    });
+    push({
+      type: 'tool_result',
+      tool: 'engine',
+      args: { engine: 'opentakeoff-mcp', sheet: otBackend.engine.sheet },
+      result: { engine: 'opentakeoff-mcp', upp: otBackend.engine.upp, scaleLabel: otBackend.engine.scaleLabel, roomsResolved: otBackend.getFeatures().rooms.length, unresolved: otBackend.unresolvedRooms() },
+    });
+  }
   const env = createEnvironment({
     task,
     assetPath: anchor.path,
-    assetContent: readAssetContent(anchor.path),
+    assetContent: otBackend ? null : readAssetContent(anchor.path),
+    ...(otBackend ? { backend: otBackend } : {}),
   });
 
   const answer = { quantities: [] };

@@ -8,7 +8,7 @@ A standalone, open **benchmark + certification arena** for AI agents that do **c
 
 - The Academy publishes **task suites** on real plansets, in two kinds of track: **Generalist** and **Vertical-Specialist** (first live: **Division 9 / flooring**).
 - You wire your agent — any **OpenAI-compatible endpoint** or **MCP server** — to the conformance runner. Your parser/model/harness stay yours (a black box).
-- The agent **operates a real takeoff sandbox** (the *OpenTakeoff environment*): the built-in tools (`set_scale`, `measure_area`, `count`, …) return **measurements computed from the planset geometry at the agent's calibrated scale** — so a wrong calibration yields a wrong area. It runs through the runner or as an MCP server (`opentakeoff-env`); the **Certified** path drives a **deployed OpenTakeoff instance** behind the same tools. Agents are scored on **operating the tool**, not on self-reporting numbers.
+- The agent **operates a real takeoff sandbox** (the *OpenTakeoff environment*): the built-in tools (`set_scale`, `measure_area`, `count`, …) return **measurements computed from the planset geometry at the agent's calibrated scale** — so a wrong calibration yields a wrong area. It runs through the runner or as an MCP server (`opentakeoff-env`); the **Certified** path drives the **real OpenTakeoff engine** (`opentakeoff-mcp`) behind the same tools — see [`docs/ENGINE-BACKEND.md`](docs/ENGINE-BACKEND.md). Agents are scored on **operating the tool**, not on self-reporting numbers.
 - The runner emits a **signed run-bundle**: full provenance of every tool/MCP call, the produced quantities, and telemetry.
 - Scoring is against **held-out ground truth you never see**. Clear a tier threshold → earn a certificate.
 
@@ -55,11 +55,13 @@ Your **weights, parser internals, harness source, raw traces, and any plansets y
 
 ```
 schema/        run-bundle, task, and cert JSON Schemas (the contracts)
-src/           the conformance SDK + CLI: runner, the takeoff environment (environment.js + ot-env-mcp.js), MCP glue, bundle signer, scorer, cert issuer
+src/           the conformance SDK + CLI: runner, the takeoff environment (environment.js + ot-env-mcp.js), the real-engine backend (ot-backend.js + ot-mcp-client.js), MCP glue, bundle signer, scorer, cert issuer
 tasks/         task suites (generalist/, div9/) — practice tasks ship with keys
 submissions/   entrant run-bundles (scored by CI)
 site/          the leaderboard + cert pages + badge generator
 examples/      reference BYO-agent adapter
+test/          reconciliation tests (ot-backend.test.mjs)
+docs/          ENGINE-BACKEND.md — the certified path on the real OpenTakeoff engine
 .github/       CI scoring workflow
 PROTOCOL.md    the certification protocol
 ```

@@ -29,34 +29,67 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { ListToolsRequestSchema, CallToolRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 
 import { createEnvironment } from './environment.js';
+import { createOpenTakeoffBackend } from './ot-backend.js';
 import { BUILTIN_TOOLS, BUILTIN_TOOL_NAMES } from './runner.js';
 
-/** Build the environment described by CLI flags (--task | --asset | none). */
-export function buildEnvFromArgs(argv = []) {
-  const flags = parseFlags(argv);
+/** Resolve the task + planset asset path from CLI flags (--task | --asset | none). */
+function resolveTaskAndAsset(flags) {
   let task;
-  let assetContent = null;
   let assetPath = null;
-
   if (flags.task) {
     const taskPath = resolve(flags.task);
     task = JSON.parse(readFileSync(taskPath, 'utf8'));
     const ref = task.planset?.assetRef;
-    if (ref) {
-      const p = resolve(dirname(taskPath), ref);
-      if (existsSync(p)) { assetPath = p; assetContent = readFileSync(p, 'utf8'); }
-    }
+    if (ref) { const p = resolve(dirname(taskPath), ref); if (existsSync(p)) assetPath = p; }
   } else if (flags.asset) {
     assetPath = resolve(flags.asset);
-    assetContent = readFileSync(assetPath, 'utf8');
     task = { planset: { assetRef: flags.asset, units: flags.unit === 'm' ? 'metric' : 'imperial' } };
   } else {
-    // No asset: explicit-geometry environment (the agent supplies px points/rects).
     task = { planset: { assetRef: null, units: flags.unit === 'm' ? 'metric' : 'imperial' } };
   }
+  return { task, assetPath };
+}
 
+/** True when CLI flags select the real OpenTakeoff engine backend. */
+function wantsOpenTakeoff(flags) {
+  return flags.backend === 'opentakeoff' || flags.engine === 'opentakeoff' || flags.opentakeoff === true;
+}
+
+/**
+ * Build the environment described by CLI flags, SVG backend (--task | --asset |
+ * none — the explicit-geometry sandbox). Synchronous; the certified engine
+ * backend is built by {@link buildEnvFromArgsAsync}.
+ */
+export function buildEnvFromArgs(argv = []) {
+  const flags = parseFlags(argv);
+  const { task, assetPath } = resolveTaskAndAsset(flags);
+  const assetContent = assetPath ? readFileSync(assetPath, 'utf8') : null;
   const env = createEnvironment({ task, assetPath, assetContent, unit: flags.unit });
   return { env, task, assetPath };
+}
+
+/**
+ * Build the environment, honoring `--backend opentakeoff` (the CERTIFIED path):
+ * drives the real opentakeoff-mcp engine on the planset PDF. Falls through to the
+ * synchronous SVG builder otherwise. `--mcp-dir` overrides engine auto-discovery.
+ */
+export async function buildEnvFromArgsAsync(argv = []) {
+  const flags = parseFlags(argv);
+  if (!wantsOpenTakeoff(flags)) return buildEnvFromArgs(argv);
+
+  const { task, assetPath } = resolveTaskAndAsset(flags);
+  if (!assetPath) {
+    throw new Error('the opentakeoff backend needs a planset PDF on disk: pass --task <task.json> (PDF assetRef) or --asset <plan.pdf>');
+  }
+  const backend = await createOpenTakeoffBackend({
+    plansetPath: assetPath,
+    mcpDir: flags['mcp-dir'],
+    rooms: task.planset?.rooms,
+    unit: flags.unit === 'm' ? 'm' : 'ft',
+    log: (m) => process.stderr.write(`[ot-env-mcp] ${m}\n`),
+  });
+  const env = createEnvironment({ task, assetPath, backend });
+  return { env, task, assetPath, backend };
 }
 
 /** MCP tool descriptors derived from the built-in Academy toolset. */
@@ -69,7 +102,7 @@ export function environmentToolDescriptors() {
 }
 
 async function main() {
-  const { env, assetPath } = buildEnvFromArgs(process.argv.slice(2));
+  const { env, assetPath } = await buildEnvFromArgsAsync(process.argv.slice(2));
 
   const server = new Server(
     { name: 'opentakeoff-environment', version: '1.0.0' },

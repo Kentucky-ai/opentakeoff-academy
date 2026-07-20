@@ -82,36 +82,18 @@ export class SvgGeometryBackend {
 }
 
 /**
- * OpenTakeoffBackend — the CERTIFIED-path seam. Instead of parsing a static SVG,
- * this drives a DEPLOYED OpenTakeoff instance/engine (its real takeoff pipeline:
- * raster/vector planset ingest, calibration, region + symbol detection) and
- * returns pixel geometry through the SAME three methods SvgGeometryBackend
- * exposes. The environment above is unchanged when this backend is swapped in.
+ * OpenTakeoffBackend — the CERTIFIED-path backend. Instead of parsing a static
+ * SVG, it drives the REAL OpenTakeoff engine (`opentakeoff-mcp`) over stdio and
+ * returns the engine's actual pixel geometry through the SAME methods
+ * SvgGeometryBackend exposes, so the environment above is unchanged when it is
+ * swapped in. It is async to construct (it does engine I/O up front), so it lives
+ * in its own module and is built via `createOpenTakeoffBackend(...)`.
  *
- * This DEPLOYS/DRIVES an OpenTakeoff-grade engine; it does NOT modify the
- * OpenTakeoff source.
- *
- * @param {object} opts - { endpoint, apiKey, projectId, assetRef, ... }
+ * Re-exported here so the backend name resolves from either module. See
+ * `src/ot-backend.js` for the implementation and the exact reconciliation math
+ * (pxPerUnit = 1/upp), and `src/ot-mcp-client.js` for the engine transport.
  */
-export class OpenTakeoffBackend {
-  constructor(opts = {}) {
-    this.opts = opts;
-    // TODO(opentakeoff-backend): connect to a deployed OpenTakeoff instance
-    //   (opts.endpoint / opts.apiKey), upload/ingest the planset (opts.assetRef),
-    //   and back the three methods below with its real takeoff engine:
-    //     getFeatures()  -> instance.listRegions()+listSymbols()+calibration()
-    //     resolveRoom()  -> instance.getRegion(roomId) → pixel polygon
-    //     countSymbols() -> instance.detectSymbols(query, region)
-    //     getScaleBar()  -> instance.getGraphicScale()
-    //   Pixel geometry flows back the same way, so the environment (scale math,
-    //   grounding, provenance) is identical to the SVG backend.
-  }
-
-  getFeatures() { throw new Error('OpenTakeoffBackend: not wired to a deployed instance yet (see TODO(opentakeoff-backend))'); }
-  resolveRoom() { throw new Error('OpenTakeoffBackend: not wired to a deployed instance yet (see TODO(opentakeoff-backend))'); }
-  countSymbols() { throw new Error('OpenTakeoffBackend: not wired to a deployed instance yet (see TODO(opentakeoff-backend))'); }
-  getScaleBar() { throw new Error('OpenTakeoffBackend: not wired to a deployed instance yet (see TODO(opentakeoff-backend))'); }
-}
+export { OpenTakeoffBackend, createOpenTakeoffBackend } from './ot-backend.js';
 
 // ---------------------------------------------------------------------------
 // The environment (operations layer)
