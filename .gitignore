@@ -30,3 +30,9 @@ plans/
 
 # held-out ground-truth answer keys — never published
 **/ground-truth/
+
+# internal validation run (Opus) + rough harness — not for the public board yet
+scripts/contestant-af101-takeoff.json
+scripts/measure-af101.mjs
+scripts/discover.mjs
+scripts/wire-smoke.mjs
