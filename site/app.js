@@ -638,7 +638,7 @@ vrowRaw("Academy key", '<a href="/academy-public-key.pem" rel="noopener">academy
 vrowRaw("This record", '<a href="/certs/' + esc(c.certId) + '.json" rel="noopener">' + esc(c.certId) + '.json &#8599;</a>') +
 '<div style="margin-top:12px" class="embed-live">' + badge + '</div>' +
 '<p class="comp-note">The Academy signs <b>certHash</b>; anyone can recompute it from this record and check the signature against the <a href="/academy-public-key.pem">published Academy key</a> &mdash; without trusting this page:</p>' +
-'<pre class="verify-cmd"><code>curl -O ' + esc(siteRoot()) + 'certs/' + esc(c.certId) + '.json\nnpx github:Kentucky-ai/opentakeoff-academy verify ' + esc(c.certId) + '.json</code></pre>' +
+'<pre class="verify-cmd"><code>curl -O ' + esc(siteRoot()) + 'certs/' + esc(c.certId) + '.json\nnpx github:Kentucky-ai/opentakeoff-academy verify ' + esc(c.certId) + '.json \\\n  --key ' + esc(siteRoot()) + 'academy-public-key.pem</code></pre>' +
 '<p class="comp-note">Tamper with any field and the hash check fails; sign with any other key and the signature check fails. The <b>run-bundle hash</b> binds the score to the exact recorded trace.</p>' +
 '</div>' +
 '</div>';

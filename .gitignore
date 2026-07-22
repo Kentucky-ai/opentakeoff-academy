@@ -44,3 +44,6 @@ scripts/wire-smoke.mjs
 # internal session closeouts / working notes — for our own pickup, NOT for the
 # public repo (may reference strategy, moat, or held-out numbers)
 docs/SESSION-*.md
+
+# Local Netlify folder
+.netlify
