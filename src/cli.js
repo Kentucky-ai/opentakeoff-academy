@@ -8,14 +8,18 @@
 //   opentakeoff-academy score <bundle.json> --track <t> --suite <id> [--tasks <dir>] [--out <report.json>]
 //   opentakeoff-academy cert  <report.json> --attestation <self_reported|certified> --out <cert.json>
 //   opentakeoff-academy validate <bundle.json>
+//   opentakeoff-academy verify   <cert.json> [--key <pem-path-or-url>]
 //   opentakeoff-academy badge <cert.json> --out <badge.svg>
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import {
   runSuite, loadTasks, scoreBundle, formatReport, validateBundle, verifyBundle,
-  issueCert, renderBadgeSvg,
+  issueCert, renderBadgeSvg, verifyCert,
 } from './index.js';
+
+/** Published Academy signing key — the default trust anchor for `verify`. */
+const ACADEMY_KEY_URL = 'https://aec.kentucky-ai.com/academy-public-key.pem';
 
 main().catch((err) => { fail(err?.message || String(err)); process.exit(1); });
 
@@ -29,6 +33,7 @@ async function main() {
     case 'score':    return cmdScore(positionals[0], flags);
     case 'cert':     return cmdCert(positionals[0], flags);
     case 'validate': return cmdValidate(positionals[0]);
+    case 'verify':   return cmdVerify(positionals[0], flags);
     case 'badge':    return cmdBadge(positionals[0], flags);
     case 'help': case '--help': case '-h': case undefined:
       return usage(0);
@@ -161,6 +166,58 @@ function cmdValidate(bundlePath) {
   process.stdout.write(`valid ✓ ${bundlePath} (schema ok · hash ok${sig})\n`);
 }
 
+// --- verify -----------------------------------------------------------------
+// Third-party check of a published credential: recompute certHash from the
+// record itself, then verify the Academy's signature over it against the
+// published Academy key. This is the command the cert page points at — anyone
+// holding a cert.json can run it without trusting the site that served it.
+async function cmdVerify(certPath, flags) {
+  if (!certPath) return fail('verify requires a <cert.json> path'), process.exit(1);
+  const cert = readJson(certPath);
+  const keyRef = flags.key || ACADEMY_KEY_URL;
+
+  let pem = null;
+  try {
+    pem = /^https?:\/\//.test(keyRef) ? await fetchText(keyRef) : readFileSync(keyRef, 'utf8');
+  } catch (err) {
+    // A missing key is only fatal for a certified cert — say so, don't guess.
+    if (cert.attestation === 'certified') {
+      fail(`cannot read Academy key from ${keyRef} — ${err?.message || err}`);
+      process.exit(1);
+    }
+  }
+
+  const v = verifyCert(cert, pem);
+  if (!v.hashMatch) {
+    fail(`INVALID (tampered) ✗ ${certPath} — certHash does not match the record (expected ${v.expectedHash})`);
+    process.exit(1);
+  }
+  if (v.signatureValid === false) {
+    fail(`INVALID (signature) ✗ ${certPath} — not signed by the Academy key at ${keyRef}`);
+    process.exit(1);
+  }
+
+  const id = cert.certId || '(no id)';
+  if (cert.attestation === 'certified') {
+    process.stdout.write(`verified ✓ ${id} — certified · hash ok · Academy signature ok (key ${cert.integrity?.academyKeyId || '—'})\n`);
+  } else {
+    process.stdout.write(`verified ✓ ${id} — self-reported · hash ok · NO Academy signature (entrant-run, self-attested)\n`);
+  }
+}
+
+/** Fetch a text resource (the published Academy key) with a bounded timeout. */
+async function fetchText(url, timeoutMs = 10000) {
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { signal: ctl.signal });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.text();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 // --- badge ------------------------------------------------------------------
 function cmdBadge(certPath, flags) {
   if (!certPath) return fail('badge requires a <cert.json> path'), process.exit(1);
@@ -255,6 +312,8 @@ Usage:
   opentakeoff-academy cert  <report.json> --attestation <self_reported|certified> --out <cert.json>
                             [--academy-key <pem>] [--now <iso>] [--serial <n>] [--verify-url <url>] [--model-id <id>]
   opentakeoff-academy validate <bundle.json>
+  opentakeoff-academy verify   <cert.json> [--key <pem-path-or-url>]
+                            (defaults to the published Academy key)
   opentakeoff-academy badge <cert.json> --out <badge.svg>
 
 Docs: PROTOCOL.md · schema/*.schema.json

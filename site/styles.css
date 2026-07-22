@@ -625,6 +625,9 @@ table.crew tr.human td .crew-role { color: rgba(255, 210, 30, 0.75); }
 .vrow .vv.pass { color: var(--pass-l); }
 .vrow .vv.amber { color: var(--hi); }
 .vrow .vv.mono-hash { font-size: 0.64rem; color: var(--cyan-lite); }
+.vrow .vv a { color: var(--cyan-lite); text-decoration: underline; text-underline-offset: 3px; }
+.vrow .vv a:hover { color: var(--bp-ink); }
+.comp-note a { color: var(--cyan-lite); text-decoration: underline; text-underline-offset: 2px; }
 .vstatus {
   display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 6px; margin-bottom: 4px;
   font-family: var(--mono); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
@@ -667,6 +670,14 @@ table.crew tr.human td .crew-role { color: rgba(255, 210, 30, 0.75); }
   border: 1px solid rgba(139,197,236,0.3);
 }
 .codewrap pre code { white-space: pre; }
+/* The verify command on a cert page — same blueprint slab as .codewrap, standalone. */
+.verify-cmd {
+  margin: 10px 0 0; overflow-x: auto; border-radius: 7px; padding: 12px 13px;
+  background: var(--blueprint-2); color: var(--bp-2);
+  font-family: var(--mono); font-size: 0.62rem; line-height: 1.7;
+  border: 1px solid rgba(139,197,236,0.3);
+}
+.verify-cmd code { white-space: pre; }
 .copy-btn {
   position: absolute; top: 8px; right: 8px;
   font-family: var(--mono); font-size: 0.54rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;

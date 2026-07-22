@@ -37,7 +37,7 @@
   "integrity": {
     "hashAlg": "sha256",
     "certHash": "058c15bb85b29cbf6b0b83af201de5eddb727cbf5ea21e64adff31f38ce553c9",
-    "academySignature": "qy2HigphGmlh9FUbEBqP4xRCO/zbSDAkq+3HsXHbEA1D6zq+u7qTyCUSdXSDxhOM/+vIIE+RXLMiNrkl0PHoBQ==",
+    "academySignature": "gBk5kWi7MwbQwgUsoyvgbZXICoaKzCKlxJYPkM6P+3k/GtZwPYwbMaFHQd5ynYIY1kVttfmCeMAyuL7Fm0VtAg==",
     "academyKeyId": "ota-registrar-demo-2026"
   }
 }

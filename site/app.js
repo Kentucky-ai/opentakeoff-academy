@@ -554,7 +554,12 @@ attLine +
     return m ? decodeURIComponent(m[1].replace(/\+/g, " ")) : null;
   }
   function siteRoot() {
-    return location.href.split(/[?#]/)[0].replace(/[^/]*$/, ""); // dir of cert.html
+    // Must resolve identically on BOTH cert URLs, or embedded badge/asset links
+    // break on the shareable one: the pretty /cert/:id (a Netlify rewrite — the
+    // address bar keeps it) and the raw /cert.html?id=:id.
+    var p = location.href.split(/[?#]/)[0];
+    p = p.replace(/\/cert\/[^/]*$/, "/"); // pretty URL → site root
+    return p.replace(/[^/]*$/, "");       // else strip the filename
   }
 
   function renderCert(data) {
@@ -629,8 +634,12 @@ vrow("Cert hash", integrity.certHash || "—", "mono-hash") +
 vrow("Signature", integrity.academySignature || "—", "mono-hash") +
 vrow("Key id", integrity.academyKeyId || "—") +
 vrow("Hash alg", integrity.hashAlg || "sha256") +
+vrowRaw("Academy key", '<a href="/academy-public-key.pem" rel="noopener">academy-public-key.pem &#8599;</a>') +
+vrowRaw("This record", '<a href="/certs/' + esc(c.certId) + '.json" rel="noopener">' + esc(c.certId) + '.json &#8599;</a>') +
 '<div style="margin-top:12px" class="embed-live">' + badge + '</div>' +
-'<p class="comp-note">The Academy signs <b>certHash</b>; anyone can recompute it from this record and check the signature against the Academy key. The <b>run-bundle hash</b> binds the score to the exact recorded trace.</p>' +
+'<p class="comp-note">The Academy signs <b>certHash</b>; anyone can recompute it from this record and check the signature against the <a href="/academy-public-key.pem">published Academy key</a> &mdash; without trusting this page:</p>' +
+'<pre class="verify-cmd"><code>curl -O ' + esc(siteRoot()) + 'certs/' + esc(c.certId) + '.json\nnpx github:Kentucky-ai/opentakeoff-academy verify ' + esc(c.certId) + '.json</code></pre>' +
+'<p class="comp-note">Tamper with any field and the hash check fails; sign with any other key and the signature check fails. The <b>run-bundle hash</b> binds the score to the exact recorded trace.</p>' +
 '</div>' +
 '</div>';
 
@@ -662,6 +671,11 @@ vrow("Hash alg", integrity.hashAlg || "sha256") +
 
   function vrow(k, v, cls) {
     return '<div class="vrow"><span class="vk">' + esc(k) + '</span><span class="vv ' + (cls || "") + '">' + esc(v) + '</span></div>';
+  }
+
+  // Same row, trusted markup for the value (links only — never user data).
+  function vrowRaw(k, html, cls) {
+    return '<div class="vrow"><span class="vk">' + esc(k) + '</span><span class="vv ' + (cls || "") + '">' + html + '</span></div>';
   }
 
   function embeds(c, certUrl) {

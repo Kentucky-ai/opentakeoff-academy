@@ -15,6 +15,10 @@ runs/*.svg
 *.pem
 *.key
 keys/
+# ...except the Academy's PUBLIC verification key, which is the whole point:
+# a credential nobody can check is not a credential. Private halves are
+# generated in memory and never written to disk (scripts/regen-sample-data.mjs).
+!site/academy-public-key.pem
 .env
 .env.*
 
