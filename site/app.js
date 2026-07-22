@@ -327,10 +327,29 @@ attLine +
 
     /* ---- topbar counters + tickers ---- */
     var setText = function (id, t) { var e = document.getElementById(id); if (e) e.textContent = t; };
+    // Render an integer into a fixed-width LED strip (9 digits, comma-grouped).
+    var setLed = function (id, n) {
+      var e = document.getElementById(id);
+      if (!e) return;
+      var d = String(Math.max(0, Math.round(n || 0))).padStart(9, "0").split("");
+      e.innerHTML = d.map(function (ch, i) {
+        return (i && i % 3 === 0 ? '<b class="sep">,</b>' : "") + "<b>" + ch + "</b>";
+      }).join("");
+    };
     setText("count-tickets", certifiedTickets.length + " CERTIFIED TICKETS IN FORCE");
     setText("count-tickets2", certifiedTickets.length);
+    // The board is sample data until real runs land. Say so on the page — a
+    // disclaimer that only appears when the fetch FAILS is backwards, and this
+    // site's whole claim is that its numbers are checkable.
     var demoTag = document.getElementById("demo-tag");
-    if (demoTag) demoTag.style.display = data._fallback ? "" : "none";
+    if (demoTag) {
+      var sample = !!(data._fallback || data.disclaimer);
+      demoTag.style.display = sample ? "" : "none";
+      if (data.disclaimer) demoTag.textContent = "⚠ " + data.disclaimer;
+    }
+
+    // Runs-scored odometer reflects actual scored runs — no decorative count.
+    setLed("led-runs", ranked.reduce(function (n, r) { return n + (r.nRanked || 0); }, 0));
 
     /* ---- featured (top certified journeyman/master) ---- */
     var featured = certifiedTickets[0] || ranked[0] || rows[0];
