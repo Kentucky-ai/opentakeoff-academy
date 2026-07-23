@@ -1,0 +1,449 @@
+{
+  "bundleVersion": "1.0",
+  "runId": "run_8c32cd1a-9460-4108-8aa9-165a9d10a140",
+  "track": "div9",
+  "suite": {
+    "id": "div9-va-bldg28",
+    "version": "1.0",
+    "mode": "ranked"
+  },
+  "contestant": {
+    "name": "Reference · OpenTakeoff One-Click",
+    "modelId": "reference/opentakeoff-oneclick",
+    "harness": "opentakeoff-academy/reference-runner",
+    "adapter": "openai-endpoint",
+    "contact": "https://github.com/Kentucky-ai/opentakeoff-academy"
+  },
+  "attestation": {
+    "mode": "self_reported"
+  },
+  "tasks": [
+    {
+      "taskId": "div9-va-bldg28-area",
+      "answer": {
+        "quantities": [
+          {
+            "item": "WD-1",
+            "value": 732.11,
+            "unit": "sf",
+            "confidence": 0.95
+          },
+          {
+            "item": "VCT-1",
+            "value": 103.3,
+            "unit": "sf",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "trace": [
+        {
+          "seq": 0,
+          "tOffsetMs": 1,
+          "type": "tool_result",
+          "tool": "planset",
+          "args": {
+            "assetRef": "assets/va-stcloud-bldg28-finish.pdf"
+          },
+          "result": {
+            "assetRef": "assets/va-stcloud-bldg28-finish.pdf",
+            "assetHash": "53aa2a44efc8f9a2e625ed223fcfbf9ee19d15eb8469ba57183874b6a8e2a56f",
+            "declaredHash": "53aa2a44efc8f9a2e625ed223fcfbf9ee19d15eb8469ba57183874b6a8e2a56f",
+            "verified": true
+          }
+        },
+        {
+          "seq": 1,
+          "tOffsetMs": 724,
+          "type": "tool_result",
+          "tool": "engine",
+          "args": {
+            "engine": "opentakeoff-mcp",
+            "sheet": "va-stcloud-bldg28-finish.pdf"
+          },
+          "result": {
+            "engine": "opentakeoff-mcp",
+            "upp": 0.05555555555555555,
+            "scaleLabel": "1/8\" = 1'-0\"",
+            "roomsResolved": 4,
+            "unresolved": []
+          }
+        },
+        {
+          "seq": 2,
+          "tOffsetMs": 725,
+          "type": "model_message",
+          "args": {
+            "role": "assistant"
+          },
+          "result": {
+            "content": "The plan carries a graphic scale bar (nominal 1/8\" = 1'-0\"). Calibrating from it before I measure anything.",
+            "tool_calls": [
+              {
+                "id": "call_1",
+                "name": "set_scale"
+              }
+            ]
+          },
+          "tokens": {
+            "in": 210,
+            "out": 24
+          }
+        },
+        {
+          "seq": 3,
+          "tOffsetMs": 725,
+          "type": "tool_call",
+          "tool": "set_scale",
+          "args": {
+            "from": "scale-bar",
+            "unit": "ft"
+          }
+        },
+        {
+          "seq": 4,
+          "tOffsetMs": 725,
+          "type": "tool_result",
+          "tool": "set_scale",
+          "result": {
+            "ok": true,
+            "pxPerUnit": 18,
+            "unit": "ft",
+            "unitPerPx": 0.055556,
+            "ftPerPx": 0.055556,
+            "source": "scale-bar"
+          }
+        },
+        {
+          "seq": 5,
+          "tOffsetMs": 725,
+          "type": "model_message",
+          "args": {
+            "role": "assistant"
+          },
+          "result": {
+            "content": "Measuring the finished floor area of Patient Room 162 (finish WD-1).",
+            "tool_calls": [
+              {
+                "id": "call_2",
+                "name": "measure_area"
+              }
+            ]
+          },
+          "tokens": {
+            "in": 240,
+            "out": 24
+          }
+        },
+        {
+          "seq": 6,
+          "tOffsetMs": 725,
+          "type": "tool_call",
+          "tool": "measure_area",
+          "args": {
+            "roomId": "162"
+          }
+        },
+        {
+          "seq": 7,
+          "tOffsetMs": 725,
+          "type": "tool_result",
+          "tool": "measure_area",
+          "result": {
+            "ok": true,
+            "area": 233.240123,
+            "areaUnit": "sf",
+            "areaPx": 75569.8,
+            "roomId": "162",
+            "material": "WD-1",
+            "scale": {
+              "pxPerUnit": 18,
+              "unit": "ft"
+            },
+            "source": "plan-room"
+          }
+        },
+        {
+          "seq": 8,
+          "tOffsetMs": 725,
+          "type": "model_message",
+          "args": {
+            "role": "assistant"
+          },
+          "result": {
+            "content": "Measuring the finished floor area of Patient Room 161 (finish WD-1).",
+            "tool_calls": [
+              {
+                "id": "call_3",
+                "name": "measure_area"
+              }
+            ]
+          },
+          "tokens": {
+            "in": 270,
+            "out": 24
+          }
+        },
+        {
+          "seq": 9,
+          "tOffsetMs": 725,
+          "type": "tool_call",
+          "tool": "measure_area",
+          "args": {
+            "roomId": "161"
+          }
+        },
+        {
+          "seq": 10,
+          "tOffsetMs": 725,
+          "type": "tool_result",
+          "tool": "measure_area",
+          "result": {
+            "ok": true,
+            "area": 298.732438,
+            "areaUnit": "sf",
+            "areaPx": 96789.31,
+            "roomId": "161",
+            "material": "WD-1",
+            "scale": {
+              "pxPerUnit": 18,
+              "unit": "ft"
+            },
+            "source": "plan-room"
+          }
+        },
+        {
+          "seq": 11,
+          "tOffsetMs": 725,
+          "type": "model_message",
+          "args": {
+            "role": "assistant"
+          },
+          "result": {
+            "content": "Measuring the finished floor area of Patient Room 158 (finish WD-1).",
+            "tool_calls": [
+              {
+                "id": "call_4",
+                "name": "measure_area"
+              }
+            ]
+          },
+          "tokens": {
+            "in": 300,
+            "out": 24
+          }
+        },
+        {
+          "seq": 12,
+          "tOffsetMs": 725,
+          "type": "tool_call",
+          "tool": "measure_area",
+          "args": {
+            "roomId": "158"
+          }
+        },
+        {
+          "seq": 13,
+          "tOffsetMs": 725,
+          "type": "tool_result",
+          "tool": "measure_area",
+          "result": {
+            "ok": true,
+            "area": 200.13284,
+            "areaUnit": "sf",
+            "areaPx": 64843.04,
+            "roomId": "158",
+            "material": "WD-1",
+            "scale": {
+              "pxPerUnit": 18,
+              "unit": "ft"
+            },
+            "source": "plan-room"
+          }
+        },
+        {
+          "seq": 14,
+          "tOffsetMs": 725,
+          "type": "model_message",
+          "args": {
+            "role": "assistant"
+          },
+          "result": {
+            "content": "Measuring the finished floor area of Clean Linen 159 (finish VCT-1).",
+            "tool_calls": [
+              {
+                "id": "call_5",
+                "name": "measure_area"
+              }
+            ]
+          },
+          "tokens": {
+            "in": 330,
+            "out": 24
+          }
+        },
+        {
+          "seq": 15,
+          "tOffsetMs": 725,
+          "type": "tool_call",
+          "tool": "measure_area",
+          "args": {
+            "roomId": "159"
+          }
+        },
+        {
+          "seq": 16,
+          "tOffsetMs": 725,
+          "type": "tool_result",
+          "tool": "measure_area",
+          "result": {
+            "ok": true,
+            "area": 103.300802,
+            "areaUnit": "sf",
+            "areaPx": 33469.46,
+            "roomId": "159",
+            "material": "VCT-1",
+            "scale": {
+              "pxPerUnit": 18,
+              "unit": "ft"
+            },
+            "source": "plan-room"
+          }
+        },
+        {
+          "seq": 17,
+          "tOffsetMs": 725,
+          "type": "model_message",
+          "args": {
+            "role": "assistant"
+          },
+          "result": {
+            "content": "Rooms 162, 161 and 158 are all WD-1 — summing their measured areas and recording the WD-1 quantity.",
+            "tool_calls": [
+              {
+                "id": "call_6",
+                "name": "emit_quantity"
+              }
+            ]
+          },
+          "tokens": {
+            "in": 360,
+            "out": 24
+          }
+        },
+        {
+          "seq": 18,
+          "tOffsetMs": 725,
+          "type": "tool_call",
+          "tool": "emit_quantity",
+          "args": {
+            "item": "WD-1",
+            "value": 732.11,
+            "unit": "sf",
+            "confidence": 0.95
+          }
+        },
+        {
+          "seq": 19,
+          "tOffsetMs": 725,
+          "type": "tool_result",
+          "tool": "emit_quantity",
+          "result": {
+            "ok": true,
+            "recorded": {
+              "item": "WD-1",
+              "value": 732.11,
+              "unit": "sf",
+              "confidence": 0.95
+            }
+          }
+        },
+        {
+          "seq": 20,
+          "tOffsetMs": 725,
+          "type": "model_message",
+          "args": {
+            "role": "assistant"
+          },
+          "result": {
+            "content": "Clean Linen 159 is VCT-1 — recording its measured area.",
+            "tool_calls": [
+              {
+                "id": "call_7",
+                "name": "emit_quantity"
+              }
+            ]
+          },
+          "tokens": {
+            "in": 390,
+            "out": 24
+          }
+        },
+        {
+          "seq": 21,
+          "tOffsetMs": 725,
+          "type": "tool_call",
+          "tool": "emit_quantity",
+          "args": {
+            "item": "VCT-1",
+            "value": 103.3,
+            "unit": "sf",
+            "confidence": 0.95
+          }
+        },
+        {
+          "seq": 22,
+          "tOffsetMs": 725,
+          "type": "tool_result",
+          "tool": "emit_quantity",
+          "result": {
+            "ok": true,
+            "recorded": {
+              "item": "VCT-1",
+              "value": 103.3,
+              "unit": "sf",
+              "confidence": 0.95
+            }
+          }
+        },
+        {
+          "seq": 23,
+          "tOffsetMs": 725,
+          "type": "model_message",
+          "args": {
+            "role": "assistant"
+          },
+          "result": {
+            "content": "Division 9 flooring takeoff complete: WD-1 and VCT-1 measured off the calibrated AF101 plan and emitted.",
+            "tool_calls": []
+          },
+          "tokens": {
+            "in": 420,
+            "out": 18
+          }
+        }
+      ],
+      "telemetry": {
+        "steps": 8,
+        "tokensIn": 2520,
+        "tokensOut": 186,
+        "wallMs": 725,
+        "toolCalls": 7,
+        "mcpCalls": 0
+      }
+    }
+  ],
+  "telemetry": {
+    "sdkVersion": "1.0.0",
+    "totalSteps": 8,
+    "totalTokensIn": 2520,
+    "totalTokensOut": 186,
+    "totalWallMs": 725
+  },
+  "integrity": {
+    "hashAlg": "sha256",
+    "bundleHash": "81efb9cedfe14f11ea839b1ee461f884425028d1ca66dcc583cc23399e9c93d2",
+    "signature": "q4gEfmWLqZNlpe2emK81/CiChXYBZPe3u69KdnYvMVWUw+77vygMyCTO8AoukMrOGubP3fkIj4l9V8/mUun8Cg==",
+    "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA3RWwi6vWCEJyGQWxVo8NLLx3JTdrjRsozbYihghmnzo=\n-----END PUBLIC KEY-----\n"
+  }
+}
