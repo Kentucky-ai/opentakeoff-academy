@@ -30,7 +30,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "node examples/my-agent.example.js --selftest && node test/ot-backend.test.mjs && node test/groundtruth.test.mjs",
+    "test": "node examples/my-agent.example.js --selftest && node test/ot-backend.test.mjs && node test/groundtruth.test.mjs && node test/stats.test.mjs && node test/agreement.test.mjs",
     "test:ot-live": "node scripts/ot-parity.mjs",
     "serve:agent": "node examples/my-agent.example.js --serve",
     "serve:env": "node src/ot-env-mcp.js",

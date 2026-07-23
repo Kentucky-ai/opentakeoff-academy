@@ -10,6 +10,8 @@
 // CI can pass real per-suite values. Built-in defaults are placeholders.
 
 import { verifyBundle } from './bundle.js';
+import { clusterBootstrapCI } from './stats.js';
+import { buildHumanCeiling } from './agreement.js';
 
 /** Default per-metric pass thresholds and human (Senior Estimator) baselines.
  *  Override per suite via opts.threshold / opts.baseline (numbers) or
@@ -69,9 +71,35 @@ export function scoreBundle(bundle, tasks, opts = {}) {
   const median = medianOf(scores);
   const mean = meanOf(scores);
 
+  // Item-level records — one per matched quantity, the unit of statistical power.
+  // The cluster is the task (one task = one plan set); quantities on a plan share
+  // its scale/geometry, so they are NOT independent and must be resampled together.
+  const items = [];
+  for (const p of perTask) {
+    if (p.metricType !== metricType) continue;
+    for (const m of (p.detail?.matched || [])) {
+      if (typeof m.apePct === 'number') items.push({ taskId: p.taskId, item: m.item, ape: m.apePct });
+    }
+  }
+  // Calibrated, cluster-robust CI on the item-level median metric. Deterministic
+  // (seeded bootstrap). Returns null-bounds with an honest note at <2 plan sets:
+  // you cannot certify a bounded score off a single plan.
+  const ci = items.length
+    ? clusterBootstrapCI(items, (i) => i.taskId, (i) => i.ape, { statistic: (vals) => medianOf(vals) })
+    : null;
+
   const passed = scored.length > 0 && comparePass(median, cfg.threshold, cfg.direction);
   const beatsBaseline = scored.length > 0 && comparePass(median, cfg.baseline, cfg.direction);
   const tier = earnedTier({ passed, beatsBaseline, opts });
+
+  // Human ceiling — the inter-estimator agreement floor, from multi-rater ground
+  // truth (task.groundTruth.raters). You cannot certify an agent tighter than
+  // expert estimators disagree with each other. Null when the keys are single-rater.
+  const raterQuantities = [];
+  for (const t of tasks) for (const r of (t.groundTruth?.raters || [])) raterQuantities.push(r);
+  const humanCeiling = buildHumanCeiling(raterQuantities);
+  const withinHumanFloor = humanCeiling && metricType === 'ape' && typeof humanCeiling.interEstimatorApeMedian === 'number'
+    ? median <= humanCeiling.interEstimatorApeMedian : null;
 
   const efficiency = rollupEfficiency(bundle);
   const competency = dominantCompetency(tasks);
@@ -107,6 +135,17 @@ export function scoreBundle(bundle, tasks, opts = {}) {
       beatsBaseline,
       tier,
       efficiency,
+      // Calibrated uncertainty: item-level median with a cluster-robust 95% CI.
+      // nItems = scoring units; nClusters = plan sets. ci.lower/upper are null
+      // until >=2 plan sets exist (single-plan scores are point estimates only).
+      ci,
+      nItems: items.length,
+      nClusters: ci ? ci.nClusters : 0,
+      // Human ceiling: the score is only meaningful relative to how much expert
+      // estimators disagree. withinHumanFloor === true means the agent is already
+      // inside human agreement (certifying tighter is not meaningful).
+      humanCeiling,
+      withinHumanFloor,
     },
     flags,
     integrity: {
@@ -317,10 +356,17 @@ export function formatReport(report) {
   lines.push(`  competency:   ${report.competency}`);
   lines.push(`  bundle hash:  ${report.generatedFor.bundleHash?.slice(0, 16)}…  (${report.integrity.valid ? 'verified' : 'INVALID: ' + report.integrity.reason})`);
   lines.push(``);
-  lines.push(`  metric:       ${s.metric} (${s.direction}-is-better) over ${s.n} task(s)`);
+  lines.push(`  metric:       ${s.metric} (${s.direction}-is-better) over ${s.n} task(s) · ${s.nItems ?? 0} item(s) / ${s.nClusters ?? 0} plan set(s)`);
   lines.push(`  median:       ${fmtScore(s.median, s.metric)}   mean: ${fmtScore(s.mean, s.metric)}`);
+  lines.push(`  95% CI:       ${fmtCI(s.ci, s.metric)}`);
   lines.push(`  threshold:    ${fmtScore(s.threshold, s.metric)}   baseline: ${fmtScore(s.baseline, s.metric)}`);
   lines.push(`  result:       ${s.passed ? 'PASS' : 'FAIL'}${s.beatsBaseline ? ' · beats baseline' : ''}  →  tier: ${s.tier || '—'}`);
+  if (s.humanCeiling) {
+    const hc = s.humanCeiling;
+    lines.push(`  human floor:  ${fmtScore(hc.interEstimatorApeMedian, 'ape')} inter-estimator APE (${hc.nRaters} raters, ${hc.nItems} item(s)${hc.krippendorffAlpha != null ? `, α=${hc.krippendorffAlpha}` : ''})`);
+    if (s.withinHumanFloor === true) lines.push(`                ↳ agent is WITHIN human agreement — indistinguishable from an expert estimator`);
+    else if (s.withinHumanFloor === false) lines.push(`                ↳ agent is above the human floor — a real estimator gap remains`);
+  }
   lines.push(``);
   lines.push(`  efficiency:   ${s.efficiency.avgSteps} steps/task · ${s.efficiency.avgWallMs} ms/task · ${s.efficiency.totalTokensIn}+${s.efficiency.totalTokensOut} tok`);
   if (report.flags.length) {
@@ -342,4 +388,12 @@ export function formatReport(report) {
 function fmtScore(x, metric) {
   if (typeof x !== 'number') return '—';
   return metric === 'scope-f1' ? x.toFixed(4) : x.toFixed(2) + '%';
+}
+
+function fmtCI(ci, metric) {
+  if (!ci) return '—';
+  if (ci.lower == null || ci.upper == null) {
+    return `[unbounded — ${ci.note || 'insufficient data'}]`;
+  }
+  return `[${fmtScore(ci.lower, metric)}, ${fmtScore(ci.upper, metric)}]  (${ci.method}, ${ci.nItems} items / ${ci.nClusters} plan sets)`;
 }
