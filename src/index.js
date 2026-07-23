@@ -21,6 +21,10 @@ export {
 export { runSuite, loadTasks, SDK_VERSION, BUILTIN_TOOLS, BUILTIN_TOOL_NAMES } from './runner.js';
 export { scoreBundle, formatReport, METRIC_DEFAULTS } from './score.js';
 export { applyGroundTruth, loadGroundTruthIndex, hasGroundTruth } from './groundtruth.js';
+export {
+  makeRng, seedFromData, mean, median, quantile,
+  percentileBootstrapCI, clusterBootstrapCI, wilsonInterval, passHatK, pairedDiffCI,
+} from './stats.js';
 export { issueCert, renderBadgeSvg, verifyCert } from './cert.js';
 export { connectMcp, mcpToolsToOpenAI } from './mcp.js';
 export { createEnvironment, SvgGeometryBackend, OpenTakeoffBackend } from './environment.js';
