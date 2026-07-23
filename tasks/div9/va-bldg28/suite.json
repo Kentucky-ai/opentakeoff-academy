@@ -1,0 +1,28 @@
+{
+  "suiteManifestVersion": "1.0",
+  "id": "div9-va-bldg28",
+  "dir": "va-bldg28",
+  "track": "div9",
+  "version": "1.0",
+  "title": "Division 9 (Flooring) — VA Building 28 (AF101) Ranked Standard",
+  "mode": "ranked",
+  "keys": "withheld",
+  "description": "The first WEIGHTED, estimator-validated ranked standard for the Division 9 / flooring vertical. One area-takeoff task on the real VA St. Cloud Building 28 First-Floor Finish Plan (sheet AF101) — a federal, publishable planset that also ships in the public OpenTakeoff demo. Answer keys are WITHHELD: the estimator-validated ground truth lives in the gitignored ground-truth/ directory (never committed; see PROTOCOL §5) and is materialized out-of-tree at scoring time via OTA_GROUNDTRUTH_DIR. This is the canonical REFERENCE standard the board anchors against; blind held-out certification uses the fresh private plansets in the div9-ranked pool.",
+  "competencies": ["area-takeoff"],
+  "baseline": {
+    "contestant": "Senior Estimator",
+    "area-takeoff": { "metric": "ape", "score": 2.1 }
+  },
+  "thresholds": {
+    "area-takeoff": { "metric": "ape", "apprentice": 8.0, "journeyman": 6.0, "master": "beats-baseline" }
+  },
+  "groundTruth": {
+    "source": "held-out",
+    "env": "OTA_GROUNDTRUTH_DIR",
+    "committed": false,
+    "note": "Estimator-validated (Michael Edlin, Head of Estimating, SFG — 2026-07-19). Established in OpenTakeoff on sheet AF101; keys live privately in ground-truth/ and are never distributed."
+  },
+  "tasks": [
+    { "taskId": "div9-va-bldg28-area", "file": "va-bldg28-area.task.json", "kind": "area-takeoff", "competency": "area-takeoff", "metric": "ape" }
+  ]
+}

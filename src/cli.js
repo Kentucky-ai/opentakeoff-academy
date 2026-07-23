@@ -15,7 +15,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import {
   runSuite, loadTasks, scoreBundle, formatReport, validateBundle, verifyBundle,
-  issueCert, renderBadgeSvg, verifyCert,
+  issueCert, renderBadgeSvg, verifyCert, applyGroundTruth, hasGroundTruth,
 } from './index.js';
 
 /** Published Academy signing key — the default trust anchor for `verify`. */
@@ -90,6 +90,27 @@ function cmdScore(bundlePath, flags) {
 
   const tasksDir = flags.tasks || './tasks';
   const tasks = loadTasks(tasksDir, flags.track, flags.suite);
+
+  // Inject held-out ground truth for RANKED scoring. Ranked task files carry
+  // `groundTruth: null` — the keys are never committed (PROTOCOL §5). They are
+  // materialized out-of-tree and pointed to by --groundtruth or the
+  // OTA_GROUNDTRUTH_DIR env var (see .github/workflows/score-submission.yml).
+  // Practice tasks keep their embedded keys and are left untouched.
+  const gtDir = flags.groundtruth || process.env.OTA_GROUNDTRUTH_DIR;
+  const gt = applyGroundTruth(tasks, gtDir, { log: (m) => process.stderr.write(`[score] ${m}\n`) });
+  if (gt.applied.length) process.stderr.write(`[score] injected held-out ground truth for ${gt.applied.length} task(s): ${gt.applied.join(', ')}\n`);
+
+  // Fail CLOSED: a ranked bundle scored against tasks with no available key would
+  // silently produce an empty (0-task) result and read as a non-pass. Say why
+  // instead of scoring a phantom run.
+  const isRanked = bundle.suite?.mode === 'ranked';
+  const scoredTaskIds = new Set(bundle.tasks.map((t) => t.taskId));
+  const unkeyed = tasks.filter((t) => scoredTaskIds.has(t.taskId) && !hasGroundTruth(t)).map((t) => t.taskId);
+  if (isRanked && unkeyed.length && !flags['report-only']) {
+    fail(`ranked scoring requires ground truth for every scored task; missing key(s) for: ${unkeyed.join(', ')}. `
+      + `Set --groundtruth <dir> or OTA_GROUNDTRUTH_DIR to the held-out keys (they are never committed).`);
+    process.exit(1);
+  }
 
   // If the suite ships a suite.json with published thresholds/baselines, use
   // them for the dominant competency (canonical bar = the journeyman value).
@@ -308,7 +329,8 @@ Usage:
   opentakeoff-academy run   --track <t> --suite <practice|ranked|id> --endpoint <url> [--model <m>] [--mcp <file>] --out <bundle.json>
                             [--tasks <dir>] [--name <h>] [--model-id <id>] [--adapter <a>] [--contact <url>] [--key <pem>]
   opentakeoff-academy score <bundle.json> --track <t> --suite <id> [--tasks <dir>] [--out <report.json>]
-                            [--threshold <n>] [--baseline <n>] [--report-only]
+                            [--threshold <n>] [--baseline <n>] [--groundtruth <dir>] [--report-only]
+                            (ranked keys: --groundtruth <dir> or env OTA_GROUNDTRUTH_DIR; never committed)
   opentakeoff-academy cert  <report.json> --attestation <self_reported|certified> --out <cert.json>
                             [--academy-key <pem>] [--now <iso>] [--serial <n>] [--verify-url <url>] [--model-id <id>]
   opentakeoff-academy validate <bundle.json>

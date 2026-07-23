@@ -131,9 +131,18 @@ jobs:
           const competency = report.competency
             || (manifest && Array.isArray(manifest.competencies) && manifest.competencies.length === 1 ? manifest.competencies[0] : undefined)
             || 'general-takeoff';
-          const score = num(report.medianApe, report.score && report.score.medianApe, report.score && report.score.median, report.median, typeof report.score === 'number' ? report.score : undefined);
-          const nRanked = num(report.nRanked, report.n, bundle.tasks.length);
-          const tier = report.tier || 'apprentice';
+          // Read the scorer's actual report shape (src/score.js): the suite
+          // rollups live under report.suite (median/tier/n). Older/flat field
+          // names are kept as fallbacks so a schema tweak degrades gracefully.
+          const suite = report.suite || {};
+          const score = num(suite.median, report.medianApe, report.score && report.score.medianApe, report.score && report.score.median, report.median);
+          const nRanked = num(suite.n, report.nRanked, report.n, bundle.tasks.length);
+          const tier = suite.tier || report.tier || 'apprentice';
+          // Refuse to upsert a ranked row we could not actually score.
+          if (typeof score !== 'number') {
+            console.error('Ranked bundle ' + rel + ' produced no numeric score (no ground truth matched?). Failing closed.');
+            process.exit(1);
+          }
           const attestation = (bundle.attestation && bundle.attestation.mode === 'proctored') ? 'certified' : 'self_reported';
 
           const rows = lb.rows || (lb.rows = []);
