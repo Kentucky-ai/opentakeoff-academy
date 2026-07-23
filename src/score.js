@@ -11,6 +11,7 @@
 
 import { verifyBundle } from './bundle.js';
 import { clusterBootstrapCI } from './stats.js';
+import { buildHumanCeiling } from './agreement.js';
 
 /** Default per-metric pass thresholds and human (Senior Estimator) baselines.
  *  Override per suite via opts.threshold / opts.baseline (numbers) or
@@ -91,6 +92,15 @@ export function scoreBundle(bundle, tasks, opts = {}) {
   const beatsBaseline = scored.length > 0 && comparePass(median, cfg.baseline, cfg.direction);
   const tier = earnedTier({ passed, beatsBaseline, opts });
 
+  // Human ceiling — the inter-estimator agreement floor, from multi-rater ground
+  // truth (task.groundTruth.raters). You cannot certify an agent tighter than
+  // expert estimators disagree with each other. Null when the keys are single-rater.
+  const raterQuantities = [];
+  for (const t of tasks) for (const r of (t.groundTruth?.raters || [])) raterQuantities.push(r);
+  const humanCeiling = buildHumanCeiling(raterQuantities);
+  const withinHumanFloor = humanCeiling && metricType === 'ape' && typeof humanCeiling.interEstimatorApeMedian === 'number'
+    ? median <= humanCeiling.interEstimatorApeMedian : null;
+
   const efficiency = rollupEfficiency(bundle);
   const competency = dominantCompetency(tasks);
 
@@ -131,6 +141,11 @@ export function scoreBundle(bundle, tasks, opts = {}) {
       ci,
       nItems: items.length,
       nClusters: ci ? ci.nClusters : 0,
+      // Human ceiling: the score is only meaningful relative to how much expert
+      // estimators disagree. withinHumanFloor === true means the agent is already
+      // inside human agreement (certifying tighter is not meaningful).
+      humanCeiling,
+      withinHumanFloor,
     },
     flags,
     integrity: {
@@ -346,6 +361,12 @@ export function formatReport(report) {
   lines.push(`  95% CI:       ${fmtCI(s.ci, s.metric)}`);
   lines.push(`  threshold:    ${fmtScore(s.threshold, s.metric)}   baseline: ${fmtScore(s.baseline, s.metric)}`);
   lines.push(`  result:       ${s.passed ? 'PASS' : 'FAIL'}${s.beatsBaseline ? ' · beats baseline' : ''}  →  tier: ${s.tier || '—'}`);
+  if (s.humanCeiling) {
+    const hc = s.humanCeiling;
+    lines.push(`  human floor:  ${fmtScore(hc.interEstimatorApeMedian, 'ape')} inter-estimator APE (${hc.nRaters} raters, ${hc.nItems} item(s)${hc.krippendorffAlpha != null ? `, α=${hc.krippendorffAlpha}` : ''})`);
+    if (s.withinHumanFloor === true) lines.push(`                ↳ agent is WITHIN human agreement — indistinguishable from an expert estimator`);
+    else if (s.withinHumanFloor === false) lines.push(`                ↳ agent is above the human floor — a real estimator gap remains`);
+  }
   lines.push(``);
   lines.push(`  efficiency:   ${s.efficiency.avgSteps} steps/task · ${s.efficiency.avgWallMs} ms/task · ${s.efficiency.totalTokensIn}+${s.efficiency.totalTokensOut} tok`);
   if (report.flags.length) {

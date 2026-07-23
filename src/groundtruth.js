@@ -27,6 +27,7 @@
 
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { consensusValue } from './agreement.js';
 
 const KEY_FILE = /\.groundtruth\.json$/i;
 
@@ -52,15 +53,25 @@ export function loadGroundTruthIndex(dir) {
   return index;
 }
 
-/** Lift only the scorer-relevant fields out of a held-out key file. */
+/** Lift only the scorer-relevant fields out of a held-out key file.
+ *  Supports MULTI-RATER keys: a quantity may carry `raters: [{by, value}]`; the
+ *  scored `value` is the estimator consensus (median, or an explicit `value` if
+ *  given), and the per-rater spread is kept for the human-ceiling computation. */
 function toGroundTruth(key) {
   const gt = {};
   if (Array.isArray(key.quantities)) {
+    const raters = [];
     gt.quantities = key.quantities.map((q) => {
-      const out = { item: q.item, value: q.value, unit: q.unit };
+      const raterVals = Array.isArray(q.raters) ? q.raters.map((r) => r.value).filter((v) => typeof v === 'number' && Number.isFinite(v)) : null;
+      const value = (typeof q.value === 'number') ? q.value : (raterVals && raterVals.length ? consensusValue(raterVals) : q.value);
+      if (raterVals && raterVals.length >= 2) {
+        raters.push({ item: q.item, unit: q.unit, values: raterVals, by: q.raters.map((r) => r.by).filter(Boolean) });
+      }
+      const out = { item: q.item, value, unit: q.unit };
       if (q.roomId) out.roomId = q.roomId;
       return out;
     });
+    if (raters.length) gt.raters = raters;
   }
   if (Array.isArray(key.scopeItems)) gt.scopeItems = key.scopeItems.slice();
   const by = key.validatedBy || key.provenance?.validatedBy;

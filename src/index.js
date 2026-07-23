@@ -25,6 +25,7 @@ export {
   makeRng, seedFromData, mean, median, quantile,
   percentileBootstrapCI, clusterBootstrapCI, wilsonInterval, passHatK, pairedDiffCI,
 } from './stats.js';
+export { buildHumanCeiling, krippendorffAlphaInterval, iccConsistency, consensusValue } from './agreement.js';
 export { issueCert, renderBadgeSvg, verifyCert } from './cert.js';
 export { connectMcp, mcpToolsToOpenAI } from './mcp.js';
 export { createEnvironment, SvgGeometryBackend, OpenTakeoffBackend } from './environment.js';
