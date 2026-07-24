@@ -1,0 +1,11 @@
+# Default: any PR to any file needs a review from a maintainer.
+* @kalicat7 @QuisutDeus1
+
+# The parts that make the leaderboard trustworthy get the same reviewers,
+# called out explicitly so it's obvious these are the high-scrutiny paths.
+/.github/workflows/ @kalicat7 @QuisutDeus1
+/schema/ @kalicat7 @QuisutDeus1
+/src/ @kalicat7 @QuisutDeus1
+/submissions/ @kalicat7 @QuisutDeus1
+/site/leaderboard.json @kalicat7 @QuisutDeus1
+PROTOCOL.md @kalicat7 @QuisutDeus1
