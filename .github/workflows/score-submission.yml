@@ -44,6 +44,42 @@ jobs:
         else
           echo "No OTA_GROUNDTRUTH_TARBALL_B64 secret; ranked bundles will fail closed."
         fi
+    - name: Enforce submission rules (one bundle, additions only)
+      env:
+        BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      run: |-
+        # See CONTRIBUTING.md: a submission PR may only ADD exactly one new
+        # *.bundle.json under submissions/ — no modifying/deleting an existing
+        # entry, and no other files smuggled in under submissions/. This is a
+        # structural gate that runs before any scoring, so a rule-breaking PR
+        # never even reaches the scorer.
+        git fetch --no-tags origin "$BASE_SHA" 2>/dev/null || true
+        TOUCHED=$(git diff --name-status "$BASE_SHA" "$HEAD_SHA" -- 'submissions/**' || true)
+        if [ -z "$TOUCHED" ]; then
+          echo "No files touched under submissions/ — nothing to enforce."
+          exit 0
+        fi
+        echo "Touched under submissions/:"
+        echo "$TOUCHED"
+        NON_ADDED=$(echo "$TOUCHED" | { grep -vE '^A' || true; })
+        if [ -n "$NON_ADDED" ]; then
+          echo "::error::Submission PRs may only ADD new files under submissions/ — modifying, renaming, or deleting an existing entry is not allowed (see CONTRIBUTING.md)."
+          echo "$NON_ADDED"
+          exit 1
+        fi
+        ADDED_BUNDLES=$(echo "$TOUCHED" | { grep -E '\.bundle\.json$' || true; })
+        ADDED_OTHER=$(echo "$TOUCHED" | { grep -vE '\.bundle\.json$' || true; })
+        if [ -n "$ADDED_OTHER" ]; then
+          echo "::error::Only *.bundle.json files may be added under submissions/ (see CONTRIBUTING.md)."
+          echo "$ADDED_OTHER"
+          exit 1
+        fi
+        BUNDLE_COUNT=$(echo "$ADDED_BUNDLES" | grep -c . || true)
+        if [ "$BUNDLE_COUNT" -gt 1 ]; then
+          echo "::error::One bundle per pull request (see CONTRIBUTING.md). This PR adds $BUNDLE_COUNT."
+          exit 1
+        fi
     - name: Validate + score changed submissions
       env:
         BASE_SHA: ${{ github.event.pull_request.base.sha }}
