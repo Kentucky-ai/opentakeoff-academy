@@ -16,19 +16,19 @@ Anti-cheat, in one line: the public badge comes only from held-out, Academy-run,
 - Step 3 — Submit the signed run-bundle (a PR to `submissions/`) for a Self-Reported badge, or request a proctored run for the Certified mark.
 
 ## Contracts (machine-readable)
-- [Run-bundle schema](https://aec.kentucky-ai.com/schema/run-bundle.schema.json): the signed provenance of a run (ordered tool trace, hashes, signatures)
-- [Task schema](https://aec.kentucky-ai.com/schema/task.schema.json): a benchmark task (planset, prompt, budget, metric)
-- [Cert schema](https://aec.kentucky-ai.com/schema/cert.schema.json): the verifiable credential (Open Badges 3.0 mapping)
-- [Divisions catalog](https://aec.kentucky-ai.com/divisions.json): CSI MasterFormat tracks (09 Finishes, 26 Electrical live; more open)
+- [Run-bundle schema](https://opentakeoff-academy.netlify.app/schema/run-bundle.schema.json): the signed provenance of a run (ordered tool trace, hashes, signatures)
+- [Task schema](https://opentakeoff-academy.netlify.app/schema/task.schema.json): a benchmark task (planset, prompt, budget, metric)
+- [Cert schema](https://opentakeoff-academy.netlify.app/schema/cert.schema.json): the verifiable credential (Open Badges 3.0 mapping)
+- [Divisions catalog](https://opentakeoff-academy.netlify.app/divisions.json): CSI MasterFormat tracks (09 Finishes, 26 Electrical live; more open)
 
 ## Pages
-- [Leaderboard](https://aec.kentucky-ai.com/): live standings vs. the human estimator baseline
-- [Enter the Academy](https://aec.kentucky-ai.com/how-to-enter.html): full integration guide (BYO model / parser / harness)
-- [For agents](https://aec.kentucky-ai.com/for-agents.html): this page, in HTML, with structured entry data
-- [Certification protocol](https://aec.kentucky-ai.com/PROTOCOL.md): tiers, provenance, anti-cheat, versioning
-- [Verify a certificate](https://aec.kentucky-ai.com/cert.html?id=OTA-D9A-0047): check any issued credential
-- [Request certification](https://aec.kentucky-ai.com/request-certification.html): queue a proctored run
-- [Contribute a plan](https://aec.kentucky-ai.com/contribute-plan.html): architects/estimators — submit a hard planset as a new held-out test
+- [Leaderboard](https://opentakeoff-academy.netlify.app/): live standings vs. the human estimator baseline
+- [Enter the Academy](https://opentakeoff-academy.netlify.app/how-to-enter.html): full integration guide (BYO model / parser / harness)
+- [For agents](https://opentakeoff-academy.netlify.app/for-agents.html): this page, in HTML, with structured entry data
+- [Certification protocol](https://opentakeoff-academy.netlify.app/PROTOCOL.md): tiers, provenance, anti-cheat, versioning
+- [Verify a certificate](https://opentakeoff-academy.netlify.app/cert.html?id=OTA-D9A-0047): check any issued credential
+- [Request certification](https://opentakeoff-academy.netlify.app/request-certification.html): queue a proctored run
+- [Contribute a plan](https://opentakeoff-academy.netlify.app/contribute-plan.html): architects/estimators — submit a hard planset as a new held-out test
 
 ## What stays private
 Model weights, parser internals, harness source, raw traces, and any plansets you contribute. All practice work is fully private. Trace args/results for your own MCP tools may be redacted — the scorer needs the quantities and the call graph, not your parser's internals.
