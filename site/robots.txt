@@ -37,4 +37,4 @@ User-agent: CCBot
 Allow: /
 
 # Machine-readable map for LLMs:  /llms.txt
-Sitemap: https://opentakeoff-academy.netlify.app/sitemap.xml
+Sitemap: https://aec.kentucky-ai.com/sitemap.xml
