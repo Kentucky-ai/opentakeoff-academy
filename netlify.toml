@@ -12,6 +12,20 @@
 [build]
   publish = "site"
 
+# One canonical host. Netlify is documented to 301 the .netlify.app subdomain to
+# the primary custom domain automatically, but it was still answering 200 on both
+# hosts after the domain was promoted — so declare it instead of trusting it.
+# This matters more here than on the app: every issued certificate hard-codes
+# aec.kentucky-ai.com in a signed file, so that host is the one of record and the
+# netlify.app copy must not compete with it in an index.
+# force = true is required, or the rule loses to the static file at the same path.
+# Keep this FIRST so it runs before the cert/schema rules below.
+[[redirects]]
+  from = "https://opentakeoff-academy.netlify.app/*"
+  to = "https://aec.kentucky-ai.com/:splat"
+  status = 301
+  force = true
+
 # Pretty, shareable cert URLs: /cert/OTA-D9A-0047 → /cert.html?id=OTA-D9A-0047
 # status = 200 is a rewrite (proxy): the address bar keeps /cert/:id while
 # cert.html reads the id from its ?id= query param.
