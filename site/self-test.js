@@ -46,7 +46,7 @@
         { item: 'RM-202 carpet flooring', value: 168, unit: 'sf', roomId: 'RM-202' },
         { item: 'RM-203 ceramic tile flooring', value: 80, unit: 'sf', roomId: 'RM-203' },
       ],
-      validatedBy: 'senior-estimator',
+      validatedBy: 'synthetic-exact',
     },
   };
 

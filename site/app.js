@@ -88,38 +88,26 @@
     "scale-calibration": { metric: "scale-error", apprentice: 5.0, journeyman: 3.5, master: "beats-baseline", unit: "% error" },
     "scope-identification": { metric: "scope-f1", apprentice: 6.0, journeyman: 4.0, master: "beats-baseline", unit: "% miss" }
   };
+  /* The fallback must never assert anything the real board doesn't. It carries
+     the one real scored run and nothing else — no invented agents, no invented
+     human baseline. A benchmark whose whole claim is "our numbers are
+     checkable" cannot ship illustrative scores that look like results. */
   var FALLBACK = {
     schemaVersion: "1.0",
-    updatedAt: "2026-07-19T00:00:00Z",
-    windowLabel: "2026-07-19",
+    updatedAt: "2026-08-04T03:00:00Z",
+    windowLabel: "2026-08-04",
+    disclaimer: "Offline copy — the live board is leaderboard.json. One real run; no human baseline has been measured yet.",
     suites: {
-      div9: { track: "div9", title: "Division 9 — Flooring", suiteVersion: "1.0", baseline: 2.1,
+      div9: { track: "div9", title: "Division 9 — Flooring", suiteVersion: "1.0", baseline: null,
         competencies: ["area-takeoff", "fixture-count", "scale-calibration", "scope-identification"], thresholds: THRESH },
-      generalist: { track: "generalist", title: "Generalist Takeoff", suiteVersion: "1.0", baseline: 2.2,
+      generalist: { track: "generalist", title: "Generalist Takeoff", suiteVersion: "1.0", baseline: null,
         competencies: ["area-takeoff", "fixture-count", "scale-calibration", "scope-identification"], thresholds: THRESH }
     },
     rows: [
-      { rank: 1, modelId: "reference/agent-a", contestant: "Reference Agent A", track: "generalist",
-        competency: "fixture-count", tier: "master", medianApe: 1.4, nRanked: 48,
-        attestation: "certified", movement: "up", certId: "OTA-FC-0031", url: "https://example.com/agents/reference-a" },
-      { rank: 2, modelId: "human/senior-estimator", contestant: "THE ESTIMATOR", track: "div9",
-        competency: "area-takeoff", tier: "bar", medianApe: 2.1, nRanked: 60,
-        attestation: "certified", movement: "flat" },
-      { rank: 3, modelId: "reference/agent-c", contestant: "Reference Agent C", track: "generalist",
-        competency: "fixture-count", tier: "journeyman", medianApe: 2.6, nRanked: 36,
-        attestation: "certified", movement: "up", certId: "OTA-FC-0039", url: "https://example.com/agents/reference-c" },
-      { rank: 4, modelId: "reference/agent-d", contestant: "Reference Agent D", track: "div9",
-        competency: "scale-calibration", tier: "journeyman", medianApe: 3.2, nRanked: 24,
-        attestation: "certified", movement: "flat", certId: "OTA-SC-0052", url: "https://example.com/agents/reference-d" },
-      { rank: 5, modelId: "reference/agent-a", contestant: "Reference Agent A", track: "generalist",
-        competency: "scope-identification", tier: "journeyman", medianApe: 3.8, nRanked: 40,
-        attestation: "certified", movement: "up", certId: "OTA-SI-0044", url: "https://example.com/agents/reference-a" },
-      { rank: 6, modelId: "reference/agent-d", contestant: "Reference Agent D", track: "div9",
-        competency: "area-takeoff", tier: "journeyman", medianApe: 4.6, nRanked: 24,
-        attestation: "certified", movement: "flat", certId: "OTA-D9A-0047", url: "https://example.com/agents/reference-d" },
-      { rank: 7, modelId: "reference/agent-b", contestant: "Reference Agent B", track: "generalist",
-        competency: "scope-identification", tier: "apprentice", medianApe: 4.9, nRanked: 18,
-        attestation: "self_reported", movement: "new", url: "https://example.com/agents/reference-b" }
+      { rank: 1, modelId: "reference/opentakeoff-oneclick", contestant: "Reference · OpenTakeoff One-Click",
+        track: "div9", competency: "area-takeoff", tier: "journeyman", medianApe: 0.84, nRanked: 1,
+        attestation: "self_reported", movement: "new",
+        url: "https://github.com/Kentucky-ai/opentakeoff-academy" }
     ]
   };
 
@@ -467,8 +455,11 @@ attLine +
       var contestants = {};
       ranked.forEach(function (r) { contestants[r.contestant || r.modelId] = 1; });
       var selfCt = ranked.filter(function (r) { return r.attestation === "self_reported"; }).length;
+      // Don't claim a trainer or a baseline that hasn't been measured.
+      var hasBar = rows.some(function (r) { return r.tier === "bar"; });
+      var baseText = s.baseline != null ? "BASELINE " + pct(s.baseline) : "HUMAN BASELINE NOT YET MEASURED";
       rfoot.innerHTML = '<span>' + certifiedTickets.length + ' CERTIFIED &middot; ' + provisional.length + ' PROVISIONAL &middot; <span class="hot">' + selfCt + ' SELF-REPORTED</span></span>' +
-        '<span>' + Object.keys(contestants).length + ' CONTESTANTS + 1 TRAINER &middot; BASELINE ' + pct(s.baseline) + '</span>';
+        '<span>' + Object.keys(contestants).length + (Object.keys(contestants).length === 1 ? ' CONTESTANT' : ' CONTESTANTS') + (hasBar ? " + 1 TRAINER" : "") + ' &middot; ' + baseText + '</span>';
     }
 
     /* ---- weekly review (derived from movement) ---- */
@@ -518,7 +509,9 @@ attLine +
         provItem("Protocol", "Held-out ranked plansets · weekly recertification") +
         provItem("Metric", "Per-competency error vs. ground truth (lower is better)") +
         provItem("Budget", "Wall-clock + token cap per planset") +
-        provItem("Baseline", "Human Senior Estimator · APE " + pct(s.baseline)) +
+        provItem("Baseline", s.baseline != null
+          ? "Human Senior Estimator · APE " + pct(s.baseline)
+          : "Human Senior Estimator · not yet measured (needs ≥2 raters)") +
         provItem("Build", "Suite " + suiteTitleOf(s, "div9") + " v" + suiteVersionOf(s) + " · updated " + fmtDate(data.updatedAt));
     }
     var stampEls = document.querySelectorAll("[data-updated]");

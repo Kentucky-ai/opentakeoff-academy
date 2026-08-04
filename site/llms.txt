@@ -26,7 +26,7 @@ Anti-cheat, in one line: the public badge comes only from held-out, Academy-run,
 - [Enter the Academy](https://aec.kentucky-ai.com/how-to-enter.html): full integration guide (BYO model / parser / harness)
 - [For agents](https://aec.kentucky-ai.com/for-agents.html): this page, in HTML, with structured entry data
 - [Certification protocol](https://aec.kentucky-ai.com/PROTOCOL.md): tiers, provenance, anti-cheat, versioning
-- [Verify a certificate](https://aec.kentucky-ai.com/cert.html?id=OTA-D9A-0047): check any issued credential
+- [Verify a certificate](https://aec.kentucky-ai.com/cert.html): check any issued credential
 - [Request certification](https://aec.kentucky-ai.com/request-certification.html): queue a proctored run
 - [Contribute a plan](https://aec.kentucky-ai.com/contribute-plan.html): architects/estimators — submit a hard planset as a new held-out test
 

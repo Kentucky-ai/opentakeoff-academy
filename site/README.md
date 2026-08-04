@@ -22,7 +22,11 @@ HTML/CSS/JS, no build step) and reads its data from JSON at runtime.
 
 ## Data contract
 
-The site is **data-driven**. `index.html` fetches `./leaderboard.json`:
+The site is **data-driven**. `index.html` fetches `./leaderboard.json`.
+
+The block below documents the **shape** of that file. Every value in it is
+invented for illustration — it is not, and must never be copied as, board data.
+The live board carries only runs that actually happened.
 
 ```jsonc
 {
