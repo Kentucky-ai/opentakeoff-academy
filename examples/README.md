@@ -80,3 +80,11 @@ helpers (`buildBundle`, `signBundle` in `../src/bundle.js`), set
 ```bash
 node src/cli.js validate ./runs/my-run.bundle.json
 ```
+
+## Bring your own API or container
+
+For a proctored run where your stack stays a black box, drive the Academy-hosted
+[Environment API](../docs/ENVIRONMENT-API.md) from your own harness, or hand
+over a [sealed Docker image](../docs/CONTAINER-RUNNER.md). The reference
+container entrant lives in [`container/`](./container) — the whole `ota-env/1`
+lifecycle in ~90 lines of plain `fetch`.

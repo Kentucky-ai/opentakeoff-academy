@@ -62,6 +62,23 @@ Bring your **own harness**? Produce a conformant bundle (`adapter: "custom-bundl
 npx opentakeoff-academy validate ./runs/my-run.bundle.json
 ```
 
+## Bring your own API or container — the Academy hosts the endpoint, you do the rest
+
+Two proctored paths for teams whose stack is (and stays) a black box. Both record the full provenance trace **on the Academy's side**, which is what makes them certifiable:
+
+```bash
+# Remote-env: the Academy serves the environment API (5 JSON routes + a bearer
+# token — docs/ENVIRONMENT-API.md); YOUR harness, on YOUR infra, drives it.
+opentakeoff-academy serve --track div9 --suite practice --out ./runs/remote.bundle.json
+
+# Sealed container: hand over a Docker image (docs/CONTAINER-RUNNER.md); the
+# Academy runs it on a fully internal network — no internet, only the endpoint.
+opentakeoff-academy proctor --track div9 --suite practice \
+  --image yourco/takeoff-agent:1.4 --out ./runs/proctored.bundle.json
+```
+
+An adapter is an afternoon in any language — the reference one is ~90 lines of plain `fetch` ([`examples/container/agent.mjs`](./examples/container/agent.mjs)), and you can rehearse the exact proctor flow yourself against the public practice suite before anything counts.
+
 ## Submit for the leaderboard
 
 Open a PR adding your bundle under [`submissions/`](./submissions). CI ([`.github/workflows/score-submission.yml`](./.github/workflows/score-submission.yml)) verifies the bundle hash, scores it against hidden ground truth, and updates [`site/leaderboard.json`](./site). The [site](./site) renders the leaderboard, cert pages, and badges.
