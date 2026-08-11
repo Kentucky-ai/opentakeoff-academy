@@ -12,11 +12,15 @@
 //   opentakeoff-academy badge <cert.json> --out <badge.svg>
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   runSuite, loadTasks, scoreBundle, formatReport, validateBundle, verifyBundle,
   issueCert, renderBadgeSvg, verifyCert, applyGroundTruth, hasGroundTruth,
 } from './index.js';
+import { createSession } from './env-session.js';
+import { serveSession } from './env-serve.js';
+import { ensureDocker, imageFingerprint, runSealedSuite } from './container.js';
 
 /** Published Academy signing key — the default trust anchor for `verify`. */
 const ACADEMY_KEY_URL = 'https://aec.kentucky-ai.com/academy-public-key.pem';
@@ -30,6 +34,8 @@ async function main() {
 
   switch (cmd) {
     case 'run':      return cmdRun(flags);
+    case 'serve':    return cmdServe(flags);
+    case 'proctor':  return cmdProctor(flags);
     case 'score':    return cmdScore(positionals[0], flags);
     case 'cert':     return cmdCert(positionals[0], flags);
     case 'validate': return cmdValidate(positionals[0]);
@@ -75,6 +81,123 @@ async function cmdRun(flags) {
   process.stdout.write(`run complete: ${bundle.tasks.length} task(s) → ${flags.out}\n`);
   process.stdout.write(`  runId ${bundle.runId}\n  bundleHash ${bundle.integrity.bundleHash}\n  schema-valid: ${v.valid}\n`);
   if (!v.valid) { printAjvErrors(v.errors); process.exit(1); }
+}
+
+// --- serve ------------------------------------------------------------------
+// Host the environment API for a REMOTE-ENV entrant: their harness, wherever it
+// runs, drives our tools over HTTP while we record the trace. Blocks until the
+// suite completes (or Ctrl-C → finalize what happened).
+async function cmdServe(flags) {
+  requireFlags(flags, ['track', 'suite', 'out']);
+  const { session } = buildSessionFromFlags(flags, flags.adapter === 'container' ? 'container' : 'remote-env', pruneEmpty({ endpointFingerprint: flags['endpoint-fingerprint'] }));
+
+  const handle = await serveSession({
+    session,
+    port: flags.port ? Number(flags.port) : 0,
+    host: flags.host || '127.0.0.1',
+    token: flags.token,
+    log: (m) => process.stderr.write(`[serve] ${m}\n`),
+    onComplete: (bundle) => {
+      writeJson(flags.out, bundle);
+      const v = validateBundle(bundle);
+      process.stdout.write(`run complete: ${bundle.tasks.length} task(s) → ${flags.out}\n  runId ${bundle.runId}\n  bundleHash ${bundle.integrity.bundleHash}\n  schema-valid: ${v.valid}\n`);
+    },
+  });
+
+  process.stdout.write(`environment API: ${handle.url}/v1\n`);
+  process.stdout.write(`session token:   ${handle.token}\n`);
+  process.stdout.write(`hand both to the entrant; they drive, we record. Ctrl-C finalizes a partial run.\n`);
+
+  await new Promise((resolve) => {
+    const finish = () => resolve();
+    const iv = setInterval(() => { if (session.complete) { clearInterval(iv); finish(); } }, 500);
+    process.once('SIGINT', () => { clearInterval(iv); handle.complete(); finish(); });
+  });
+  await handle.close();
+}
+
+// --- proctor ----------------------------------------------------------------
+// Run a sealed entrant image against the environment API on a fully internal
+// Docker network (academy sidecar + entrant, nothing else reachable). The
+// image sees ONLY the Academy endpoint; the sidecar records everything and the
+// bundle is bound to the exact image ID.
+async function cmdProctor(flags) {
+  requireFlags(flags, ['track', 'suite', 'image', 'out']);
+  await ensureDocker();
+  const { fingerprint, imageId } = await imageFingerprint(flags.image);
+  const log = (m) => process.stderr.write(`[proctor] ${m}\n`);
+  log(`image ${flags.image} → ${imageId.slice(0, 19)}… (fingerprint ${fingerprint.slice(0, 12)}…)`);
+
+  const repoDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+  const tasks = loadTasks(flags.tasks || './tasks', flags.track, flags.suite);
+  const suiteWallMs = tasks.reduce((a, t) => a + (t.budget?.maxWallMs ?? 180000), 0) + 60000;
+
+  const serveArgs = [];
+  for (const f of ['name', 'model-id', 'harness', 'contact', 'engine', 'attestation']) {
+    if (flags[f]) serveArgs.push(`--${f}`, String(flags[f]));
+  }
+
+  const outcome = await runSealedSuite({
+    image: flags.image,
+    repoDir,
+    outDir: dirname(resolve(flags.out)) || '.',
+    track: flags.track,
+    suite: flags.suite,
+    fingerprint,
+    maxWallMs: numFlag(flags['max-wall-ms']) || suiteWallMs,
+    limits: { memory: flags.memory || '4g', cpus: flags.cpus || '2', pids: numFlag(flags.pids) || 512 },
+    serveArgs,
+    log,
+  });
+
+  process.stdout.write(`proctored run: ${outcome.reason}${outcome.killed ? ' (entrant killed)' : ''} · entrant exit ${outcome.exitCode ?? '—'}\n`);
+  if (!outcome.bundleFile) {
+    fail('no bundle was produced — the entrant never reached the environment (see the sidecar/entrant logs above)');
+    process.exit(1);
+  }
+
+  const bundle = readJson(outcome.bundleFile);
+  writeJson(flags.out, bundle);
+  const v = validateBundle(bundle);
+  process.stdout.write(`  ${bundle.tasks.length} task(s) → ${flags.out}\n  runId ${bundle.runId}\n  bundleHash ${bundle.integrity.bundleHash}\n  imageFingerprint ${fingerprint}\n  schema-valid: ${v.valid}\n`);
+  if (!v.valid) {
+    printAjvErrors(v.errors);
+    if (bundle.tasks.length === 0) fail('the entrant connected but finished no task — nothing to score');
+    process.exit(1);
+  }
+}
+
+/** Shared session construction for serve/proctor. */
+function buildSessionFromFlags(flags, adapter, proctorExtra = {}) {
+  const tasksDir = flags.tasks || './tasks';
+  const tasks = loadTasks(tasksDir, flags.track, flags.suite);
+  const academyKeyPem = flags['academy-key'] ? readFileSync(flags['academy-key'], 'utf8') : undefined;
+  const session = createSession({
+    track: flags.track,
+    suite: flags.suite,
+    tasks,
+    contestant: {
+      name: flags.name,
+      modelId: flags['model-id'],
+      harness: flags.harness,
+      adapter,
+      contact: flags.contact,
+    },
+    attestationMode: flags.attestation === 'self_reported' ? 'self_reported' : 'proctored',
+    proctor: pruneEmpty(proctorExtra),
+    engine: flags.engine,
+    mcpDir: flags['mcp-dir'],
+    now: nowIso(flags),
+    academyKeyPem,
+    log: (m) => process.stderr.write(`[session] ${m}\n`),
+  });
+  return { session, tasks };
+}
+
+function pruneEmpty(obj) {
+  const out = {};
+  for (const [k, v] of Object.entries(obj)) if (v !== undefined && v !== null) out[k] = v;
+  return out;
 }
 
 // --- score ------------------------------------------------------------------
@@ -328,6 +451,12 @@ function usage(code = 0) {
 Usage:
   opentakeoff-academy run   --track <t> --suite <practice|ranked|id> --endpoint <url> [--model <m>] [--mcp <file>] --out <bundle.json>
                             [--tasks <dir>] [--name <h>] [--model-id <id>] [--adapter <a>] [--contact <url>] [--key <pem>]
+  opentakeoff-academy serve --track <t> --suite <id> --out <bundle.json> [--port <n>] [--host <ip>] [--token <t>]
+                            [--academy-key <pem>] [--attestation self_reported] [--engine opentakeoff]
+                            (host the environment API; the entrant's harness drives, the Academy records — docs/ENVIRONMENT-API.md)
+  opentakeoff-academy proctor --track <t> --suite <id> --image <docker-image> --out <bundle.json>
+                            [--memory 4g] [--cpus 2] [--pids 512] [--max-wall-ms <n>] [--academy-key <pem>]
+                            (run a sealed entrant container on a no-egress network — docs/CONTAINER-RUNNER.md)
   opentakeoff-academy score <bundle.json> --track <t> --suite <id> [--tasks <dir>] [--out <report.json>]
                             [--threshold <n>] [--baseline <n>] [--groundtruth <dir>] [--report-only]
                             (ranked keys: --groundtruth <dir> or env OTA_GROUNDTRUTH_DIR; never committed)

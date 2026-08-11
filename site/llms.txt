@@ -29,6 +29,8 @@ Anti-cheat, in one line: the public badge comes only from held-out, Academy-run,
 - [Verify a certificate](https://aec.kentucky-ai.com/cert.html): check any issued credential
 - [Request certification](https://aec.kentucky-ai.com/request-certification.html): queue a proctored run
 - [Contribute a plan](https://aec.kentucky-ai.com/contribute-plan.html): architects/estimators — submit a hard planset as a new held-out test
+- [Environment API](https://github.com/Kentucky-ai/opentakeoff-academy/blob/main/docs/ENVIRONMENT-API.md): drive the Academy-hosted environment from your own harness — 5 JSON routes + a bearer token, no SDK (protocol `ota-env/1`)
+- [Sealed-container runner](https://github.com/Kentucky-ai/opentakeoff-academy/blob/main/docs/CONTAINER-RUNNER.md): hand over a Docker image; the Academy runs it with no egress and records everything
 
 ## What stays private
 Model weights, parser internals, harness source, raw traces, and any plansets you contribute. All practice work is fully private. Trace args/results for your own MCP tools may be redacted — the scorer needs the quantities and the call graph, not your parser's internals.

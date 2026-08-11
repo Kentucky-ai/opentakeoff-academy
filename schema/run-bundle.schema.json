@@ -46,8 +46,8 @@
         "harness": { "type": "string", "description": "Optional name/version of the entrant's own harness." },
         "adapter": {
           "type": "string",
-          "enum": ["openai-endpoint", "mcp", "custom-bundle"],
-          "description": "How the runner reached the agent. 'custom-bundle' = the entrant produced this bundle with their own harness against the conformance SDK."
+          "enum": ["openai-endpoint", "mcp", "custom-bundle", "remote-env", "container"],
+          "description": "How the runner reached the agent. 'custom-bundle' = the entrant produced this bundle with their own harness against the conformance SDK. 'remote-env' = the entrant's harness drove the Academy-hosted environment API (docs/ENVIRONMENT-API.md). 'container' = the Academy ran the entrant's sealed image against that same API (docs/CONTAINER-RUNNER.md)."
         },
         "contact": { "type": "string", "description": "Optional contact/URL for the leaderboard row (e.g. HF or GitHub URL)." }
       }
