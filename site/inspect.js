@@ -88,8 +88,10 @@
     const wallMs = (task.telemetry && task.telemetry.wallMs) || 0;
     const steps = (task.telemetry && task.telemetry.steps) || 0;
     const anchor = trace.find((s) => s.tool === 'planset' && s.result && typeof s.result === 'object');
+    const deliverable = trace.find((s) => s.tool === 'marked_planset' && s.result && typeof s.result === 'object');
     return {
       emitCalls, measureCalls, mcpCalls, nQ, wallMs, steps, anchor: anchor ? anchor.result : null,
+      deliverable: deliverable ? deliverable.result : null,
       flags: {
         'answered-without-measurement': emitCalls > 0 && measureCalls === 0 && mcpCalls === 0,
         'missing-emit-provenance': nQ > 0 && emitCalls < nQ,
@@ -164,13 +166,17 @@
 
     // 4. per-task trace signals (aggregate)
     const agg = { 'answered-without-measurement': 0, 'missing-emit-provenance': 0, 'implausible-speed': 0, 'planset-hash-mismatch': 0 };
-    let anchored = 0, total = (b.tasks || []).length;
+    let anchored = 0, delivered = 0, total = (b.tasks || []).length;
     for (const task of (b.tasks || [])) {
       const s = traceSignals(task);
       for (const f in agg) if (s.flags[f]) agg[f]++;
       if (s.anchor && s.anchor.assetHash) anchored++;
+      if (s.deliverable && s.deliverable.assetHash) delivered++;
     }
     add(anchored === total && total > 0 ? 'ok' : 'warn', 'Planset bound by sha256', anchored + '/' + total + ' task(s) anchor the run to the exact planset asset hash');
+    if (delivered === total && total > 0) add('ok', 'Deliverable bound by sha256', delivered + '/' + total + ' task(s) seal the exported marked planset\'s hash into the signed run — edit the PDF and it no longer matches');
+    else if (delivered > 0) add('warn', 'Deliverable partially anchored', delivered + '/' + total + ' task(s) carry a marked_planset hash — the rest report numbers without sealing the drawing');
+    else add('na', 'No deliverable anchor', 'numbers-only run — a marked_planset trace step (sha256 of the exported marked set) would bind the drawing deliverable to this run');
     const FLAG_TXT = {
       'answered-without-measurement': 'emitted a quantity with no measurement/tool step',
       'missing-emit-provenance': 'reported more quantities than emit_quantity calls',
