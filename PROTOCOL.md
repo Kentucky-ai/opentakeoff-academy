@@ -64,6 +64,8 @@ The **run-bundle** (see `schema/run-bundle.schema.json`) records the **complete 
 - **missing** `emit_quantity` calls for reported quantities,
 - planset `assetHash` mismatch (ran on the wrong/altered plan).
 
+A run may additionally **anchor its deliverable**: a `marked_planset` trace step recording the sha256 of the exported marked-up planset seals the drawing artifact into the signed bundle — an after-the-fact edit to the PDF no longer matches the hash the run swore to. The inspector surfaces this as a provenance row; runs without one read as numbers-only, not as cheating.
+
 Combined with proctored held-out tasks, this makes the **Certified** mark credible. Self-Reported runs get the same checks but remain self-attested.
 
 ## 8. Certification flow
