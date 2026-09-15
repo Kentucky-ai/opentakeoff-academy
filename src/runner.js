@@ -171,6 +171,7 @@ export function loadTasks(tasksDir, track, suite) {
  * @param {string} opts.track
  * @param {string} opts.suite - suite folder ('practice'|'ranked'|id)
  * @param {string} opts.endpoint - OpenAI-compatible base URL (…/v1)
+ * @param {string} [opts.apiKey] - bearer token for the endpoint (falls back to OPENAI_API_KEY)
  * @param {string} [opts.model]
  * @param {object} [opts.mcpDescriptor] - entrant MCP server descriptor
  * @param {string} [opts.tasksDir='./tasks']
@@ -204,6 +205,7 @@ export async function runSuite(opts) {
 
   const ctx = {
     endpoint: opts.endpoint,
+    apiKey: opts.apiKey || process.env.OPENAI_API_KEY,
     model: opts.model || 'default',
     fetchImpl: opts.fetchImpl || globalThis.fetch,
     mcp,
@@ -416,7 +418,7 @@ async function chatCompletion(ctx, messages, tools) {
   };
   const res = await ctx.fetchImpl(url, {
     method: 'POST',
-    headers: { 'content-type': 'application/json', ...(process.env.OPENAI_API_KEY ? { authorization: `Bearer ${process.env.OPENAI_API_KEY}` } : {}) },
+    headers: { 'content-type': 'application/json', ...(ctx.apiKey ? { authorization: `Bearer ${ctx.apiKey}` } : {}) },
     body: JSON.stringify(body),
   });
   if (!res.ok) {

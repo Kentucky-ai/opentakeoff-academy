@@ -4,7 +4,8 @@
 // OpenTakeoff Academy conformance CLI. Every subcommand exits non-zero on
 // failure so CI can gate. Contract:
 //
-//   opentakeoff-academy run   --track <t> --suite <practice|ranked|id> --endpoint <url> [--model <m>] [--mcp <file>] --out <bundle.json>
+//   opentakeoff-academy run   --track <t> --suite <practice|ranked|id> (--endpoint <url> | --provider <name>) [--model <m>] [--mcp <file>] --out <bundle.json>
+//   opentakeoff-academy providers [--live]   (free-tier presets: which have keys; --live asks each for /models)
 //   opentakeoff-academy score <bundle.json> --track <t> --suite <id> [--tasks <dir>] [--out <report.json>]
 //   opentakeoff-academy cert  <report.json> --attestation <self_reported|certified> --out <cert.json>
 //   opentakeoff-academy validate <bundle.json>
@@ -21,6 +22,7 @@ import {
 import { createSession } from './env-session.js';
 import { serveSession } from './env-serve.js';
 import { ensureDocker, imageFingerprint, runSealedSuite } from './container.js';
+import { PROVIDERS, resolveProvider, providerStatus } from './providers.js';
 
 /** Published Academy signing key — the default trust anchor for `verify`. */
 const ACADEMY_KEY_URL = 'https://aec.kentucky-ai.com/academy-public-key.pem';
@@ -37,6 +39,7 @@ async function main() {
     case 'serve':    return cmdServe(flags);
     case 'proctor':  return cmdProctor(flags);
     case 'score':    return cmdScore(positionals[0], flags);
+    case 'providers': return cmdProviders(flags);
     case 'cert':     return cmdCert(positionals[0], flags);
     case 'validate': return cmdValidate(positionals[0]);
     case 'verify':   return cmdVerify(positionals[0], flags);
@@ -50,7 +53,19 @@ async function main() {
 
 // --- run --------------------------------------------------------------------
 async function cmdRun(flags) {
-  requireFlags(flags, ['track', 'suite', 'endpoint', 'out']);
+  requireFlags(flags, ['track', 'suite', 'out']);
+  // --provider <name> resolves a free-tier preset (src/providers.js) into
+  // endpoint + key + default model; an explicit --endpoint always wins.
+  let apiKey;
+  if (flags.provider && !flags.endpoint) {
+    let p;
+    try { p = resolveProvider(flags.provider); } catch (e) { fail(e.message); process.exit(1); }
+    flags.endpoint = p.endpoint;
+    apiKey = p.apiKey;
+    if (!flags.model) flags.model = p.model;
+    process.stderr.write(`[run] provider ${p.name} (${p.label}) → ${p.endpoint} · model ${flags.model}\n`);
+  }
+  requireFlags(flags, ['endpoint']);
 
   const mcpDescriptor = flags.mcp ? JSON.parse(readFileSync(flags.mcp, 'utf8')) : undefined;
   const privateKeyPem = flags.key ? readFileSync(flags.key, 'utf8') : undefined;
@@ -59,6 +74,7 @@ async function cmdRun(flags) {
     track: flags.track,
     suite: flags.suite,
     endpoint: flags.endpoint,
+    apiKey,
     model: flags.model,
     mcpDescriptor,
     tasksDir: flags.tasks || './tasks',
@@ -81,6 +97,28 @@ async function cmdRun(flags) {
   process.stdout.write(`run complete: ${bundle.tasks.length} task(s) → ${flags.out}\n`);
   process.stdout.write(`  runId ${bundle.runId}\n  bundleHash ${bundle.integrity.bundleHash}\n  schema-valid: ${v.valid}\n`);
   if (!v.valid) { printAjvErrors(v.errors); process.exit(1); }
+}
+
+// --- providers --------------------------------------------------------------
+// Which free-tier presets are usable in this shell. --live pings each ready
+// endpoint's /models so the default model ids can be checked against reality.
+async function cmdProviders(flags) {
+  const rows = providerStatus();
+  const w = Math.max(...rows.map((r) => r.name.length));
+  for (const r of rows) {
+    const key = r.keyEnv ? `${r.keyEnv}${r.ready ? ' ✓' : ' —'}` : '(no key)';
+    process.stdout.write(`${r.name.padEnd(w)}  ${r.ready ? 'READY ' : 'no key'}  ${key.padEnd(24)} ${r.defaultModel}\n    ${r.label} · ${r.free}\n`);
+    if (flags.live && r.ready) {
+      try {
+        const p = resolveProvider(r.name);
+        const res = await fetch(`${p.endpoint.replace(/\/+$/, '')}/models`, { headers: p.apiKey ? { authorization: `Bearer ${p.apiKey}` } : {} });
+        const j = await res.json().catch(() => ({}));
+        const ids = (j.data || []).map((m) => m.id).filter(Boolean);
+        process.stdout.write(`    /models → HTTP ${res.status}, ${ids.length} model(s)${ids.length ? ': ' + ids.slice(0, 8).join(', ') + (ids.length > 8 ? ', …' : '') : ''}\n`);
+        if (ids.length && !ids.includes(r.defaultModel)) process.stdout.write(`    ⚠ default '${r.defaultModel}' not in the list — pass --model\n`);
+      } catch (e) { process.stdout.write(`    /models → ${e.message || e}\n`); }
+    }
+  }
 }
 
 // --- serve ------------------------------------------------------------------
@@ -449,8 +487,10 @@ function usage(code = 0) {
   process.stdout.write(`OpenTakeoff Academy — conformance CLI
 
 Usage:
-  opentakeoff-academy run   --track <t> --suite <practice|ranked|id> --endpoint <url> [--model <m>] [--mcp <file>] --out <bundle.json>
+  opentakeoff-academy run   --track <t> --suite <practice|ranked|id> (--endpoint <url> | --provider <name>) [--model <m>] [--mcp <file>] --out <bundle.json>
                             [--tasks <dir>] [--name <h>] [--model-id <id>] [--adapter <a>] [--contact <url>] [--key <pem>]
+  opentakeoff-academy providers [--live]
+                            (free-tier presets: ${Object.keys(PROVIDERS).join(', ')} — key from env, e.g. GROQ_API_KEY)
   opentakeoff-academy serve --track <t> --suite <id> --out <bundle.json> [--port <n>] [--host <ip>] [--token <t>]
                             [--academy-key <pem>] [--attestation self_reported] [--engine opentakeoff]
                             (host the environment API; the entrant's harness drives, the Academy records — docs/ENVIRONMENT-API.md)

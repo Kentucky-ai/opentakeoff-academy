@@ -62,6 +62,18 @@ Bring your **own harness**? Produce a conformant bundle (`adapter: "custom-bundl
 npx opentakeoff-academy validate ./runs/my-run.bundle.json
 ```
 
+## Free-tier providers, no custom endpoint needed
+
+`--provider <name>` swaps in a preset OpenAI-compatible endpoint (base URL + default model) and reads its key from the environment — nothing is stored. Presets: `nvidia` (build.nvidia.com NIM credits), `gemini` (Flash free tier), `groq` (free dev tier), `cloudflare` (Workers AI daily quota, needs `CLOUDFLARE_ACCOUNT_ID`), `nebius`, `openrouter`, `openai`, `ollama`.
+
+```bash
+opentakeoff-academy providers            # which presets have keys in this shell
+opentakeoff-academy providers --live     # ask each ready endpoint for /models (default model ids drift)
+GROQ_API_KEY=… opentakeoff-academy run --track div9 --suite practice --provider groq --out runs/groq.json
+```
+
+Every preset speaks `/chat/completions` with function tools, so the same runner and the same scoring apply; the model id is the only thing that changes between vendors. Source: `src/providers.js`.
+
 ## Bring your own API or container — the Academy hosts the endpoint, you do the rest
 
 Two proctored paths for teams whose stack is (and stays) a black box. Both record the full provenance trace **on the Academy's side**, which is what makes them certifiable:
