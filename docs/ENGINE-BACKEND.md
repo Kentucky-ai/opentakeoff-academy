@@ -10,10 +10,15 @@ answer the same four geometric questions (`getFeatures`, `resolveRoom`,
 | **`OpenTakeoffBackend`** | **drives the real `opentakeoff-mcp` engine over stdio** | the **certified** path |
 
 `OpenTakeoffBackend` does **not** modify OpenTakeoff. It operates the published
-engine exactly as any MCP client would: load the plan PDF, adopt the sheet's
-detected scale, and flood each room with the engine's **One-Click Area** tool to
-get the *actual* traced polygon. The environment layer above it is unchanged — the
-same `set_scale` → `measure_area` tools, the same provenance, the same scoring.
+engine exactly as any MCP client would: load the plan PDF and adopt the sheet's
+detected scale, so the agent measures in the engine's own frame. The environment
+layer above it is unchanged — the same `set_scale` → `measure_area` tools, the
+same provenance, the same scoring.
+
+**No flood fill.** The backend never asks the engine to fill a room. The agent
+traces each room on its innermost wall faces and measures the polygon
+(`measure_area` with `region.points`, image px at render scale 2.0). A
+`roomId`-only measure is refused with a note to trace the room.
 
 ## Why the numbers reconcile exactly
 
@@ -32,24 +37,20 @@ area = pixelArea / pxPerUnit²
 These agree **iff `pxPerUnit = 1/upp`**. So `OpenTakeoffBackend.getScaleBar()`
 reports a scale synthesized from the engine's detected `upp` (a
 `10 ft = 10·pxPerFoot px` bar). Once the agent calibrates off it, the
-environment's shoelace over the engine's **real vertices** reproduces the engine's
-One-Click area. Calibrate wrong → wrong area, exactly like the SVG backend:
-**grounding is preserved.**
-
-Traced-polygon measurements (`region.points`) never touch the engine — the
-environment's own shoelace at the engine-derived scale is identical to the
-engine's `measure_polygon`, so no live connection is needed after room discovery.
+environment's shoelace over a traced polygon equals the engine's
+`measure_polygon`. Calibrate wrong → wrong area, exactly like the SVG backend:
+**grounding is preserved.** Measurements never touch the engine after setup, so
+no live connection is needed once the plan and scale are loaded.
 
 ## Verified
 
 - **Unit (no engine needed):** `npm test` → `test/ot-backend.test.mjs` proves the
-  reconciliation against a mock engine (scale, room polygon, traced polygon,
-  grounding-under-miscalibration).
+  reconciliation against a mock engine (engine asked for plan + scale only,
+  traced polygon, roomId refused, grounding-under-miscalibration).
 - **Live parity:** `npm run test:ot-live` (`scripts/ot-parity.mjs`) drives the
-  **real** engine on AF101 through the academy environment:
-  - academy area == engine One-Click area to **≤ 0.05 %** (vertex rounding only);
-  - measured totals vs. estimator ground truth: **WD-1 1.52 %, VCT-1 0.17 %,
-    median APE 0.84 % → PASS** (Journeyman ≤ 6 %).
+  **real** engine on AF101: three fixed traced polygons measure the same through
+  the academy environment and the engine's own `measure_polygon`, within 0.1 %
+  (0.0042 % max on opentakeoff-mcp 0.9.90, 2026-09-27).
 
 ## Running against the real engine
 
@@ -62,6 +63,10 @@ cd web && npm install && cd ../mcp && npm install
 # tell the academy where the engine's mcp/ dir (the folder with server.ts) is:
 export OTA_MCP_DIR=/path/to/opentakeoff/mcp     # else auto: ../opentakeoff/mcp, ~/dev/opentakeoff/mcp
 ```
+
+Point it at a checkout of OpenTakeoff `main` (the build the live app runs), not a
+feature branch: the auto-resolved `../opentakeoff/mcp` is whatever that working
+tree has checked out.
 
 **As an MCP environment server** (a BYO-harness agent connects and drives it):
 
@@ -77,23 +82,6 @@ import { runSuite } from './src/runner.js';
 await runSuite({ track: 'div9', suite: 'va-bldg28', endpoint, model,
                  engine: 'opentakeoff', mcpDir: process.env.OTA_MCP_DIR });
 ```
-
-### Room hints
-
-A certified task may carry `planset.rooms` — click hints the backend uses to flood
-each room deterministically (they are backend config, **not** shown to the agent):
-
-```json
-{ "id": "162", "condition": "WD-1",
-  "points": [[3300, 2010], [3260, 1990]],   // candidate open-floor clicks, in order
-  "search": "162",                            // else locate the label text
-  "plausibleSf": [140, 360] }                 // reject fills outside this SF window
-```
-
-Without hints, the backend auto-discovers rooms from the sheet's number labels and
-offsets into open floor (clicking *on* a label fills the glyph, not the room). It
-accepts the first clean fill whose polygon **contains** the label — so it never
-grabs a neighbor.
 
 ## What this does and doesn't cover
 
