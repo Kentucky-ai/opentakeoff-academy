@@ -87,6 +87,8 @@ async function cmdRun(flags) {
     },
     attestationMode: flags.attestation === 'proctored' ? 'proctored' : 'self_reported',
     mode: flags.mode,
+    engine: flags.engine,
+    mcpDir: flags['mcp-dir'],
     now: nowIso(flags),
     privateKeyPem,
     log: (m) => process.stderr.write(`[run] ${m}\n`),
@@ -488,7 +490,7 @@ function usage(code = 0) {
 
 Usage:
   opentakeoff-academy run   --track <t> --suite <practice|ranked|id> (--endpoint <url> | --provider <name>) [--model <m>] [--mcp <file>] --out <bundle.json>
-                            [--tasks <dir>] [--name <h>] [--model-id <id>] [--adapter <a>] [--contact <url>] [--key <pem>]
+                            [--tasks <dir>] [--name <h>] [--model-id <id>] [--adapter <a>] [--contact <url>] [--key <pem>] [--engine opentakeoff]
   opentakeoff-academy providers [--live]
                             (free-tier presets: ${Object.keys(PROVIDERS).join(', ')} — key from env, e.g. GROQ_API_KEY)
   opentakeoff-academy serve --track <t> --suite <id> --out <bundle.json> [--port <n>] [--host <ip>] [--token <t>]

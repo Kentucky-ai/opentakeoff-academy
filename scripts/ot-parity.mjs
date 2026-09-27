@@ -97,12 +97,19 @@ async function main() {
     console.log('cond    measured   truth     APE%');
     console.log('─────   ────────   ───────   ─────');
     const apes = [];
+    const missing = [];
     for (const q of gt.quantities || []) {
       const measured = totals[q.item];
-      if (measured == null) continue;
+      if (measured == null) { missing.push(q.item); continue; }
       const a = ape(measured, q.value);
       apes.push(a);
       console.log(`${pad(q.item, 5)}   ${pad(measured.toFixed(2), 8)}   ${pad(q.value.toFixed(2), 7)}   ${a.toFixed(2)}`);
+    }
+    // A median over nothing is not a pass: every ground-truth quantity has to
+    // be measured before the parity check can say the engine works.
+    if (missing.length) {
+      console.log(`\n✗ LIVE PARITY FAILED: no measurement for ${missing.join(', ')} (${rows.filter((r) => r.envSf == null).length}/${rows.length} rooms unresolved by the engine)`);
+      process.exit(1);
     }
     const med = median(apes);
     verdict = `median APE ${med.toFixed(2)}%  (Journeyman ≤ 6% → ${med <= 6 ? 'PASS' : 'FAIL'})`;

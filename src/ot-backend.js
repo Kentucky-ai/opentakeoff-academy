@@ -159,7 +159,13 @@ export async function createOpenTakeoffBackend(opts = {}) {
 
     const rooms = [];
     const unresolved = [];
+    // opentakeoff-mcp >= 0.9.73 gates one_click (OPENTAKEOFF_ONE_CLICK=1 lifts
+    // it). Without it no room can be flooded, so skip the per-room clicks and
+    // leave roomId measures unresolved; traced region.points still measure.
+    const oneClick = await engineHasTool(engine, 'one_click');
+    if (!oneClick) log('one_click is not registered on this engine (gated); roomId measures are unavailable, traced polygons still work');
     for (const hint of hints) {
+      if (!oneClick) { unresolved.push(hint.id); continue; }
       const resolved = await floodRoom(engine, sheet, hint, { textItems, W, H, log });
       if (resolved) rooms.push(resolved);
       else unresolved.push(hint.id);
@@ -209,6 +215,17 @@ export async function createOpenTakeoffBackend(opts = {}) {
  * takeoff.
  * @returns {object|null} room record { roomId, material, polygonPx, bboxPx, centroidPx, areaSfEngine }
  */
+/** True when the engine registers the named tool (unknown if it can't list). */
+async function engineHasTool(engine, name) {
+  if (typeof engine.listToolNames !== 'function') return true;
+  try {
+    const tools = await engine.listToolNames();
+    return (tools || []).includes(name);
+  } catch {
+    return true;
+  }
+}
+
 async function floodRoom(engine, sheet, hint, ctx) {
   const label = locateLabel(hint, ctx.textItems);
   const labelPt = label ? { x: label.x, y: label.y } : null;

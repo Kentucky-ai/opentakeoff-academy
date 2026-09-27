@@ -20,7 +20,7 @@
 // instance for the certified path (same interface, no source changes).
 
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { performance } from 'node:perf_hooks';
 import { buildBundle, signBundle, sha256File, newRunId } from './bundle.js';
 import { connectMcp, mcpToolsToOpenAI } from './mcp.js';
@@ -152,7 +152,9 @@ const SYSTEM_PROMPT = [
  * @returns {Array<object>} parsed task objects, sorted by taskId for determinism
  */
 export function loadTasks(tasksDir, track, suite) {
-  const dir = join(tasksDir, track, suite);
+  // Absolute, so the planset path survives into the engine child process
+  // (which runs with its own cwd) when --tasks is given relative.
+  const dir = resolve(tasksDir, track, suite);
   if (!existsSync(dir) || !statSync(dir).isDirectory()) {
     throw new Error(`no task directory at ${dir} (expected <tasksDir>/<track>/<suite>/*.task.json)`);
   }
