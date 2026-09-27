@@ -296,14 +296,13 @@ async function runTask(task, ctx) {
     otBackend = await createOpenTakeoffBackend({
       plansetPath: anchor.path,
       mcpDir: ctx.mcpDir,
-      rooms: task.planset?.rooms,
       log: ctx.log,
     });
     push({
       type: 'tool_result',
       tool: 'engine',
       args: { engine: 'opentakeoff-mcp', sheet: otBackend.engine.sheet },
-      result: { engine: 'opentakeoff-mcp', upp: otBackend.engine.upp, scaleLabel: otBackend.engine.scaleLabel, roomsResolved: otBackend.getFeatures().rooms.length, unresolved: otBackend.unresolvedRooms() },
+      result: { engine: 'opentakeoff-mcp', upp: otBackend.engine.upp, scaleLabel: otBackend.engine.scaleLabel, measure: 'traced-polygon' },
     });
   }
   const env = createEnvironment({

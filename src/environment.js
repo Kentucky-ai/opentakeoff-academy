@@ -448,7 +448,7 @@ function resolvePolygon(args, backend) {
   const roomId = args.roomId || region.roomId || region.ref || region.room;
   if (roomId) {
     const room = backend.resolveRoom(roomId);
-    if (!room) return { polygon: null, error: 'unknown-room', note: `no room '${roomId}' on this planset` };
+    if (!room) return { polygon: null, error: 'unknown-room', note: backend.roomLookupNote || `no room '${roomId}' on this planset` };
     return { polygon: room.polygonPx, roomId: room.roomId, material: room.material, source: 'plan-room' };
   }
   return { polygon: null };
@@ -463,7 +463,7 @@ function resolvePolyline(args, backend) {
   const roomId = args.roomId || region.roomId || region.ref || region.room;
   if (roomId) {
     const room = backend.resolveRoom(roomId);
-    if (!room) return { points: null, error: 'unknown-room', note: `no room '${roomId}' on this planset` };
+    if (!room) return { points: null, error: 'unknown-room', note: backend.roomLookupNote || `no room '${roomId}' on this planset` };
     return { points: room.polygonPx, closed: true, roomId: room.roomId, source: 'plan-room-perimeter' };
   }
   return { points: null };

@@ -92,12 +92,12 @@ export function createSession(opts) {
     if (opts.engine === 'opentakeoff') {
       if (!anchor.path) throw new Error(`opentakeoff engine requires the planset asset on disk; ${task.taskId} has none resolvable`);
       log(`[${task.taskId}] building OpenTakeoff engine backend on ${anchor.path} …`);
-      backend = await createOpenTakeoffBackend({ plansetPath: anchor.path, mcpDir: opts.mcpDir, rooms: task.planset?.rooms, log });
+      backend = await createOpenTakeoffBackend({ plansetPath: anchor.path, mcpDir: opts.mcpDir, log });
       push({
         type: 'tool_result',
         tool: 'engine',
         args: { engine: 'opentakeoff-mcp', sheet: backend.engine.sheet },
-        result: { engine: 'opentakeoff-mcp', upp: backend.engine.upp, scaleLabel: backend.engine.scaleLabel, roomsResolved: backend.getFeatures().rooms.length, unresolved: backend.unresolvedRooms() },
+        result: { engine: 'opentakeoff-mcp', upp: backend.engine.upp, scaleLabel: backend.engine.scaleLabel, measure: 'traced-polygon' },
       });
     }
     const env = createEnvironment({
