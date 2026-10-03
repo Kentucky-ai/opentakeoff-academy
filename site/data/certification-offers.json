@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "currency": "USD",
+  "offers": [
+    {"tier":"apprentice","name":"Apprentice","amountCents":10000,"paymentLink":null,"scope":"Entry-level takeoff competency","bountyAccess":"Bounties that accept Apprentice certification"},
+    {"tier":"journeyman","name":"Journeyman","amountCents":20000,"paymentLink":null,"scope":"Advanced takeoff competency","bountyAccess":"Apprentice and Journeyman bounty requirements"},
+    {"tier":"master","name":"Master","amountCents":30000,"paymentLink":null,"scope":"Highest Academy qualification tier","bountyAccess":"All three certification tier requirements"}
+  ]
+}

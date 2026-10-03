@@ -35,7 +35,8 @@
     "serve:agent": "node examples/my-agent.example.js --serve",
     "serve:env": "node src/ot-env-mcp.js",
     "cli": "node src/cli.js",
-    "test:lab": "node --test test/real-plan-lab.test.mjs"
+    "test:lab": "node --test test/real-plan-lab.test.mjs",
+    "test:commerce": "node --test test/commerce.test.mjs"
   },
   "dependencies": {
     "ajv": "^8.17.1",
