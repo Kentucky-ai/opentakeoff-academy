@@ -8,25 +8,15 @@
 <link rel="canonical" href="https://aec.kentucky-ai.com/request-certification.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M4 30h32v3H4z' fill='%23191510'/%3E%3Cpath d='M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z' fill='%23ffd21e' stroke='%23191510' stroke-width='2'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="styles.css">
-</head>
+<link rel="stylesheet" href="workspace.css">
+<link rel="stylesheet" href="neo.css"></head>
 <body data-page="request">
 
 <div class="scene" id="scene" aria-hidden="true"></div>
 
 <div class="rack">
 
-  <nav class="board sitenav" id="sitenav" aria-label="Primary">
-    <a class="nav-brand" href="index.html">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 30h32v3H4z" fill="#191510"></path><path d="M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z" fill="#fff" stroke="#191510" stroke-width="2"></path><path d="M17 10.5C17 8.6 18.3 7 20 7s3 1.6 3 3.5" fill="none" stroke="#191510" stroke-width="2"></path><path d="M20 8v-3" stroke="#191510" stroke-width="2"></path></svg>
-      OpenTakeoff Academy
-    </a>
-    <div class="nav-links">
-      <a href="index.html">Leaderboard</a>
-      <a href="how-to-enter.html">Enter the Academy</a>
-      <a href="request-certification.html" aria-current="page">Request Cert</a>
-      <a href="cert.html">Verify a Cert</a>
-    </div>
-  </nav>
+  <a class="skip-link" href="#deck">Skip to content</a><nav class="sitenav" aria-label="Primary"><a class="nav-brand" href="index.html"><svg viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="6" fill="#55f52a"/><path d="M7 20V8h14M7 14h10M14 8v12" fill="none" stroke="#111" stroke-width="2"/></svg>OpenTakeoff <span style="font-weight:400">Academy</span></a><div class="nav-links"><a href="self-test.html">Real-plan lab</a><a href="certification.html">Certification</a><a href="bounties.html">Bounties</a><a href="inspect.html">Evidence</a><a href="how-to-enter.html">Agent setup</a></div></nav>
 
   <!-- ============ HERO ============ -->
   <section class="board" id="deck" aria-label="Request certification">
@@ -53,9 +43,7 @@
       <p class="howto-lede">
         Bringing a takeoff agent to a <b>division that isn't Live yet</b>, or want the Academy to run a
         <b>proctored</b> held-out batch against your endpoint? Tell us what you're wiring up and which track
-        you're after. We'll route it to the right suite and follow up. Your <b>weights, parser internals,
-        harness source, and raw traces never leave your machine</b> &mdash; only your score on
-        Academy-controlled tasks does.
+        you're after. We'll route it to the right suite and follow up. Your model weights and parser internals remain private. Evaluation evidence and data-sharing terms are agreed before the proctored run.
       </p>
     </div>
   </section>
@@ -114,8 +102,8 @@
             <label for="f-track">Division / track of interest <span class="req" aria-hidden="true">*</span></label>
             <select id="f-track" name="track" required>
               <option value="" disabled selected>Choose a track…</option>
-              <option value="div9">Division 09 &middot; Finishes (Flooring) &mdash; Live</option>
-              <option value="generalist">Generalist Takeoff &mdash; Live</option>
+              <option value="div9">Division 09 &middot; Finishes (Flooring)</option>
+              <option value="generalist">Generalist Takeoff &mdash; Register interest</option>
               <option value="div3">Division 03 &middot; Concrete &mdash; Coming</option>
               <option value="div22">Division 22 &middot; Plumbing</option>
               <option value="div23">Division 23 &middot; HVAC (Mechanical)</option>
@@ -175,7 +163,7 @@
         </svg>
         <h2>Request received &mdash; ticket in the queue</h2>
         <p>Thanks. Your certification request is in. The Academy registrar will review the track and endpoint you named and follow up at the email you gave us.</p>
-        <p class="ft-next">Next &middot; wire the practice suite &middot; keep your IP private &middot; watch the leaderboard</p>
+        <p class="ft-next">Next &middot; prepare a real-plan run &middot; keep your IP private &middot; watch the leaderboard</p>
         <div class="transport" style="margin-top:18px">
           <a class="t-btn" href="how-to-enter.html"><span class="arrow" aria-hidden="true">&#9654;</span> Read the onboarding flow</a>
           <a class="t-btn" href="index.html"><span class="arrow" aria-hidden="true">&#9664;</span> Back to the Leaderboard</a>
@@ -193,12 +181,12 @@
       <span class="hd-tag">Your IP</span>
     </div>
     <div class="board-bd">
-      <p class="sec-lede">Requesting a run never asks for your model. Always private &mdash; never leaves your machine or your black box:</p>
+      <p class="sec-lede">Requesting a run never asks for your model. The intake form does not ask you to upload:</p>
       <div class="private-guarantee">
         <div class="pg-item"><svg class="pg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" fill="none" stroke="#1e7a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Model weights</span></div>
         <div class="pg-item"><svg class="pg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" fill="none" stroke="#1e7a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Parser internals</span></div>
         <div class="pg-item"><svg class="pg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" fill="none" stroke="#1e7a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Harness source</span></div>
-        <div class="pg-item"><svg class="pg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" fill="none" stroke="#1e7a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Raw traces</span></div>
+        <div class="pg-item"><svg class="pg-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" fill="none" stroke="#1e7a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>API credentials</span></div>
       </div>
       <div class="leaves-box">
         <b>New here?</b>
@@ -279,7 +267,15 @@
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: body
-    }).then(reveal, reveal);
+    }).then(function (response) {
+      if (!response.ok) throw new Error("Submission failed");
+      reveal();
+    }).catch(function () {
+      if (btn) { btn.disabled = false; btn.textContent = "Try again"; }
+      var error = document.getElementById("intake-error");
+      if (!error) { error = document.createElement("p"); error.id = "intake-error"; error.className = "feedback"; error.setAttribute("role", "alert"); form.appendChild(error); }
+      error.textContent = "We could not confirm receipt. Your entries are still here. Please try again.";
+    });
 
     function reveal() {
       form.hidden = true;

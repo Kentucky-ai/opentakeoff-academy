@@ -1,0 +1,10 @@
+{
+  "id": "va-stcloud-bldg28",
+  "project": "VA St. Cloud Health Care System — Renovate Building 28 First Floor East RRTP",
+  "projectNumber": "656-19-306",
+  "sheets": ["AF101", "AF600"],
+  "source": "https://github.com/Kentucky-ai/opentakeoff-academy/blob/main/tasks/div9/va-bldg28/assets/va-stcloud-bldg28-finish.pdf",
+  "sha256": "53aa2a44efc8f9a2e625ed223fcfbf9ee19d15eb8469ba57183874b6a8e2a56f",
+  "provenance": "Original PDF already distributed in the public Academy repository. Sheet previews are direct Poppler renders, with no modifications to drawing content.",
+  "assessment": "Browser drafts are unverified. No held-out answers are distributed."
+}

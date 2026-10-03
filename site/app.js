@@ -579,7 +579,7 @@ attLine +
     var root = document.getElementById("cert-root");
     if (!root) return;
 
-    if (!id) { root.innerHTML = certNotFound(null, "No credential id supplied. Add ?id=OTA-… to the URL."); return; }
+    if (!id) { root.innerHTML = ""; return; }
     if (!/^OTA-[A-Z0-9]{2,6}-[0-9]{4,6}$/.test(id)) {
       root.innerHTML = certNotFound(id, "That credential id is not a valid OpenTakeoff Academy id."); return;
     }
