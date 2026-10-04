@@ -4,7 +4,7 @@
   "description": "Conformance SDK + CLI for OpenTakeoff Academy \u2014 an open benchmark & certification harness for construction-takeoff AI agents.",
   "type": "module",
   "license": "Apache-2.0",
-  "homepage": "https://aec.kentucky-ai.com",
+  "homepage": "https://union.kentucky-ai.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/Kentucky-ai/opentakeoff-academy.git"

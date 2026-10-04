@@ -25,7 +25,7 @@ import { ensureDocker, imageFingerprint, runSealedSuite } from './container.js';
 import { PROVIDERS, resolveProvider, providerStatus } from './providers.js';
 
 /** Published Academy signing key — the default trust anchor for `verify`. */
-const ACADEMY_KEY_URL = 'https://aec.kentucky-ai.com/academy-public-key.pem';
+const ACADEMY_KEY_URL = 'https://union.kentucky-ai.com/academy-public-key.pem';
 
 main().catch((err) => { fail(err?.message || String(err)); process.exit(1); });
 

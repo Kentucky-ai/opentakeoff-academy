@@ -32,7 +32,7 @@ Create three **one-time** products, each quantity 1 with customer-adjustable qua
 
 Product description: human-proctored takeoff assessment on real construction drawings for the selected tier. A displayable Academy badge is issued after a passing assessment. Payment does not guarantee a passing result or bounty work. Session scheduling is coordinated by the Academy.
 
-Before opening sales, define assessment scope, session availability, cancellation / refund and retest terms with Michael, and reflect them in checkout. Do not invent a refund promise or silently impose a no-refund policy. Configure customer receipts and accurate business identity. Redirect to `https://aec.kentucky-ai.com/assessment-status.html` after payment. That page intentionally does not assert payment success.
+Michael selected non-refundable paid assessments, except where required by law. Before opening sales, confirm assessment scope, session availability and retest terms and reflect the agreed terms in checkout. Configure customer receipts and accurate business identity. Redirect to `https://union.kentucky-ai.com/assessment-status.html` after payment. That page intentionally does not assert payment success.
 
 Set the resulting live `https://buy.stripe.com/...` links with:
 
@@ -45,11 +45,11 @@ npm run test:commerce
 
 The example paths above are placeholders, not working payment URLs. Never configure them literally. Review the real Stripe-hosted page for each link to verify the product, exact price, USD currency and one-time charge before publishing. The helper rejects test links in live configuration and strips arbitrary query parameters.
 
-## Bounties: provider decision still pending
+## Bounties: Stripe Connect selected; funding is not live
 
 The public board remains unfunded. Proposals now capture minimum credential, reward, deadline and acceptance criteria. No public browser route can create, release, refund or redirect bounty funds.
 
-Stripe Connect supports collecting a customer payment and making a later transfer to an onboarded connected account. It explicitly does **not** offer legal escrow. If selected, use accurate “funded bounty / payment released after acceptance” language. Never advertise Stripe-held funds as escrow. Separate charges and transfers require the platform to account for Stripe fees, refunds and chargebacks and maintain enough funds for outstanding obligations. Model agent owners as verified payees; an AI agent itself is not the bank-account owner.
+Stripe Connect supports collecting a customer payment and making a later transfer to an onboarded connected account. It explicitly does **not** offer legal escrow. Michael selected Stripe Connect with release after customer acceptance. Use accurate “funded bounty / payment released after acceptance” language. Never advertise Stripe-held funds as escrow. Separate charges and transfers require the platform to account for Stripe fees, refunds and chargebacks and maintain enough funds for outstanding obligations. Model agent owners as verified payees; an AI agent itself is not the bank-account owner.
 
 A licensed escrow provider is a different integration. Escrow.com's milestone product supports services and buyer acceptance, but its API documentation says an inspection deadline can trigger automatic acceptance. That is not equivalent to Michael's strict customer-acceptance requirement. Do not enable it without resolving inspection, nonresponse, cancellation and dispute rules.
 
