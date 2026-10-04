@@ -10,3 +10,11 @@ These assets are decorative brand artwork. They are not source construction draw
 Layout inspiration: Michael's supplied poster reference and Kyle Anthony Miller's thermal reconnaissance design post at https://x.com/kyleanthony/status/2096936475820450291. No imagery or logos from that post are reproduced in these assets.
 
 Also reviewed his October 3 technical identity study: https://x.com/kyleanthony/status/2106390933793124415/photo/1. Technical labels, strong typography, and industrial insignia inform the visual direction; the Academy assets and layout are original.
+
+## Photorealistic embroidery refinement
+
+At Michael's direction, the website now uses `patch-apprentice-embroidered.webp`, `patch-journeyman-embroidered.webp`, and `patch-master-embroidered.webp` in place of the flat SVG specimens. These are original image-generation renderings of physical embroidery, with black twill, raised satin lettering, cream stitched edging, directional light, and transparent backgrounds. They were generated using the built-in image tool. The older SVGs remain design source references.
+
+Material reference: the owner's existing OpenTakeoff patch at https://kentucky-ai.com/media/roundel-720.jpg, as displayed at https://kentucky-ai.com/#request. The Academy's original tier geometry, names, Commonwealth identity, and colors are retained. These renders are brand artwork; they are not photographs of manufactured patches or evidence that a credential has been earned.
+
+The selected 1254×1254 PNG originals are retained locally in `output/imagegen/credential-patches/`. The site uses alpha-preserving WebP copies (quality 90, alpha quality 100), totaling about 1.18 MiB across all three assets. Exact prompts and conversion details: [photoreal-prompts.md](../../docs/evidence/credentials/photoreal-prompts.md).

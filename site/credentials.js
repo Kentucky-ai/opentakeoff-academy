@@ -10,7 +10,7 @@ if(viewer){
   function show(tier){
     const rank=ranks[tier];if(!rank)return;
     const img=viewer.querySelector('[data-patch-image]');
-    img.src=`assets/patch-${tier}.svg`;
+    img.src=`assets/patch-${tier}-embroidered.webp`;
     img.alt=`OpenTakeoff Academy ${rank.name} mission patch — artwork preview`;
     viewer.querySelector('[data-patch-name]').textContent=`OTA–${rank.number} / ${rank.name.toUpperCase()}`;
     viewer.querySelector('[data-patch-scope]').textContent=rank.scope;
@@ -23,7 +23,7 @@ const enrollmentPatch=document.getElementById('enrollment-patch');
 if(tierSelect&&enrollmentPatch){
   function sync(){
     const tier=tierSelect.value;if(!ranks[tier])return;
-    enrollmentPatch.src=`assets/patch-${tier}.svg`;
+    enrollmentPatch.src=`assets/patch-${tier}-embroidered.webp`;
     enrollmentPatch.alt=`${ranks[tier].name} qualification patch — earned after passing`;
   }
   const requested=new URLSearchParams(location.search).get('tier');
