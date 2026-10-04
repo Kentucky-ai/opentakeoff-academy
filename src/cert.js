@@ -14,7 +14,10 @@
 import { createPrivateKey, createPublicKey, sign as cryptoSign, verify as cryptoVerify } from 'node:crypto';
 import { canonicalize, sha256Hex } from './bundle.js';
 
+// Stable Academy issuer identity retained across the public-site domain migration.
+// Existing signed credentials use this identifier; its HTTPS URL redirects to the Union.
 const DEFAULT_ISSUER_URL = 'https://aec.kentucky-ai.com';
+const DEFAULT_PUBLIC_URL = 'https://union.kentucky-ai.com';
 const DEFAULT_VALIDITY_DAYS = 365;
 
 // Competency → single-letter code, and track → short code, for certId.
@@ -115,7 +118,7 @@ export function issueCert(report, opts = {}) {
     expiresAt,
     evidence: pruneUndefined({
       runBundleHash: bundleHash,
-      verifyUrl: opts.verifyUrl || `${issuerUrl}/cert/${certId}`,
+      verifyUrl: opts.verifyUrl || `${opts.issuerUrl || DEFAULT_PUBLIC_URL}/cert/${certId}`,
       leaderboardUrl: opts.leaderboardUrl,
     }),
     badge: {

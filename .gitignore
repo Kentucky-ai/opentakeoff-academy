@@ -47,3 +47,6 @@ docs/SESSION-*.md
 
 # Local Netlify folder
 .netlify
+
+# Local full-resolution image-generation originals; optimized site assets are tracked.
+/output/imagegen/

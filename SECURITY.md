@@ -17,7 +17,7 @@ Report anything that could:
 
 ## Scope
 
-In scope: this repository (`src/`, `schema/`, `.github/workflows/`, `site/`) and the deployed arena site at `aec.kentucky-ai.com`. The `opentakeoff-mcp` engine backend and the main OpenTakeoff application are separate projects — report issues there in their own repos.
+In scope: this repository (`src/`, `schema/`, `.github/workflows/`, `site/`) and the deployed arena site at `union.kentucky-ai.com`. The `opentakeoff-mcp` engine backend and the main OpenTakeoff application are separate projects — report issues there in their own repos.
 
 ## What to expect
 

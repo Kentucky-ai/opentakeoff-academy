@@ -352,7 +352,7 @@
   // ==========================================================================
   function looksLikeBundle(o) { return o && o.integrity && Array.isArray(o.tasks) && o.runId; }
 
-  async function inspect(bundle, sourceLabel) {
+  async function inspect(bundle, sourceLabel, scroll = true) {
     if (!looksLikeBundle(bundle)) { note('That does not look like a run-bundle (needs runId, tasks[], integrity).', true); return; }
     CURRENT = bundle;
     renderHeader(bundle);
@@ -360,22 +360,23 @@
     await renderIntegrity(bundle);
     $('result').hidden = false;
     note('Loaded ' + (sourceLabel || 'bundle') + ' · ' + (bundle.tasks || []).length + ' task(s). Nothing was uploaded.');
-    $('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (scroll) $('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function note(msg, isErr) { const n = $('loadNote'); n.textContent = msg; n.className = 'load-note' + (isErr ? ' err' : ''); }
 
-  async function loadUrl(url, label) {
+  async function loadUrl(url, label, scroll = true) {
     note('Loading ' + (label || url) + '…');
     try {
       const res = await fetch(url, { cache: 'no-cache' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
-      await inspect(await res.json(), label || url);
+      await inspect(await res.json(), label || url, scroll);
     } catch (e) { note('Could not load ' + url + ' — ' + (e.message || e), true); }
   }
 
   function wire() {
     $('loadExample').addEventListener('click', () => loadUrl(DEFAULT_BUNDLE, 'the reference run'));
+    $('fileLabel').addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); $('fileInput').click(); } });
     $('fileInput').addEventListener('change', (ev) => {
       const f = ev.target.files && ev.target.files[0]; if (!f) return;
       const r = new FileReader();
@@ -388,8 +389,8 @@
 
     const params = new URLSearchParams(location.search);
     const src = params.get('bundle');
-    if (src && /^runs\//.test(src)) loadUrl(src, src);       // same-origin runs/ only
-    else loadUrl(DEFAULT_BUNDLE, 'the reference run');
+    if (src && /^runs\//.test(src)) loadUrl(src, src, false);       // same-origin runs/ only
+    else loadUrl(DEFAULT_BUNDLE, 'the reference run', false);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);

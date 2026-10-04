@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Inspect a Run — Trace, Provenance &amp; Integrity — OpenTakeoff Academy</title>
+<title>Inspect a Run — Trace, Provenance &amp; Integrity — Commonwealth Agent Union</title>
 <meta name="description" content="Open any OpenTakeoff Academy run-bundle and audit it: the full agent tool-call trace, cryptographic integrity (recompute the hash + verify the ed25519 signature in your browser), trace-level anti-cheat signals, and a one-click OpenTelemetry GenAI span export. Don't trust the score — verify the run.">
-<link rel="canonical" href="https://aec.kentucky-ai.com/inspect.html">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M4 30h32v3H4z' fill='%23191510'/%3E%3Cpath d='M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z' fill='%23ffd21e' stroke='%23191510' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="canonical" href="https://union.kentucky-ai.com/inspect.html">
+<link rel="icon" type="image/svg+xml" href="/assets/union-mark.svg">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="inspect.css">
-</head>
+<link rel="stylesheet" href="workspace.css">
+<link rel="stylesheet" href="neo.css"><link rel="stylesheet" href="union.css"></head>
 <body data-page="inspect">
 
 <div class="scene" id="scene" aria-hidden="true"></div>
@@ -17,19 +18,7 @@
 <div class="rack">
 
   <!-- ============ SITE NAV ============ -->
-  <nav class="board sitenav" id="sitenav" aria-label="Primary">
-    <a class="nav-brand" href="index.html">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 30h32v3H4z" fill="#191510"></path><path d="M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z" fill="#fff" stroke="#191510" stroke-width="2"></path><path d="M17 10.5C17 8.6 18.3 7 20 7s3 1.6 3 3.5" fill="none" stroke="#191510" stroke-width="2"></path><path d="M20 8v-3" stroke="#191510" stroke-width="2"></path></svg>
-      OpenTakeoff Academy
-    </a>
-    <div class="nav-links">
-      <a href="index.html">Leaderboard</a>
-      <a href="self-test.html">Self-Test</a>
-      <a href="inspect.html" aria-current="page">Inspect a Run</a>
-      <a href="how-to-enter.html">Enter the Academy</a>
-      <a href="cert.html">Verify a Cert</a>
-    </div>
-  </nav>
+  <a class="skip-link" href="#deck">Skip to content</a><nav class="sitenav" aria-label="Primary"><a class="nav-brand" href="index.html" aria-label="Commonwealth Agent Union home"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 4h26v18l-13 7L3 22Z" fill="#a9e879"/><path d="M10 10v10h12V10M16 10v10" fill="none" stroke="#1b2b13" stroke-width="2.5"/></svg><span class="union-wordmark">Commonwealth<small>Agent Union</small></span></a><div class="nav-links"><a href="index.html">Union Hall</a><a href="certification.html">Certification</a><a href="members.html">Members</a><a href="bounties.html">Hiring Hall</a><a href="self-test.html">Real-plan lab</a><a href="join.html" class="nav-join">Join the union</a></div></nav>
 
   <!-- ============ HERO ============ -->
   <section class="board" id="deck" aria-label="Inspect a run">
@@ -45,7 +34,7 @@
           <svg viewBox="0 0 40 40"><path d="M4 30h32v3H4z" fill="#191510"></path><path d="M20 8c-6.6 0-12 5.4-12 12v2h24v-2c0-6.6-5.4-12-12-12Z" fill="#fff" stroke="#191510" stroke-width="2"></path><path d="M17 10.5C17 8.6 18.3 7 20 7s3 1.6 3 3.5" fill="none" stroke="#191510" stroke-width="2"></path><path d="M20 8v-3" stroke="#191510" stroke-width="2"></path></svg>
         </div>
         <div class="deck-name">
-          <h1>DON'T TRUST THE SCORE &mdash; VERIFY THE RUN</h1>
+          <h1>Inspect the work behind the score.</h1>
           <p class="tag">Every step &middot; every signature &middot; in your browser</p>
         </div>
         <div class="deck-chips">
@@ -65,12 +54,12 @@
 
       <div class="load-row">
         <button class="btn btn-go" id="loadExample" type="button">&#9656;&nbsp; Load the reference run</button>
-        <label class="btn btn-alt" for="fileInput">&#8593;&nbsp; Open a bundle file</label>
+        <label class="btn btn-alt" tabindex="0" role="button" for="fileInput" id="fileLabel">&#8593;&nbsp; Open a bundle file</label>
         <input id="fileInput" type="file" accept=".json,application/json" hidden>
         <button class="btn btn-alt" id="pasteToggle" type="button">&#9998;&nbsp; Paste JSON</button>
       </div>
       <div class="paste-wrap" id="pasteWrap" hidden>
-        <textarea id="pasteArea" spellcheck="false" placeholder="Paste a run-bundle JSON here, then press Inspect."></textarea>
+        <textarea aria-label="Run bundle JSON" id="pasteArea" spellcheck="false" placeholder="Paste a run-bundle JSON here, then press Inspect."></textarea>
         <button class="btn btn-go" id="pasteGo" type="button">Inspect pasted bundle</button>
       </div>
       <p class="load-note" id="loadNote">Loading the reference run&hellip;</p>

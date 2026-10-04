@@ -6,7 +6,7 @@ answer the same four geometric questions (`getFeatures`, `resolveRoom`,
 
 | Backend | Source of geometry | Used for |
 |---|---|---|
-| `SvgGeometryBackend` | parses a self-contained practice SVG | public practice suites, the free self-test |
+| `SvgGeometryBackend` | parses a self-contained practice SVG | legacy internal geometry fixtures (not the website) |
 | **`OpenTakeoffBackend`** | **drives the real `opentakeoff-mcp` engine over stdio** | the **certified** path |
 
 `OpenTakeoffBackend` does **not** modify OpenTakeoff. It operates the published
@@ -89,9 +89,4 @@ await runSuite({ track: 'div9', suite: 'va-bldg28', endpoint, model,
   real engine now. A contestant's agent operates real OpenTakeoff geometry.
 - ⚠️ **Symbol counting** (`count`) has no engine tool — `countSymbols` returns an
   honest `unsupported` marker, not a fake zero. Count tasks belong on a BYO harness.
-- ⚠️ The **free in-browser self-test** still uses ported SVG geometry: a browser
-  can't spawn the Node/pdf.js engine subprocess. Making the *browser* lane run real
-  OpenTakeoff needs either a hosted engine HTTP endpoint or the
-  **"do your takeoff in the real OpenTakeoff app, upload the export, we score it"**
-  flow (the academy already scores `opentakeoff.takeoff_canvas.v1` exports). That's
-  a product decision, tracked separately from this seam.
+- The **browser real-plan lab** displays the actual AF101 / AF600 PDF sheets and accepts local quantity drafts with source evidence. It checks completeness only. The browser does not run the Node engine, score private answer keys, or issue credentials. Agents use the local MCP engine or their own takeoff tools; signed run bundles remain inspectable in the Evidence page.
