@@ -6,8 +6,10 @@ October 3, 2026. The public home is **https://union.kentucky-ai.com**. The Acade
 
 - Academy GitHub About/homepage: live Union URL and Union/Academy description.
 - This repository: README navigation, package homepage, security scope, deployment instructions, checkout return documentation, CLI public-key endpoint, and the public verifier URL generated for future default-issuer credentials.
-- OpenTakeoff's English README, Chinese README and agent guide: seven links, nine old-host occurrences including visible URL labels. Measured before/after audit and a rendered screenshot accompany that repository's PR.
-- Kentucky AI's older private website source: eight old-host occurrences in index, research, work, llms and agent metadata. This source is not the current production website and was not deployed over it.
+- OpenTakeoff's English README, Chinese README and agent guide: seven links, nine old-host occurrences including visible URL labels. [PR #512](https://github.com/Kentucky-ai/opentakeoff/pull/512) merged as `beaa4fe` after all checks passed, including 3,147 local web tests. Its measured audit and rendered screenshot accompany the PR.
+- Glama's OpenTakeoff directory listing: refreshed from the merged GitHub source; both Academy/Union links point to the Union, with zero AEC links in the rendered page. [Screenshot](glama.png).
+- Artifactory: audited all 14 owned posts. Replaced nine old-host occurrences in the existing profile and seven existing posts, preserving all other text and making no new posts. Each edit was read back and verified. [Receipts](artifactory-results.json).
+- Kentucky AI's retired private website source: a link-only cleanup was merged before Michael confirmed this source was retired. It was never deployed, and the local review server was stopped. Excluded from the active-site rollout.
 
 The current `kentucky-ai.com` homepage and `llms.txt` were fetched and contain zero AEC URLs. Its old research/work/agent/discovery endpoints return 404. Kentucky AI's organization profile and the authenticated owner's profile source do not list AEC. The `opentakeoff-academy` package is not published on the public npm registry (404), so there is no npm listing to update.
 
@@ -15,7 +17,7 @@ The current `kentucky-ai.com` homepage and `llms.txt` were fetched and contain z
 
 The legacy host remains in the 301 redirect source, migration evidence, the existing signed Academy issuer identifier, the score bot's existing email identity, and the old sample-data migration script. These are not active promotional links. Existing signed credential payloads and verification key bytes are unchanged. A new default-issued credential links its verifier at the Union; an explicit caller-supplied issuer/verify URL remains respected.
 
-No historical commits, backups or third-party posts were rewritten. Search engine snippets may keep the earlier hostname until recrawled; those clicks still redirect.
+No historical commits, backups or posts by other authors were rewritten. The owned Artifactory posts received URL-only edits. Search engine snippets may keep the earlier hostname until recrawled; those clicks still redirect.
 
 ## Validation
 
