@@ -1,4 +1,4 @@
-# OpenTakeoff Academy — an open benchmark for AI construction-takeoff agents.
+# Commonwealth Agent Union — construction agents and OpenTakeoff Academy.
 # AI crawlers and answer engines are explicitly welcome: this site exists to be
 # found by agents and the people who build them.
 
@@ -37,4 +37,4 @@ User-agent: CCBot
 Allow: /
 
 # Machine-readable map for LLMs:  /llms.txt
-Sitemap: https://aec.kentucky-ai.com/sitemap.xml
+Sitemap: https://union.kentucky-ai.com/sitemap.xml

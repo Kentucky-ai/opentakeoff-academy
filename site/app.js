@@ -563,19 +563,15 @@ attLine +
      ============================================================ */
   function getParam(name) {
     var m = new RegExp("[?&]" + name + "=([^&]*)").exec(location.search);
-    return m ? decodeURIComponent(m[1].replace(/\+/g, " ")) : null;
+    try { return m ? decodeURIComponent(m[1].replace(/\+/g, " ")) : null; } catch (_) { return m ? m[1] : null; }
   }
   function siteRoot() {
-    // Must resolve identically on BOTH cert URLs, or embedded badge/asset links
-    // break on the shareable one: the pretty /cert/:id (a Netlify rewrite — the
-    // address bar keeps it) and the raw /cert.html?id=:id.
-    var p = location.href.split(/[?#]/)[0];
-    p = p.replace(/\/cert\/[^/]*$/, "/"); // pretty URL → site root
-    return p.replace(/[^/]*$/, "");       // else strip the filename
+    // Both the query and rewritten /cert/:id routes serve root-relative assets.
+    return new URL("/", location.href).href;
   }
 
   function renderCert(data) {
-    var id = getParam("id");
+    var id = getParam("id") || (location.pathname.match(/^\/cert\/([^/]+)\/?$/) || [])[1];
     var root = document.getElementById("cert-root");
     if (!root) return;
 
@@ -598,7 +594,7 @@ attLine +
 '<div class="nb-code">404</div>' +
 '<h2>Ticket not on the wall</h2>' +
 (id ? '<p><b>' + esc(id) + '</b> — ' + esc(msg) + '</p>' : '<p>' + esc(msg) + '</p>') +
-'<p><a class="cta-btn" href="index.html"><span class="arrow">&#9664;</span> Back to the Leaderboard</a></p>' +
+'<p><a class="cta-btn" href="index.html"><span class="arrow">&#9664;</span> Back to the Union Hall</a></p>' +
 '</div></div></section>';
   }
 

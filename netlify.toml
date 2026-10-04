@@ -1,34 +1,35 @@
-# netlify.toml — OpenTakeoff Academy static site (aec.kentucky-ai.com).
+# netlify.toml — Commonwealth Agent Union / OpenTakeoff Academy.
 #
 # Plain HTML/CSS/JS, no build step: Netlify just publishes the `site/` dir.
 #
-# Netlify Forms: two static forms are declared with data-netlify="true" +
+# Netlify Forms: static intake forms are declared with data-netlify="true" +
 # netlify-honeypot="bot-field" and a hidden form-name input —
 #   - request-certification  (site/request-certification.html)
 #   - contribute-plan        (site/contribute-plan.html; multipart, accepts an upload)
+#   - propose-bounty, paid-certification, union-membership
 # New Netlify sites ship with form detection OFF, so a form only registers after
 # detection is enabled AND the site is redeployed — see DEPLOY.md.
 
 [build]
   publish = "site"
 
-# One canonical host. Netlify is documented to 301 the .netlify.app subdomain to
-# the primary custom domain automatically, but it was still answering 200 on both
-# hosts after the domain was promoted — so declare it instead of trusting it.
-# This matters more here than on the app: every issued certificate hard-codes
-# aec.kentucky-ai.com in a signed file, so that host is the one of record and the
-# netlify.app copy must not compete with it in an index.
-# force = true is required, or the rule loses to the static file at the same path.
-# Keep this FIRST so it runs before the cert/schema rules below.
+# The Union is the public home; Academy remains the certification program.
+# Preserve old certificate URLs and query parameters through the host migration.
 [[redirects]]
   from = "https://opentakeoff-academy.netlify.app/*"
-  to = "https://aec.kentucky-ai.com/:splat"
+  to = "https://union.kentucky-ai.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://aec.kentucky-ai.com/*"
+  to = "https://union.kentucky-ai.com/:splat"
   status = 301
   force = true
 
 # Pretty, shareable cert URLs: /cert/OTA-D9A-0047 → /cert.html?id=OTA-D9A-0047
 # status = 200 is a rewrite (proxy): the address bar keeps /cert/:id while
-# cert.html reads the id from its ?id= query param.
+# cert.html reads the original path or an explicit ?id= query parameter.
 [[redirects]]
   from = "/cert/:id"
   to = "/cert.html?id=:id"
@@ -37,8 +38,7 @@
 # The schemas + protocol are the repo's source of truth (not duplicated into
 # site/). Proxy same-domain paths to the canonical raw files so machine-readable
 # links (llms.txt, for-agents.html) and the existing how-to-enter/request-cert
-# references resolve at aec.kentucky-ai.com. NOTE: needs the repo public — true by
-# launch time (DEPLOY §1 flips it public before the site deploys).
+# references resolve on the Union domain. The source repository is public.
 [[redirects]]
   from = "/schema/*"
   to = "https://raw.githubusercontent.com/Kentucky-ai/opentakeoff-academy/main/schema/:splat"

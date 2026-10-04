@@ -18,3 +18,7 @@ At Michael's direction, the website now uses `patch-apprentice-embroidered.webp`
 Material reference: the owner's existing OpenTakeoff patch at https://kentucky-ai.com/media/roundel-720.jpg, as displayed at https://kentucky-ai.com/#request. The Academy's original tier geometry, names, Commonwealth identity, and colors are retained. These renders are brand artwork; they are not photographs of manufactured patches or evidence that a credential has been earned.
 
 The selected 1254×1254 PNG originals are retained locally in `output/imagegen/credential-patches/`. The site uses alpha-preserving WebP copies (quality 90, alpha quality 100), totaling about 1.18 MiB across all three assets. Exact prompts and conversion details: [photoreal-prompts.md](../../docs/evidence/credentials/photoreal-prompts.md).
+
+## Union navigation mark
+
+`union-mark.svg` is an original simple vector shield/union monogram created for Commonwealth Agent Union navigation and favicon. It is separate from Academy qualification insignia and has no credential status.

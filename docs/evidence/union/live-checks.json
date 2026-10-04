@@ -1,0 +1,197 @@
+{
+  "checkedAt": "2026-10-04T02:09:02.266191+00:00",
+  "base": "https://union.kentucky-ai.com",
+  "pages": [
+    {
+      "path": "/join.html",
+      "status": 200,
+      "canonicalUnion": true
+    },
+    {
+      "path": "/bounties.html",
+      "status": 200,
+      "canonicalUnion": true
+    },
+    {
+      "path": "/index.html",
+      "status": 200,
+      "canonicalUnion": true
+    },
+    {
+      "path": "/inspect.html",
+      "status": 200,
+      "canonicalUnion": true
+    },
+    {
+      "path": "/certification.html",
+      "status": 200,
+      "canonicalUnion": true
+    },
+    {
+      "path": "/for-agents.html",
+      "status": 200,
+      "canonicalUnion": true
+    },
+    {
+      "path": "/request-certification.html",
+      "status": 200,
+      "canonicalUnion": true
+    },
+    {
+      "path": "/contribute-plan.html",
+      "status": 200,
+      "canonicalUnion": true
+    },
+    {
+      "path": "/enroll.html",
+      "status": 200,
+      "canonicalUnion": true
+    },
+    {
+      "path": "/members.html",
+      "status": 200,
+      "canonicalUnion": true
+    },
+    {
+      "path": "/cert.html",
+      "status": 200,
+      "canonicalUnion": false
+    },
+    {
+      "path": "/how-to-enter.html",
+      "status": 200,
+      "canonicalUnion": true
+    },
+    {
+      "path": "/assessment-status.html",
+      "status": 200,
+      "canonicalUnion": true
+    },
+    {
+      "path": "/self-test.html",
+      "status": 200,
+      "canonicalUnion": true
+    }
+  ],
+  "assets": [
+    {
+      "path": "/assets/union-mark.svg",
+      "status": 200
+    },
+    {
+      "path": "app.js",
+      "status": 200
+    },
+    {
+      "path": "assets/concrete-tower-thermal.jpg",
+      "status": 200
+    },
+    {
+      "path": "assets/concrete-tower.jpg",
+      "status": 200
+    },
+    {
+      "path": "assets/patch-apprentice-embroidered.webp",
+      "status": 200
+    },
+    {
+      "path": "assets/patch-journeyman-embroidered.webp",
+      "status": 200
+    },
+    {
+      "path": "assets/patch-master-embroidered.webp",
+      "status": 200
+    },
+    {
+      "path": "badge.js",
+      "status": 200
+    },
+    {
+      "path": "certification-pricing.js",
+      "status": 200
+    },
+    {
+      "path": "credentials.css",
+      "status": 200
+    },
+    {
+      "path": "credentials.js",
+      "status": 200
+    },
+    {
+      "path": "enroll.js",
+      "status": 200
+    },
+    {
+      "path": "home.js",
+      "status": 200
+    },
+    {
+      "path": "inspect.css",
+      "status": 200
+    },
+    {
+      "path": "inspect.js",
+      "status": 200
+    },
+    {
+      "path": "intake.js",
+      "status": 200
+    },
+    {
+      "path": "members.js",
+      "status": 200
+    },
+    {
+      "path": "neo.css",
+      "status": 200
+    },
+    {
+      "path": "plans/va-bldg28/af101.jpg",
+      "status": 200
+    },
+    {
+      "path": "self-test.js",
+      "status": 200
+    },
+    {
+      "path": "start.js",
+      "status": 200
+    },
+    {
+      "path": "styles.css",
+      "status": 200
+    },
+    {
+      "path": "union.css",
+      "status": 200
+    },
+    {
+      "path": "workspace.css",
+      "status": 200
+    }
+  ],
+  "redirects": [
+    {
+      "from": "https://aec.kentucky-ai.com/cert.html?id=OTA-D9A-0047",
+      "status": 301,
+      "to": "https://union.kentucky-ai.com/cert.html?id=OTA-D9A-0047"
+    },
+    {
+      "from": "https://aec.kentucky-ai.com/cert/OTA-D9A-0047",
+      "status": 301,
+      "to": "https://union.kentucky-ai.com/cert/OTA-D9A-0047"
+    },
+    {
+      "from": "https://aec.kentucky-ai.com/self-test.html",
+      "status": 301,
+      "to": "https://union.kentucky-ai.com/self-test.html"
+    },
+    {
+      "from": "https://opentakeoff-academy.netlify.app/members.html",
+      "status": 301,
+      "to": "https://union.kentucky-ai.com/members.html"
+    }
+  ],
+  "realPlanSHA256": "53aa2a44efc8f9a2e625ed223fcfbf9ee19d15eb8469ba57183874b6a8e2a56f"
+}

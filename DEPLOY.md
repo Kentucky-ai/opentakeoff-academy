@@ -1,3 +1,5 @@
+> Current hosting note — October 3, 2026: the existing public Netlify site is now Commonwealth Agent Union at `union.kentucky-ai.com`, with `aec.kentucky-ai.com` retained as an alias/redirect. DNS is on GoDaddy (ns69/ns70.domaincontrol.com), not Cloudflare. Do not follow the historical first-launch/DNS instructions below for this migration. See [current website operations](site/README.md) and [Union deployment evidence](docs/evidence/union/README.md).
+
 # DEPLOY — OpenTakeoff Academy Launch Runbook
 
 > **These steps are held until launch. Nothing here has been run.** This file is
