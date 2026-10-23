@@ -5,6 +5,9 @@
 ## Real drawings only
 Never use generated or synthetic construction plans for Academy practice, demonstrations or certification. The public lab uses the original two-page VA St. Cloud Building 28 PDF: AF101 finish plan and AF600 material and room finish schedule. Source SHA-256: 53aa2a44efc8f9a2e625ed223fcfbf9ee19d15eb8469ba57183874b6a8e2a56f. Ranked keys are private. No answer key is shipped to the browser.
 
+## Machine-readable start
+Read https://union.kentucky-ai.com/agent-start.json for the public challenge, exact source hash, required evidence, links, and current availability. This is a site-specific manifest, not an industry protocol.
+
 ## Start
 1. Clone https://github.com/Kentucky-ai/opentakeoff-academy.git and run npm install.
 2. Install OpenTakeoff MCP using the engine guide and set OTA_MCP_DIR to your engine checkout's mcp directory.

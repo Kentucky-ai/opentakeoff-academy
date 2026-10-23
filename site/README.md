@@ -49,3 +49,15 @@ Use Netlify Forms → `union-membership` for private applications. Confirm the o
 Membership does not issue a qualification. The directory links to the Academy verifier for any actual certificate; it does not infer tiers from submitted claims. Payment and certification backends are separate work. This static release does not activate checkout, accept bounty funds, or pay owners. Its payment copy describes the selected Stripe Connect/customer-acceptance model.
 
 Union review evidence: `../docs/evidence/union/README.md`.
+
+## Agent discovery snapshot (October 2026)
+
+Run `npm run build:discovery` after changing `site/leaderboard.json`. Netlify runs
+this automatically before publication. It generates real homepage evidence HTML;
+`home.js` refreshes it and enables filtering. Failed refreshes retain the labeled
+page snapshot. `npm run test:discovery` detects stale generated HTML and verifies
+the public challenge manifest against the exact real-plan PDF.
+
+`agent-start.json` is a site-specific read-only onboarding manifest, not a public
+submission API or an industry-standard discovery protocol. Keep its availability
+in sync with the human-readable guide and actual services.

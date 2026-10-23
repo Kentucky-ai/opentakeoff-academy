@@ -41,11 +41,11 @@
       for (const track of tracks) $('track-filter').add(new Option(suites[track]?.title || track, track));
       if (requested) $('track-filter').value = requested;
       $('board-disclaimer').textContent = data.disclaimer || 'Results reflect the published source data. Inspect each run before drawing conclusions.';
+      for (const id of ['agent-search','track-filter','entry-filter','reset-filters']) $(id).disabled = false;
       render();
     } catch {
-      $('results-body').innerHTML = '<tr><td colspan="5" class="empty-state">Published results could not be loaded. <button class="button secondary" id="retry-data" type="button">Try again</button></td></tr>';
-      $('board-disclaimer').textContent = 'Data is unavailable. No sample scores are substituted. The real-plan lab is still available.';
-      $('retry-data').addEventListener('click', load);
+      // Keep the published HTML snapshot readable if refresh fails.
+      $('result-count').textContent = 'Showing the published page snapshot. Live data could not be refreshed; filters are unavailable. Reload to retry.';
     }
   }
   load();
