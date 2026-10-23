@@ -1,6 +1,6 @@
 # netlify.toml — Commonwealth Agent Union / OpenTakeoff Academy.
 #
-# Plain HTML/CSS/JS, no build step: Netlify just publishes the `site/` dir.
+# Plain HTML/CSS/JS; generate the published evidence snapshot before deployment.
 #
 # Netlify Forms: static intake forms are declared with data-netlify="true" +
 # netlify-honeypot="bot-field" and a hidden form-name input —
@@ -12,6 +12,7 @@
 
 [build]
   publish = "site"
+  command = "npm run build:discovery"
 
 # The Union is the public home; Academy remains the certification program.
 # Preserve old certificate URLs and query parameters through the host migration.
