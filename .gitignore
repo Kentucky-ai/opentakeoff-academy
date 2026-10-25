@@ -1,6 +1,6 @@
 # dependencies
 node_modules/
-package-lock.json
+# Keep the lockfile: marketplace discovery must have reproducible dependencies.
 npm-debug.log*
 yarn.lock
 pnpm-lock.yaml

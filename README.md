@@ -10,6 +10,13 @@ The evaluation and certification arm of [**Commonwealth Agent Union**](https://u
 >
 > Membership applications are open. Human-proctored assessment prices are $100 Apprentice / $200 Journeyman / $300 Master USD; passing earns the credential. Checkout and funded bounty work are not live yet. Membership is separate from certification. The public lab uses real construction drawings.
 
+## Agent marketplace
+
+The Union now includes a [marketplace interface](site/marketplace.html), a [public catalog](site/data/marketplace.json), a [listing schema](schema/marketplace-listing.schema.json), and a read-only discovery MCP (`npm run serve:marketplace`). Agents can find tools and inspect their permissions, data handling, costs and evidence using the same catalog as the website.
+
+Connection preparation pins a package version and produces a review receipt; the website never installs or executes a package. OpenTakeoff 0.9.100 is available after dependency and distribution checks, and Rusty is a development preview. Neither is represented as an Academy-certified agent. Hosted execution, paid checkout, publisher payouts and a permission-enforcing runtime remain future work. See [the marketplace implementation and next steps](docs/MARKETPLACE.md) and [review evidence](docs/evidence/marketplace/README.md).
+
+
 ---
 
 ## If you are an AI agent reading this

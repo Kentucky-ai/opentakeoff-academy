@@ -1,0 +1,325 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "publisher",
+    "kind",
+    "version",
+    "status",
+    "summary",
+    "categories",
+    "platforms",
+    "license",
+    "pricing",
+    "permissions",
+    "dataPolicy",
+    "certification",
+    "sourceUrl",
+    "docsUrl",
+    "install",
+    "evidence",
+    "security"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,63}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "pattern": "^[^\\u0000-\\u001f]+$"
+    },
+    "publisher": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "pattern": "^[^\\u0000-\\u001f]+$"
+    },
+    "kind": {
+      "enum": [
+        "agent",
+        "mcp-server"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "status": {
+      "enum": [
+        "available",
+        "preview",
+        "paused",
+        "revoked"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "pattern": "^[^\\u0000-\\u001f]+$"
+    },
+    "categories": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100
+      }
+    },
+    "platforms": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100
+      }
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "pattern": "^[^\\u0000-\\u001f]+$"
+    },
+    "pricing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model",
+        "label"
+      ],
+      "properties": {
+        "model": {
+          "enum": [
+            "free-software",
+            "not-offered"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "^[^\\u0000-\\u001f]+$"
+        }
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "files.read",
+          "files.write",
+          "process.local",
+          "network.install"
+        ]
+      }
+    },
+    "dataPolicy": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "pattern": "^[^\\u0000-\\u001f]+$"
+    },
+    "certification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "note"
+      ],
+      "properties": {
+        "status": {
+          "const": "not-assessed"
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "^[^\\u0000-\\u001f]+$"
+        }
+      }
+    },
+    "sourceUrl": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^https://[^/@:]+(?:[:][0-9]+)?(?:/.*)?$",
+      "maxLength": 2000
+    },
+    "docsUrl": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^https://[^/@:]+(?:[:][0-9]+)?(?:/.*)?$",
+      "maxLength": 2000
+    },
+    "install": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "package",
+            "version",
+            "integrity"
+          ],
+          "properties": {
+            "type": {
+              "const": "npm-stdio"
+            },
+            "package": {
+              "type": "string",
+              "pattern": "^(?:@[a-z0-9-]+/)?[a-z0-9][a-z0-9._-]{0,100}$"
+            },
+            "version": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            },
+            "integrity": {
+              "type": "string",
+              "pattern": "^sha512-[A-Za-z0-9+/]{86}==$"
+            }
+          }
+        }
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label",
+          "url"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000,
+            "pattern": "^[^\\u0000-\\u001f]+$"
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://[^/@:]+(?:[:][0-9]+)?(?:/.*)?$",
+            "maxLength": 2000
+          }
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "note"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "pending",
+            "blocked",
+            "reviewed"
+          ]
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "pattern": "^[^\\u0000-\\u001f]+$"
+        }
+      }
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://union.kentucky-ai.com/schema/marketplace-listing.schema.json",
+  "description": "Public listing only. No owner contacts, private notes or credentials. Runtime additionally checks version equality, safe URLs and available-listing prerequisites.",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "available"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "security": {
+            "properties": {
+              "status": {
+                "const": "reviewed"
+              }
+            }
+          },
+          "install": {
+            "type": "object"
+          },
+          "sourceUrl": {
+            "type": "string"
+          },
+          "docsUrl": {
+            "type": "string"
+          },
+          "evidence": {
+            "minItems": 1
+          },
+          "pricing": {
+            "properties": {
+              "model": {
+                "const": "free-software"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "install": {
+            "type": "object"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "permissions": {
+            "allOf": [
+              {
+                "contains": {
+                  "const": "process.local"
+                }
+              },
+              {
+                "contains": {
+                  "const": "network.install"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

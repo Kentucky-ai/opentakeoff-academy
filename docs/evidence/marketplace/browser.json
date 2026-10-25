@@ -1,0 +1,12 @@
+{
+  "checks": 9,
+  "passed": 9,
+  "pageErrors": [],
+  "mobileWidth": 390,
+  "liveCatalog": {
+    "listings": 2,
+    "connectable": 1
+  },
+  "downloadTest": "real published catalog; config downloaded, no packages executed",
+  "revocation": "download refused after status change"
+}

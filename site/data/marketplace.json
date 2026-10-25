@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "union.marketplace.v1",
+  "updated": "2026-10-25",
+  "listings": [
+    {
+      "id": "opentakeoff-mcp",
+      "name": "OpenTakeoff",
+      "publisher": "Kentucky AI",
+      "kind": "mcp-server",
+      "version": "0.9.100",
+      "status": "available",
+      "summary": "Read construction PDFs, measure quantities, and export marked-up plans through your own agent.",
+      "categories": [
+        "Takeoff",
+        "Estimating"
+      ],
+      "platforms": [
+        "Any compatible MCP client"
+      ],
+      "license": "AGPL-3.0-only",
+      "pricing": {
+        "model": "free-software",
+        "label": "No software fee. Your model and compute costs are separate."
+      },
+      "permissions": [
+        "files.read",
+        "files.write",
+        "process.local",
+        "network.install"
+      ],
+      "dataPolicy": "Runs locally under your account. The MCP client and model provider have their own data policies. The connection file does not sandbox the process.",
+      "certification": {
+        "status": "not-assessed",
+        "note": "A marketplace listing is not an Academy credential."
+      },
+      "sourceUrl": "https://github.com/Kentucky-ai/opentakeoff/tree/136dc04bd4e4da8ea8f8319e36152af9f3c5a47d/mcp",
+      "docsUrl": "https://github.com/Kentucky-ai/opentakeoff/blob/136dc04bd4e4da8ea8f8319e36152af9f3c5a47d/mcp/README.md",
+      "install": {
+        "type": "npm-stdio",
+        "package": "opentakeoff-mcp",
+        "version": "0.9.100",
+        "integrity": "sha512-JANrWX8wcHY/vOxpFxGVLQdoGV1WEZbzz+ysHgJePvfyzqTHz1MZQfdqXQsdtM1s09juTxKZG9RwhJKHzSh6KQ=="
+      },
+      "evidence": [
+        {
+          "label": "Security fixes and validation",
+          "url": "https://github.com/Kentucky-ai/opentakeoff/pull/566"
+        },
+        {
+          "label": "Published release and bundle",
+          "url": "https://github.com/Kentucky-ai/opentakeoff/releases/tag/mcp-v0.9.100"
+        }
+      ],
+      "security": {
+        "status": "reviewed",
+        "note": "First-party dependency and distribution review, October 25, 2026: patched release 0.9.100; fresh npm installation has zero known advisories and passes flat/staged MCP negotiation and resource checks. Not an independent security certification or runtime sandbox."
+      }
+    },
+    {
+      "id": "ot-rusty",
+      "name": "OpenTakeoff Rusty",
+      "publisher": "Kentucky AI",
+      "kind": "mcp-server",
+      "version": "0.1.0",
+      "status": "preview",
+      "summary": "Native geometry and PDF text indexing with bounded workers, cancellation, and source-linked search.",
+      "categories": [
+        "Takeoff",
+        "Document search"
+      ],
+      "platforms": [
+        "Any compatible MCP client"
+      ],
+      "license": "Apache-2.0",
+      "pricing": {
+        "model": "not-offered",
+        "label": "Development preview. No marketplace release yet."
+      },
+      "permissions": [
+        "process.local"
+      ],
+      "dataPolicy": "Local geometry and PDF bytes supplied through MCP. Session-local text indexes. No agent file-path or URL tool.",
+      "certification": {
+        "status": "not-assessed",
+        "note": "Development preview; not an Academy credential or a production reliability claim."
+      },
+      "sourceUrl": null,
+      "docsUrl": null,
+      "install": null,
+      "evidence": [],
+      "security": {
+        "status": "pending",
+        "note": "Not independently security-audited."
+      }
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "name": "opentakeoff-academy",
   "version": "0.1.0",
-  "description": "Conformance SDK + CLI for OpenTakeoff Academy \u2014 an open benchmark & certification harness for construction-takeoff AI agents.",
+  "description": "Conformance SDK + CLI for OpenTakeoff Academy — an open benchmark & certification harness for construction-takeoff AI agents.",
   "type": "module",
   "license": "Apache-2.0",
   "homepage": "https://union.kentucky-ai.com",
@@ -17,7 +17,8 @@
   },
   "bin": {
     "opentakeoff-academy": "src/cli.js",
-    "opentakeoff-env": "src/ot-env-mcp.js"
+    "opentakeoff-env": "src/ot-env-mcp.js",
+    "union-marketplace": "src/marketplace-mcp.js"
   },
   "main": "src/index.js",
   "exports": {
@@ -27,7 +28,9 @@
     "src/",
     "schema/",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "site/marketplace-contract.js",
+    "site/data/marketplace.json"
   ],
   "scripts": {
     "test": "node examples/my-agent.example.js --selftest && node test/ot-backend.test.mjs && node test/groundtruth.test.mjs && node test/stats.test.mjs && node test/agreement.test.mjs && node test/env-serve.test.mjs && node test/providers.test.mjs",
@@ -36,11 +39,14 @@
     "serve:env": "node src/ot-env-mcp.js",
     "cli": "node src/cli.js",
     "test:lab": "node --test test/real-plan-lab.test.mjs",
-    "test:commerce": "node --test test/commerce.test.mjs"
+    "test:commerce": "node --test test/commerce.test.mjs",
+    "test:marketplace": "node --test test/marketplace.test.mjs test/marketplace-mcp.test.mjs",
+    "serve:marketplace": "node src/marketplace-mcp.js"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
     "ajv": "^8.17.1",
-    "@modelcontextprotocol/sdk": "^1.29.0"
+    "zod": "4.6.7"
   },
   "keywords": [
     "construction",
@@ -50,5 +56,8 @@
     "mcp",
     "agents",
     "evaluation"
-  ]
+  ],
+  "devDependencies": {
+    "playwright-core": "1.61.1"
+  }
 }
