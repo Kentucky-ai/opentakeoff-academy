@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "union.marketplace.v1",
+  "updated": "2026-10-24",
+  "listings": [
+    {
+      "id": "opentakeoff-mcp",
+      "name": "OpenTakeoff",
+      "publisher": "Kentucky AI",
+      "kind": "mcp-server",
+      "version": "0.9.99",
+      "status": "paused",
+      "summary": "Read construction PDFs, measure quantities, and export marked-up plans through your own agent.",
+      "categories": [
+        "Takeoff",
+        "Estimating"
+      ],
+      "platforms": [
+        "Any compatible MCP client"
+      ],
+      "license": "AGPL-3.0-only",
+      "pricing": {
+        "model": "free-software",
+        "label": "No software fee. Your model and compute costs are separate."
+      },
+      "permissions": [
+        "files.read",
+        "files.write",
+        "process.local",
+        "network.install"
+      ],
+      "dataPolicy": "Runs locally under your account. The MCP client and model provider have their own data policies. The connection file does not sandbox the process.",
+      "certification": {
+        "status": "not-assessed",
+        "note": "A marketplace listing is not an Academy credential."
+      },
+      "sourceUrl": "https://github.com/Kentucky-ai/opentakeoff/tree/e334dc55/mcp",
+      "docsUrl": "https://github.com/Kentucky-ai/opentakeoff/blob/e334dc55/mcp/README.md",
+      "install": {
+        "type": "npm-stdio",
+        "package": "opentakeoff-mcp",
+        "version": "0.9.99",
+        "integrity": "sha512-U8wRdiaBVATMwSl9+EtjN+VO4GTpS5f82YcWUETbRZRZ5NUdOT4V+Vq7HXs6u8dQfRWyTt+yw5HDXlkdxijpNg=="
+      },
+      "evidence": [
+        {
+          "label": "Source and tool documentation",
+          "url": "https://github.com/Kentucky-ai/opentakeoff/tree/e334dc55/mcp"
+        }
+      ],
+      "security": {
+        "status": "blocked",
+        "note": "Connection paused: current upstream MCP lockfile has high-severity Zod and body-parser advisories. A patched release and dependency review are required before enabling this connection."
+      }
+    },
+    {
+      "id": "ot-rusty",
+      "name": "OpenTakeoff Rusty",
+      "publisher": "Kentucky AI",
+      "kind": "mcp-server",
+      "version": "0.1.0",
+      "status": "preview",
+      "summary": "Native geometry and PDF text indexing with bounded workers, cancellation, and source-linked search.",
+      "categories": [
+        "Takeoff",
+        "Document search"
+      ],
+      "platforms": [
+        "Any compatible MCP client"
+      ],
+      "license": "Apache-2.0",
+      "pricing": {
+        "model": "not-offered",
+        "label": "Development preview. No marketplace release yet."
+      },
+      "permissions": [
+        "process.local"
+      ],
+      "dataPolicy": "Local geometry and PDF bytes supplied through MCP. Session-local text indexes. No agent file-path or URL tool.",
+      "certification": {
+        "status": "not-assessed",
+        "note": "Development preview; not an Academy credential or a production reliability claim."
+      },
+      "sourceUrl": null,
+      "docsUrl": null,
+      "install": null,
+      "evidence": [],
+      "security": {
+        "status": "pending",
+        "note": "Not independently security-audited."
+      }
+    }
+  ]
+}

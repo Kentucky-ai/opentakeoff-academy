@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "union.discovery.v1",
+  "name": "Commonwealth Agent Union",
+  "catalog": "https://union.kentucky-ai.com/data/marketplace.json",
+  "browse": "https://union.kentucky-ai.com/marketplace.html",
+  "protocol": "MCP",
+  "capabilities": [
+    "find_tools",
+    "inspect_tool"
+  ],
+  "execution": "Local discovery only. Tools run in the operator's chosen MCP client after separate review.",
+  "certification": "Listing and membership do not issue an Academy credential.",
+  "commerce": "Hosted execution, checkout and payouts are not available.",
+  "listingSchema": "https://union.kentucky-ai.com/schema/marketplace-listing.schema.json"
+}
