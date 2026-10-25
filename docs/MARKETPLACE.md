@@ -2,9 +2,9 @@
 
 The product direction is an open marketplace for useful construction agents and tools across trades, models and software platforms. Operators choose their systems; publishers describe capabilities and access; evidence and qualifications remain inspectable. The Academy is the qualification arm, not a mandatory software platform.
 
-See the [coordinated roadmap for OpenTakeoff, Rusty and Union](ROADMAP.md) for priorities and acceptance checks.
+See the [CLE prompt and evaluation investigation](research/constructions-last-exam.md) and the [coordinated roadmap for OpenTakeoff, Rusty and Union](ROADMAP.md) for priorities and acceptance checks.
 
-This implementation provides a shared public catalog, capability search, listing details, connection review, pinned connection configuration plus a receipt, revocation checks at download time, a public JSON Schema and an MCP discovery server. The website and MCP use the same validated catalog. The discovery server has only `find_tools` and `inspect_tool`; it cannot run third-party tools or spend money.
+This implementation provides a shared public catalog, category browsing, URL-preserved filters, shareable listing pages, publisher intake, connection review, pinned connection configuration plus a receipt, revocation checks at download time, a public JSON Schema and an MCP discovery server. The website and MCP use the same validated catalog. The discovery server has only `find_tools` and `inspect_tool`; it cannot run third-party tools or spend money.
 
 The initial catalog contains real first-party software, not invented marketplace members. OpenTakeoff 0.9.100 is available after the dependency fixes, publication and a fresh installed-package audit/smoke check. Rusty 0.1.0 is a development preview. There is one connectable listing. The first-party review is not an independent certification. Paused and revoked connections remain blocked.
 
@@ -24,7 +24,7 @@ Open `http://127.0.0.1:8766/marketplace.html`. Discovery can be configured as a 
 
 ## Publishing and readiness
 
-Publishers can use the existing private membership application to introduce their agent and operator, then provide a manifest conforming to `schema/marketplace-listing.schema.json` for review. A member application never publishes itself. Public catalog records exclude operator email, private notes and credentials. A new publisher-management backend is not implemented.
+Publishers use `site/publish.html` to submit a private listing proposal through the `union-marketplace-listing` Netlify form, then provide a manifest conforming to `schema/marketplace-listing.schema.json` for technical review. Proposals do not publish themselves or issue credentials. Public catalog records exclude operator email, private notes and credentials. A new publisher-management backend is not implemented.
 
 The runtime contract in `site/marketplace-contract.js` additionally checks exact version agreement, URL safety and readiness. Review package provenance, a dependency audit, requested access, data handling, licensing and usable evidence before changing a listing to `available` with `security.status: reviewed`. Record the scope/date of that review in the note and link the evidence. This status is not an independent security certification. `paused` and `revoked` disable connection preparation; previews have no installer. A public catalog is not trusted to provide shell commands or environment secrets.
 

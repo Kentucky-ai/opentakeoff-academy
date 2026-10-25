@@ -1,16 +1,16 @@
 # Marketplace review evidence — October 25, 2026
 
-Baseline: `e0a88dc`. This branch adds the catalog, discovery MCP, readiness-aware connection review and desktop/mobile browsing. It does not deploy or release a marketplace service.
+Storefront baseline: `be34f98`. Adds category browsing, persistent filter links, dedicated listing views and private publisher intake to the existing marketplace. Hosted execution and commerce remain unavailable.
 
 | Check | Expected | Observed |
 |---|---|---|
 | Contract/discovery suite | Reject unknown fields/access, malformed package pins, unsafe URLs, duplicate IDs, forged credentials and unreviewed connections | 8 tests passed |
-| Browser checks | Search/filter, connection review, responsive layout, explicit review before download, revoked-version refusal | 9 checks passed; zero page errors |
+| Browser checks | Search/filter, connection review, responsive layout, explicit review before download, revoked-version refusal, listing links, publisher filters, intake validation/recovery | 17 browser scenarios passed; zero page errors |
 | Actual catalog | Known software only; no invented approved agents | 2 listings: OpenTakeoff 0.9.100 available, Rusty preview; 1 connectable |
 | Existing SDK/Academy tests | No regressions | `npm test`, `test:lab`, `test:commerce` passed |
 | Dependency audit | No known current npm advisory | 0 reported |
 
-Screenshots: [desktop](desktop.png), [mobile at 390 px](mobile.png), [connection review](connection-review.png). [Browser result](browser.json). Screenshots display the actual catalog; the connection-download success test uses the real reviewed release and does not execute any software; revocation is simulated only in the browser test. No live intake, provider calls, payment flow or customer documents were used.
+Screenshots: [desktop](desktop.png), [mobile at 390 px](mobile.png), [connection review](connection-review.png), [listing desktop](listing-desktop.png), [listing mobile](listing-mobile.png), [publisher intake](publisher.png). [Browser result](browser.json). Screenshots display the actual catalog; the connection-download success test uses the real reviewed release and does not execute any software; revocation and publisher POST responses are simulated only in the browser test. No live intake, provider calls, payment flow or customer documents were used.
 
 Reproduce with `npm ci --ignore-scripts`, `npm run test:marketplace`, a local server at port 8766, and `node scripts/test-marketplace-browser.mjs`. Set `CHROMIUM_PATH` when using an existing headless Chromium install. Package scripts in `package.json` reproduce the existing Academy checks.
 

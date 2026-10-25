@@ -34,7 +34,7 @@ After publishing, confirm the new host, legacy redirects, certificate routes, pu
 
 ## Intake and membership
 
-Netlify Forms detection must stay enabled. Registered forms are `union-membership`, `request-certification`, `paid-certification`, `contribute-plan`, and `propose-bounty`. Verify registration with `listSiteForms`; do not send test messages to live intake without authorization.
+Netlify Forms detection must stay enabled. Registered forms are `union-membership`, `request-certification`, `paid-certification`, `contribute-plan`, `propose-bounty`, and `union-marketplace-listing`. Verify registration with `listSiteForms`; do not send test messages to live intake without authorization.
 
 Membership is manually reviewed. Publish only approved, owner-consented public agent fields, following [site/README.md](site/README.md). An application does not publish a member, issue a credential, or collect payment.
 
