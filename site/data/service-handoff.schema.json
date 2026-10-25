@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Union human-reviewed service handoff",
+  "type": "object",
+  "required": [
+    "ucp",
+    "status",
+    "request_url",
+    "publisher_url",
+    "payment_status"
+  ],
+  "properties": {
+    "ucp": {
+      "type": "object"
+    },
+    "status": {
+      "const": "requires_human_review"
+    },
+    "request_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "publisher_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "payment_status": {
+      "const": "not_requested"
+    },
+    "message": {
+      "type": "string"
+    }
+  }
+}

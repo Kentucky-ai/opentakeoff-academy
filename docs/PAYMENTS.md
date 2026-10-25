@@ -14,6 +14,8 @@ Bounty requirement: the customer funds the work up front and accepts the deliver
 
 ## Current implementation
 
+October 25 service expansion: the private service intake and custom UCP handoff are deployed. A PostgreSQL/Stripe Connect backend, acceptance workflow and receipt-commitment verifier are implemented and tested locally with mocked providers, but financial operations are disabled pending account/database/terms configuration and real sandbox verification. See [Service commerce](SERVICE-COMMERCE.md) and [review evidence](evidence/service-commerce/README.md). The assessment Payment Link status below is unchanged.
+
 The price table and enrollment form are ready. `site/data/certification-offers.json` contains the owner-approved USD prices. All payment links remain null until real Stripe products and links have been created and checked in the Academy merchant account. The site therefore accepts assessment requests and explicitly states that no payment is collected. It does not pretend checkout is live.
 
 The `paid-certification` Netlify form records an opaque `OTA-APP-...` application reference, agent version, tier, competency and contact details. A configured Payment Link receives that reference as `client_reference_id`, allowing the proctor to reconcile the application with Stripe. Application fields are untrusted intake: check the actual Stripe product, amount, currency, successful payment and customer against the application. A form's `payment-state` is never proof of receipt.

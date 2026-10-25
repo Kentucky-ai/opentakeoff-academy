@@ -1,0 +1,487 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Union Service API",
+    "version": "2026-10-25",
+    "description": "Custom service operations. This is not UCP shopping checkout. Financial operations require backend activation."
+  },
+  "servers": [
+    {
+      "url": "https://union.kentucky-ai.com/api/union"
+    }
+  ],
+  "paths": {
+    "/handoff": {
+      "get": {
+        "summary": "Return service request and publisher intake URLs; no order or payment is created",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Human-reviewed service handoff",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://union.kentucky-ai.com/data/service-handoff.schema.json"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/quotes": {
+      "post": {
+        "summary": "Operator creates an agreed quote; returns separate customer and provider access keys once",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Invalid role-specific access"
+          },
+          "409": {
+            "description": "State or agreement conflict"
+          },
+          "503": {
+            "description": "Not activated or configured"
+          },
+          "201": {
+            "description": "Private order and single-return customer/provider bearer tokens"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "acceptanceCriteria": {
+                    "type": "string"
+                  },
+                  "customerEmail": {
+                    "type": "string"
+                  },
+                  "providerName": {
+                    "type": "string"
+                  },
+                  "providerAccount": {
+                    "type": "string"
+                  },
+                  "dueAt": {
+                    "type": "string"
+                  },
+                  "termsVersion": {
+                    "type": "string"
+                  },
+                  "amountCents": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 1000000
+                  },
+                  "providerAmountCents": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 1000000
+                  },
+                  "qualificationVerified": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "title",
+                  "scope",
+                  "acceptanceCriteria",
+                  "customerEmail",
+                  "providerName",
+                  "providerAccount",
+                  "dueAt",
+                  "termsVersion",
+                  "amountCents",
+                  "providerAmountCents",
+                  "qualificationVerified"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "summary": "Read private order using its role-specific bearer key",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation completed"
+          },
+          "401": {
+            "description": "Invalid role-specific access"
+          },
+          "409": {
+            "description": "State or agreement conflict"
+          },
+          "503": {
+            "description": "Not activated or configured"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Union-Role",
+            "schema": {
+              "enum": [
+                "customer",
+                "provider"
+              ],
+              "default": "customer"
+            }
+          }
+        ]
+      }
+    },
+    "/orders/{id}/checkout": {
+      "post": {
+        "summary": "Customer approves agreement and opens Stripe Checkout",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation completed"
+          },
+          "401": {
+            "description": "Invalid role-specific access"
+          },
+          "409": {
+            "description": "State or agreement conflict"
+          },
+          "503": {
+            "description": "Not activated or configured"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "termsVersion": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "termsVersion"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/delivery": {
+      "post": {
+        "summary": "Provider submits funded work with an HTTPS link and SHA-256",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation completed"
+          },
+          "401": {
+            "description": "Invalid role-specific access"
+          },
+          "409": {
+            "description": "State or agreement conflict"
+          },
+          "503": {
+            "description": "Not activated or configured"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                },
+                "required": [
+                  "url",
+                  "sha256"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/decision": {
+      "post": {
+        "summary": "Customer accepts the exact revision, requests revision or disputes",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation completed"
+          },
+          "401": {
+            "description": "Invalid role-specific access"
+          },
+          "409": {
+            "description": "State or agreement conflict"
+          },
+          "503": {
+            "description": "Not activated or configured"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "enum": [
+                      "accept",
+                      "revise",
+                      "dispute"
+                    ]
+                  },
+                  "sha256": {
+                    "type": "string"
+                  },
+                  "revision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "reason": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "action"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/release": {
+      "post": {
+        "summary": "Operator requests transfer after customer acceptance",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation completed"
+          },
+          "401": {
+            "description": "Invalid role-specific access"
+          },
+          "409": {
+            "description": "State or agreement conflict"
+          },
+          "503": {
+            "description": "Not activated or configured"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/orders/{id}/anchor": {
+      "post": {
+        "summary": "Operator prepares a zero-value commitment transaction or verifies its inclusion",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation completed"
+          },
+          "401": {
+            "description": "Invalid role-specific access"
+          },
+          "409": {
+            "description": "State or agreement conflict"
+          },
+          "503": {
+            "description": "Not activated or configured"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "txHash": {
+                    "type": "string"
+                  }
+                },
+                "required": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/refund": {
+      "post": {
+        "summary": "Operator full refund before release; never a partial or post-transfer recovery",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 3000
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Refund confirmed or pending provider confirmation"
+          },
+          "409": {
+            "description": "State conflict or reconciliation required"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
