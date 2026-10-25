@@ -1,6 +1,6 @@
 {
-  "checks": 9,
-  "passed": 9,
+  "checks": 17,
+  "passed": 17,
   "pageErrors": [],
   "mobileWidth": 390,
   "liveCatalog": {
@@ -8,5 +8,7 @@
     "connectable": 1
   },
   "downloadTest": "real published catalog; config downloaded, no packages executed",
-  "revocation": "download refused after status change"
+  "revocation": "download refused after status change",
+  "storefront": "category URL, agent empty state, clear filters, shareable listing, publisher filter, unknown listing",
+  "publisher": "required fields, failed request preserves input, accepted request resets; POST intercepted, no live submission"
 }
