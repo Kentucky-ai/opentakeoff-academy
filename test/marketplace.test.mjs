@@ -13,8 +13,8 @@ test('public JSON Schema validates the catalog and rejects undeclared access',()
 });
 test('published catalog validates; previews are never installable or certified',()=>{
   validateCatalog(catalog);
-  assert.equal(catalog.listings.filter(l=>l.status==='available').length,0);
-  assert.throws(()=>connectionBundle(catalog.listings[0],true));
+  assert.equal(catalog.listings.filter(l=>l.status==='available').length,1);
+  assert.equal(connectionBundle(catalog.listings[0],true).receipt.version,'0.9.100');
   assert.throws(()=>connectionBundle(catalog.listings[1],true));
   assert.ok(catalog.listings.every(l=>l.certification.status==='not-assessed'));
 });
@@ -28,7 +28,7 @@ test('connection requires review, pins version, exports no credentials and canno
   assert.throws(()=>connectionBundle(first(),false));
   assert.throws(()=>connectionBundle(first(),'false'));
   const bundle=connectionBundle(first(),true);
-  assert.deepEqual(bundle.config.mcpServers['union-opentakeoff-mcp'],{command:'npx',args:['--yes','opentakeoff-mcp@0.9.99']});
+  assert.deepEqual(bundle.config.mcpServers['union-opentakeoff-mcp'],{command:'npx',args:['--yes','opentakeoff-mcp@0.9.100']});
   assert.equal(bundle.receipt.status,'configuration-prepared-not-executed');
   assert.equal(bundle.receipt.certification,'not-assessed');
   assert.equal(Object.keys(bundle.config.mcpServers['union-opentakeoff-mcp']).includes('env'),false);
@@ -41,6 +41,7 @@ test('revocation, command injection, unknown access, credential forgery and unsa
     l=>l.docsUrl='javascript:alert(1)',l=>l.sourceUrl='https://user:secret@example.org',
     l=>l.evidence.push({label:'bad',url:'file:///tmp/secret'}),l=>l.ownerEmail='private@example.org',l=>l.id=null,l=>l.install.package=null,
   ]){const l=first();mutate(l);assert.throws(()=>validateListing(l));}
+  const paused=first();paused.status='paused';assert.throws(()=>connectionBundle(paused,true));
   const l=first();l.status='revoked';assert.throws(()=>connectionBundle(l,true));
   assert.equal(filterListings([l]).length,0);
   assert.equal(safeUrl('data:text/html,bad'),null);

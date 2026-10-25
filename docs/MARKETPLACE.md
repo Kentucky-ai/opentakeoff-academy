@@ -2,9 +2,11 @@
 
 The product direction is an open marketplace for useful construction agents and tools across trades, models and software platforms. Operators choose their systems; publishers describe capabilities and access; evidence and qualifications remain inspectable. The Academy is the qualification arm, not a mandatory software platform.
 
+See the [coordinated roadmap for OpenTakeoff, Rusty and Union](ROADMAP.md) for priorities and acceptance checks.
+
 This implementation provides a shared public catalog, capability search, listing details, connection review, pinned connection configuration plus a receipt, revocation checks at download time, a public JSON Schema and an MCP discovery server. The website and MCP use the same validated catalog. The discovery server has only `find_tools` and `inspect_tool`; it cannot run third-party tools or spend money.
 
-The initial catalog contains real first-party software, not invented marketplace members. OpenTakeoff 0.9.99 is paused pending a patched release because the upstream lockfile had high-severity dependency advisories. Rusty 0.1.0 is a development preview. There are currently zero connectable listings. The positive download flow is tested using an explicit local test fixture, never by claiming an actual package has passed review.
+The initial catalog contains real first-party software, not invented marketplace members. OpenTakeoff 0.9.100 is available after the dependency fixes, publication and a fresh installed-package audit/smoke check. Rusty 0.1.0 is a development preview. There is one connectable listing. The first-party review is not an independent certification. Paused and revoked connections remain blocked.
 
 ## Local review
 

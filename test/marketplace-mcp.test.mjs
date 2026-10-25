@@ -14,8 +14,8 @@ test('agents can discover and inspect the real catalog, with no execution verbs'
  const search=await client.callTool({name:'find_tools',arguments:{query:'pdf'}});
  assert.equal(search.structuredContent.total,2);
  const item=await client.callTool({name:'inspect_tool',arguments:{id:'opentakeoff-mcp'}});
- assert.equal(item.structuredContent.listing.security.status,'blocked');
- assert.equal(item.structuredContent.listing.status,'paused');
+ assert.equal(item.structuredContent.listing.security.status,'reviewed');
+ assert.equal(item.structuredContent.listing.status,'available');
  const missing=await client.callTool({name:'inspect_tool',arguments:{id:'unknown-tool'}});
  assert.equal(missing.isError,true);
  const bad=await client.callTool({name:'find_tools',arguments:{query:'takeoff',shell:'anything'}});

@@ -5,8 +5,8 @@
   "mobileWidth": 390,
   "liveCatalog": {
     "listings": 2,
-    "connectable": 0
+    "connectable": 1
   },
-  "downloadTest": "test-only approved fixture; no packages executed",
+  "downloadTest": "real published catalog; config downloaded, no packages executed",
   "revocation": "download refused after status change"
 }

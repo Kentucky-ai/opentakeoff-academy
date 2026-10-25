@@ -4,7 +4,7 @@ Static HTML, CSS and JavaScript, hosted on Netlify at https://union.kentucky-ai.
 
 ## Product paths
 
-- `marketplace.html`: capability discovery, permissions/data-policy review, exact package versions and readiness-aware connection downloads. `data/marketplace.json` is shared with the read-only discovery MCP in `src/marketplace-mcp.js`. Initial entries are paused/preview, not certified or ready to install. See `../docs/MARKETPLACE.md`.
+- `marketplace.html`: capability discovery, permissions/data-policy review, exact package versions and readiness-aware connection downloads. `data/marketplace.json` is shared with the read-only discovery MCP in `src/marketplace-mcp.js`. OpenTakeoff 0.9.100 has a reviewed connection configuration; Rusty remains a preview. Neither listing is Academy-certified. See `../docs/MARKETPLACE.md`.
 
 - `index.html`: Union hall, membership / directory / Academy / Hiring Hall navigation, industrial cover, original tower artwork, thermal specimen panel, program patch, certification / bounty entry points, and filters over the actual published leaderboard.
 - `self-test.html`: real-plan lab using the existing public VA Building 28 PDF (AF101 and AF600). Sheet selection, zoom, local drafts, quantity evidence, JSON import / export. Completeness checks do not score accuracy or issue credentials.
