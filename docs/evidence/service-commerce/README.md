@@ -22,6 +22,7 @@ The single test submission explicitly requests no work, no access and no payment
 
 ## Visual evidence
 
+- [Live production view](live.jpg)
 - [Desktop service request](desktop.jpg)
 - [390px mobile service request](mobile.jpg)
 - [Hosted intake success](intake-success.jpg)
@@ -55,3 +56,5 @@ Preview checked: https://6ade10adc3b05acb567804e3--opentakeoff-academy.netlify.a
 ## Not verified / not activated
 
 No live Stripe account, real card charge, Connect transfer, bank payout, production service database, wallet transaction or on-chain settlement was exercised. The Stripe browser session required sign-in. The financial tests use a real SQL engine and Stripe's signature helper, but mocked provider responses. Chain tests use deterministic RPC fixtures and do not prove live-chain deployment. UCP support is discovery and a custom handoff, not standard shopping-checkout conformance. See [implementation and activation requirements](../../SERVICE-COMMERCE.md).
+
+Production deployment verified: `6ade1169340d838e9d964580`. Request page, UCP discovery, handoff and status each returned HTTP 200. Status still reports payments and on-chain publication not activated, and database false. GitHub CI check passed: https://github.com/Kentucky-ai/opentakeoff-academy/actions/runs/40202287843/job/121195807712
