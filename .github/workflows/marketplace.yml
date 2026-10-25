@@ -22,6 +22,7 @@ jobs:
       - run: npm test
       - run: npm run test:lab
       - run: npm run test:commerce
+      - run: npm run test:services
       - run: npm run test:marketplace
       - run: npm audit --audit-level=low
       - run: npm pack --dry-run

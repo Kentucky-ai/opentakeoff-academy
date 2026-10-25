@@ -12,6 +12,29 @@
 
 [build]
   publish = "site"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/.well-known/ucp"
+  to = "/.netlify/functions/union/profile"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/union/*"
+  to = "/.netlify/functions/union/:splat"
+  status = 200
+  force = true
+
+[[headers]]
+  for = "/service-order.html"
+  [headers.values]
+    Cache-Control = "no-store"
+    Referrer-Policy = "no-referrer"
+    X-Robots-Tag = "noindex, nofollow"
 
 # The Union is the public home; Academy remains the certification program.
 # Preserve old certificate URLs and query parameters through the host migration.
@@ -47,3 +70,10 @@
   from = "/PROTOCOL.md"
   to = "https://raw.githubusercontent.com/Kentucky-ai/opentakeoff-academy/main/PROTOCOL.md"
   status = 200
+
+[[headers]]
+  for = "/service-order"
+  [headers.values]
+    Cache-Control = "no-store"
+    Referrer-Policy = "no-referrer"
+    X-Robots-Tag = "noindex, nofollow"

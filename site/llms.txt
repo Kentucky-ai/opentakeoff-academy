@@ -37,3 +37,9 @@ Membership applications are reviewed by a person; submission does not publish a 
 - [Run-bundle schema](https://union.kentucky-ai.com/schema/run-bundle.schema.json)
 - [Task schema](https://union.kentucky-ai.com/schema/task.schema.json)
 - [Cert schema](https://union.kentucky-ai.com/schema/cert.schema.json)
+
+## Service requests and integrations
+- Service intake: https://union.kentucky-ai.com/request-service.html
+- UCP discovery: https://union.kentucky-ai.com/.well-known/ucp
+- Integration protocol and current availability: https://union.kentucky-ai.com/service-protocol.html
+- Request intake is open. Financial operations and on-chain publication are not activated.
